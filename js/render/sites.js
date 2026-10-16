@@ -319,7 +319,8 @@ function campArt(ctx, site, x, y, k, st) {
   const img = A && (getImage(`camp_${site.camp}_${fort}`) || getImage(`camp_${site.camp}_0`));
   if (!img) return false;
   const h = A.h * k, w = h * img.naturalWidth / img.naturalHeight;
-  drawSmooth(ctx, img, x - w / 2, y - h * 0.985, w, h);
+  const sink = (A.sink && A.sink[getImage(`camp_${site.camp}_${fort}`) ? fort : 0]) || 0.015;
+  drawSmooth(ctx, img, x - w / 2, y - h * (1 - sink), w, h);
   const color = ATTITUDE_COLORS[(st && st.attitude) || 'peaceful'];
   if (!flagArt(ctx, x + w * A.flagX, y, k, color, performance.now() / 1000)) flag(ctx, x + w * A.flagX, y, k, color);
   return true;

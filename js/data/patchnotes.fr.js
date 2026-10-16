@@ -1,6 +1,11 @@
 // Notes de mise à jour montrées aux joueurs (menu « Nouveautés », et une fois après chaque mise à jour).
 // Les plus récentes en premier ; courtes, dans la langue du jeu. Le détail technique est dans CHANGELOG.md.
 export const PATCH_NOTES = [
+  { v: '0.23.5', title: 'Motard et campements', items: [
+    'Le motard reste sur sa moto, qui ne change plus de taille d’une image à l’autre.',
+    'Les ennemis ne sursautent plus à chaque tir de tourelle.',
+    'Les campements nomades et les villages sont bien posés au sol.'
+  ] },
   { v: '0.23.4', title: 'Portraits recadrés', items: [
     'Les portraits des survivants (pastilles et fiches) sont tous cadrés pareil, centrés sur le visage.'
   ] },

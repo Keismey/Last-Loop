@@ -284,7 +284,7 @@ function animOf(type) {
   return { meta, frames };
 }
 // Cadence des poses (s par image)
-const TEMPO = { biker: 0.11, runner: 0.09, brute: 0.17, militia: 0.15 };
+const TEMPO = { biker: 0.16, runner: 0.09, brute: 0.17, militia: 0.15 };
 const ATTACK = { biker: 0.32, runner: 0.38, brute: 0.55, militia: 0.4 };
 const hurtUntil = new WeakMap();     // ennemi → fin de la grimace (render seulement)
 
@@ -312,9 +312,10 @@ function enemyFrame(e, t, attached, now) {
   let f;
   if (e.phase === 'dead') f = P.dead[0];
   else {
-    // Grimace quand il prend un coup (pas plus d'une fois toutes les 0,7 s)
+    // Grimace quand il prend un coup : accroché seulement, au plus une fois toutes les 2,5 s, jamais à moto
+    // (l'image « touché » du motard est à pied : il aurait l'air de sauter de sa moto et d'y remonter)
     const hu = hurtUntil.get(e);
-    if (now - e.hitT < 0.05 && e.hitT > 0 && (!hu || now > hu + 0.5)) hurtUntil.set(e, now + 0.2);
+    if (attached && e.type !== 'biker' && now - e.hitT < 0.05 && e.hitT > 0 && (!hu || now > hu + 2.3)) hurtUntil.set(e, now + 0.22);
     const h2 = hurtUntil.get(e);
     if (h2 && now < h2) f = P.hurt[0];
     else if (attached && e.moveT === undefined || attached && e.moveT >= 1) f = pick(P.attack, t, ATTACK[e.type] || 0.4);

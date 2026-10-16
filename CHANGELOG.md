@@ -1,5 +1,15 @@
 # Journal des versions
 
+## 0.23.5 — Motard et campements
+
+- **Motard** : son image « touché » est à pied, il semblait sauter de sa moto et y remonter à chaque coup reçu ;
+  il ne grimace plus à moto. Les trois images de moto (dessinées à des tailles un peu différentes par Gemini) sont
+  ramenées à la même taille et calées entre les deux roues : la moto ne gonfle plus et ne glisse plus. Cadence ralentie.
+- Les autres ennemis grimacent au plus une fois toutes les 2,5 s, et seulement accrochés au train (plus de sursauts
+  en pleine course sous le feu des tourelles).
+- **Campements** posés au sol : nomades et villages étaient dessinés un peu en perspective (tentes et maisons plus
+  haut que le bas de l'image) ; l'image descend sous la ligne du sol (`CAMP_ART.sink`, mesuré sur chaque image).
+
 ## 0.23.4 — Pas de debug en ligne, portraits recadrés
 
 - Portraits des survivants (pastilles et fiches) : même cadrage pour les huit bases, centrés sur le visage.

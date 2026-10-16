@@ -92,8 +92,10 @@ export const SITE_ART = {
 };
 // Camps (images Gemini) : hauteur en unités ; fortifié à partir de cette défense ; drapeau (position, hauteur)
 export const CAMP_ART = {
-  village: { h: 225, flagX: -0.48 },
-  nomads: { h: 215, flagX: -0.48 },
+  // sink : part de l'image sous la ligne du sol (Gemini a dessiné le campement un peu en perspective :
+  // les tentes posent plus haut que le bas de l'image), par état [normal, fortifié]
+  village: { h: 225, flagX: -0.48, sink: [0.055, 0.045] },
+  nomads: { h: 215, flagX: -0.48, sink: [0.12, 0.055] },
   outpost: { h: 255, flagX: -0.48 },
   raiders: { h: 255, flagX: -0.47 },
   fortifiedAt: 3,
