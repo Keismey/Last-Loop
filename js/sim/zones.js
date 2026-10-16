@@ -91,6 +91,11 @@ export function easeHunt(state, n) {
   p.huntRelief[state.route.ring] = (p.huntRelief[state.route.ring] || 0) + k;
   return k;
 }
+// Avant-poste du Roi pillé : ses bandes perdent la trace, la traque repart de zéro (puis remonte d'un cran par tour)
+export function resetHunt(state) {
+  const lv = huntLevel(state);
+  return lv > 0 ? easeHunt(state, lv) : 0;
+}
 export const huntMult = state => 1 + PROGRESS.huntStep * huntLevel(state);
 
 // ---------- Entretien du convoi (au dépôt) ----------

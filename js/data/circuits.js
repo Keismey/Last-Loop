@@ -66,7 +66,7 @@ export const CIRCUITS = {
           { id: 'c1_t5_b', name: 'Gare de Fer-Blanc', signal: 'green', sites: [
             site('c1_fer_blanc', 'station', 'Gare de Fer-Blanc', { specialty: 'forge' })] },
           { id: 'c1_t5_c', name: 'La Tranchée', signal: 'red', lockCost: 2, sites: [
-            camp('c1_avant_poste_roi', 'raiders', 'Avant-poste du Roi', { defense: 3 }),
+            camp('c1_avant_poste_roi', 'raiders', 'Avant-poste du Roi', { defense: 3, huntReset: true }),
             site('c1_tranchee', 'fortress', 'La Tranchée', { boss: 'boss_c1' })] }
         ]
       },

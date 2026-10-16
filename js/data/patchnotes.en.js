@@ -1,5 +1,8 @@
 // Patch notes shown to players in English (same entries as patchnotes.fr.js).
 export const PATCH_NOTES = [
+  { v: '0.25.2', title: 'Shaking off the hunt', items: [
+    'Raiding the King’s Outpost, in The Trench, makes his gangs lose your trail: the hunt starts over.'
+  ] },
   { v: '0.25.1', title: 'Redrawn camps', items: [
     'The village, the nomad camp and the raider den are redrawn flat, standing along the track like the other places.',
     'The harvested field keeps its scarecrow and finally shows stubble.'

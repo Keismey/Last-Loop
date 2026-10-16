@@ -16,6 +16,7 @@ import { attitudeOf, raidPreview, tributeCost, campState } from '../sim/camp.js'
 import { CAMP, ATTITUDE_COLORS } from '../data/sites.js';
 import { depotVisit } from '../sim/station.js';
 import { BOSSES, COMBAT } from '../data/enemies.js';
+import { huntLevel } from '../sim/zones.js';
 
 let refs = null;
 let lastKey = '';
@@ -452,7 +453,7 @@ function buildCamp(state, sc, site, st, body) {
     let sub = t('action.nothing');
     if (a === 'halt') sub = t(att === 'ally' || att === 'peaceful' ? 'camp.haltTrade' : 'camp.haltTalk');
     else if (a === 'tribute') { const c = tributeCost(state); sub = c ? t('camp.tributeSub', { c: fmtCost(c) }) : t('camp.tributeNo'); }
-    else if (a === 'raid') sub = fmtGain(raidPreview(state, site)) + ' · ' + t(att === 'hostile' ? 'camp.raidHostile' : 'camp.raidAnger');
+    else if (a === 'raid') sub = fmtGain(raidPreview(state, site)) + ' · ' + t(site.huntReset && huntLevel(state) > 0 ? 'camp.raidHunt' : att === 'hostile' ? 'camp.raidHostile' : 'camp.raidAnger');
     else if (att === 'hostile') sub = t('camp.passHostile', { f: Math.round(campForce(state, site) * 10) / 10 });
     else if (att === 'suspicious') sub = t('camp.passSuspicious');
     const b = el('button', { class: 'sb-action' + (a === chosen ? ' selected' : '') + (a === 'pass' ? ' pass' : '') + (a === 'raid' ? ' danger' : ''), type: 'button' },

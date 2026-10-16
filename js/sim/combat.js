@@ -17,7 +17,7 @@ import { entryWagon, isAssault, updateIncursions } from './incursion.js';
 import { caboose, hitCaboose, regenCaboose } from './caboose.js';
 import { attitudeOf, payTribute, raidVictory } from './camp.js';
 import { CAMP } from '../data/sites.js';
-import { huntMult, huntLevel, onBossDefeated, easeHunt } from './zones.js';
+import { huntMult, huntLevel, onBossDefeated, easeHunt, resetHunt } from './zones.js';
 import { fx } from './research.js';
 
 // Menace : facteur de l'anneau × traque (tant que le boss de la zone vit, elle monte à chaque tour)
@@ -504,6 +504,8 @@ function updateRaid(state, dt) {
   const site = findSite(state.route.ring, R.site);
   const got = grant(state, raidVictory(state, site), 1);
   bus.emit('camp:raided', { site, got });
+  // Avant-poste du Roi : le relais de ses bandes tombe, la traque repart de zéro
+  if (site.huntReset) { const n = resetHunt(state); if (n) bus.emit('hunt:reset', { site, n }); }
 }
 
 // ---------- Forteresse (GDD §6.6, §6.7) ----------

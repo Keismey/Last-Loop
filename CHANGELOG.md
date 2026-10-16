@@ -1,5 +1,12 @@
 # Journal des versions
 
+## 0.25.2 — Semer la traque
+
+- **Traque** : piller l'Avant-poste du Roi (La Tranchée, `huntReset` sur le camp) la remet à zéro (`resetHunt`) ;
+  elle remonte ensuite d'un cran par tour. Le choix « Piller » l'annonce, la bulle de la traque et le conseil de Gus
+  le rappellent. Le déraillement la fait toujours reculer de 2 crans.
+- **Planche à faire** : drone faucheur animé (8 images).
+
 ## 0.25.1 — Camps redessinés
 
 - **Lieux** : nouvelles images à plat (retouches Gemini de lieux déjà à plat) pour le village et les nomades (normal et

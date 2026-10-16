@@ -598,6 +598,7 @@ async function start(data) {
   });
   bus.on('crew:died', s => addLog(getState(), 'log.died', { name: displayName(s) }));
   bus.on('camp:raided', ({ site }) => addLog(getState(), 'log.raided', { site: site.name }));
+  bus.on('hunt:reset', ({ site }) => { toast(t('hunt.reset', { site: site.name })); addLog(getState(), 'log.huntReset', { site: site.name }); });
   bus.on('camp:allyKey', site => addLog(getState(), 'log.allyKey', { site: site.name }));
   // Camps (GDD §3.4)
   bus.on('camp:tribute', ({ site, cost }) => toast(t('camp.tributePaid', { name: site.name, c: lootText(cost).replace(/\+/g, '−') })));
