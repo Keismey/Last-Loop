@@ -103,26 +103,35 @@ function checkOrientation() {
 }
 portraitQuery.addEventListener('change', checkOrientation);
 
-function tryFullscreen() {
-  const root = document.documentElement;
+// Plein écran + verrou paysage. Ouvert depuis le hub installé, le jeu tourne dans la
+// fenêtre du hub : seul ce verrou force l'horizontale, quel que soit le manifeste du hub.
+// À appeler sur « pointerup » : sur écran tactile, « pointerdown » ne compte pas comme
+// un geste de l'utilisateur et le navigateur refuse alors le plein écran.
+let landscapeLocked = false, landscapeTries = 0;
+function lockLandscape() {
   try {
-    const p = root.requestFullscreen ? root.requestFullscreen({ navigationUI: 'hide' }) : null;
-    if (p && p.then) {
-      p.then(() => {
-        try { screen.orientation.lock('landscape').catch(() => {}); } catch (e) { /* non supporté */ }
-      }).catch(() => {});
-    }
-  } catch (e) { /* plein écran refusé : sans conséquence */ }
+    const p = screen.orientation && screen.orientation.lock ? screen.orientation.lock('landscape') : null;
+    if (p && p.then) p.then(() => { landscapeLocked = true; }).catch(() => {});
+  } catch (e) { /* non supporté (iPhone) */ }
+}
+function tryLandscape(force) {
+  if (landscapeLocked || !matchMedia('(pointer: coarse)').matches) return;
+  if (!force && landscapeTries >= 3) return;   // pas d'insistance si l'appareil refuse
+  landscapeTries++;
+  const root = document.documentElement;
+  if (document.fullscreenElement || matchMedia('(display-mode: fullscreen), (display-mode: standalone)').matches) lockLandscape();
+  if (!document.fullscreenElement && root.requestFullscreen) {
+    try { root.requestFullscreen({ navigationUI: 'hide' }).then(lockLandscape).catch(() => {}); } catch (e) { /* refusé */ }
+  }
 }
 
-// Premier toucher : son débloqué (les navigateurs l'exigent) et, sur téléphone, plein écran tenté
+// Premier toucher : son débloqué (les navigateurs l'exigent)
 let firstTouchDone = false;
 function onFirstTouch() {
   if (firstTouchDone) return;
   firstTouchDone = true;
   initAudio();
   unlockMusic();
-  if (matchMedia('(pointer: coarse)').matches) tryFullscreen();
 }
 
 // ---------- Sauvegarde ----------
@@ -269,7 +278,7 @@ function openGameMenu() {
       backToTitle();
     },
     onDebug: () => { closeModal(); openDebugPanel(); },
-    tryFullscreen
+    tryFullscreen: () => tryLandscape(true)
   });
 }
 
@@ -451,6 +460,7 @@ async function start(data) {
   $('title-version').textContent = t('title.version', { v: CONFIG.VERSION });
   $('rotate-title').textContent = t('rotate.title');
   $('rotate-body').textContent = t('rotate.body');
+  $('rotate-go').textContent = t('rotate.go');
   $('rotate-icon').innerHTML = icon('phone');
   $('loading-title').textContent = t('loading.title');
   $('error-title').textContent = t('error.title');
@@ -629,6 +639,8 @@ async function start(data) {
   });
 
   document.addEventListener('pointerdown', onFirstTouch, { capture: true });
+  document.addEventListener('pointerup', () => tryLandscape(false), { capture: true });
+  $('rotate-go').addEventListener('click', () => tryLandscape(true));
   // Petit clic sur chaque bouton de l'interface
   document.addEventListener('click', e => { if (e.target.closest && e.target.closest('button:not([disabled])')) sfx('click'); }, { capture: true });
   wireSounds(bus, sfx);

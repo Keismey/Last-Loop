@@ -1,6 +1,10 @@
 // Notes de mise à jour montrées aux joueurs (menu « Nouveautés », et une fois après chaque mise à jour).
 // Les plus récentes en premier ; courtes, dans la langue du jeu. Le détail technique est dans CHANGELOG.md.
 export const PATCH_NOTES = [
+  { v: '0.23.3', title: 'À l’horizontale depuis le hub', items: [
+    'Ouvert depuis le hub installé, le jeu passe bien à l’horizontale.',
+    'Écran « Tourne ton téléphone » : un bouton pour passer à l’horizontale d’un toucher.'
+  ] },
   { v: '0.23.2', title: 'Comme les autres jeux du studio', items: [
     'Logo Keismey Studio au lancement (touche l’écran pour passer).',
     'Les nouveautés s’affichent une fois après chaque mise à jour, et restent dans le menu.',

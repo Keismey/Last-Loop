@@ -20,6 +20,7 @@ export const TEXTS = {
 
   'rotate.title': 'Tourne ton téléphone',
   'rotate.body': 'Last Loop se joue à l’horizontale.',
+  'rotate.go': 'Passer à l’horizontale',
 
   'hud.route': 'C{ring} · Tour {lap} · Tronçon {leg}/{legs}',
   'hud.playTime': 'Temps de jeu',

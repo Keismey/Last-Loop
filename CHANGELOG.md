@@ -1,5 +1,13 @@
 # Journal des versions
 
+## 0.23.3 — Paysage depuis le hub
+
+- Le plein écran et le verrou paysage étaient demandés sur `pointerdown`, qui ne compte pas comme un geste sur écran
+  tactile : le navigateur refusait, et le jeu restait coincé dans la fenêtre portrait du hub installé. Désormais sur
+  `pointerup` (3 essais max), avec verrou paysage direct en mode installé.
+- Écran « Tourne ton téléphone » : bouton « Passer à l’horizontale ». Le bouton Plein écran du menu verrouille aussi le paysage.
+- Hub : manifeste passé en orientation libre (il imposait le portrait à tous les jeux ouverts dans sa fenêtre).
+
 ## 0.23.2 — Aligné sur les autres jeux du studio
 
 - **Logo Keismey Studio** au lancement (toucher pour passer), comme les autres jeux.
