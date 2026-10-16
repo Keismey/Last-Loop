@@ -1,5 +1,10 @@
 # Journal des versions
 
+## 0.25.3 — Le drone s'anime
+
+- **Drone faucheur** : planche animée (vol, scie, touché, épave). Images calées sur l'œil rouge (le corps ne saute
+  pas quand la scie bouge). Abattu au-dessus du train, l'épave reste sur le toit ; abattu à l'approche, elle tombe au sol.
+
 ## 0.25.2 — Semer la traque
 
 - **Traque** : piller l'Avant-poste du Roi (La Tranchée, `huntReset` sur le camp) la remet à zéro (`resetHunt`) ;

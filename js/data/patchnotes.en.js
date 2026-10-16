@@ -1,5 +1,8 @@
 // Patch notes shown to players in English (same entries as patchnotes.fr.js).
 export const PATCH_NOTES = [
+  { v: '0.25.3', title: 'The drone comes alive', items: [
+    'The outposts’ reaper drone flies, saws at the wagons and falls as a wreck when shot down.'
+  ] },
   { v: '0.25.2', title: 'Shaking off the hunt', items: [
     'Raiding the King’s Outpost, in The Trench, makes his gangs lose your trail: the hunt starts over.'
   ] },

@@ -184,7 +184,10 @@ function enemyScreen(e, cars, view, H, time) {
   const sz = spriteSize(e, S);
   // Volant : en image, il plane juste au-dessus du toit (la scie à hauteur du toit)
   const flyY = sz ? f.top + 8 * S : f.top - 16 * S;
-  const y = fly ? flyY + Math.sin(time * 3 + e.id) * 3 * S : railY + (10 + (e.id % 3) * 3) * S;
+  // Drone abattu : l'épave tombe sur le toit du wagon (au-dessus du train) ou au sol (abattu à l'approche)
+  const wreck = fly && e.phase === 'dead';
+  const y = !fly || (wreck && e.diedAt !== undefined) ? railY + (10 + (e.id % 3) * 3) * S
+    : wreck ? flyY : flyY + Math.sin(time * 3 + e.id) * 3 * S;
   if (sz) return { x, y, fly, f, cx: x, cy: y - sz.h * 0.5, r: Math.max(sz.h * 0.45, sz.w * 0.4), W };
   const big = e.type === 'brute' ? 1.5 : 1;
   return { x, y, fly, f, cx: x, cy: fly ? y : y - 18 * S * big * K, r: 20 * S * big * K, W };
@@ -271,8 +274,8 @@ function animOf(type) {
   return { meta, frames };
 }
 // Cadence des poses (s par image)
-const TEMPO = { biker: 0.16, runner: 0.09, brute: 0.17, militia: 0.15 };
-const ATTACK = { biker: 0.32, runner: 0.38, brute: 0.55, militia: 0.4 };
+const TEMPO = { biker: 0.16, runner: 0.09, brute: 0.17, militia: 0.15, drone: 0.12 };
+const ATTACK = { biker: 0.32, runner: 0.38, brute: 0.55, militia: 0.4, drone: 0.22 };
 const hurtUntil = new WeakMap();     // ennemi → fin de la grimace (render seulement)
 
 function pick(list, t, tempo) { return list[Math.floor(t / tempo) % list.length]; }

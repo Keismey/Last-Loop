@@ -1,6 +1,9 @@
 // Notes de mise à jour montrées aux joueurs (menu « Nouveautés », et une fois après chaque mise à jour).
 // Les plus récentes en premier ; courtes, dans la langue du jeu. Le détail technique est dans CHANGELOG.md.
 export const PATCH_NOTES = [
+  { v: '0.25.3', title: 'Le drone s’anime', items: [
+    'Le drone faucheur des avant-postes vole, scie les wagons et retombe en épave quand on l’abat.'
+  ] },
   { v: '0.25.2', title: 'Semer la traque', items: [
     'Piller l’Avant-poste du Roi, dans La Tranchée, fait perdre ta trace à ses bandes : la traque repart de zéro.'
   ] },

@@ -35,7 +35,7 @@ for (let t = 1; t <= 4; t++) add(`loco_t${t}`, 520, 264, 'sprite', t <= 2 ? 'boo
 add('site_convoy', 1000, 192, 'sprite', 'boot'); add('site_refinery', 760, 310, 'sprite', 'boot');
 for (let c = 1; c <= 3; c++) add(`boss_c${c}`, 640, 360, 'sprite', c === 1 ? 'boot' : 'later');
 // Planches animées (marche, attaque, coup reçu, chute ; le boss : roule, tir, charge, saut, épave)
-['biker', 'runner', 'brute', 'militia', 'boss_c1'].forEach(e => add(`en_${e}`, 2048, 400, 'sprite', 'boot'));
+['biker', 'runner', 'brute', 'militia', 'drone', 'boss_c1'].forEach(e => add(`en_${e}`, 2048, 400, 'sprite', 'boot'));
 // Événements
 ['survivor', 'convoy', 'merchant', 'storm', 'mechanic', 'rail', 'warehouse', 'epidemic', 'map', 'overheat']
   .forEach(e => add(`ev_${e}`, 960, 540, 'opaque'));
@@ -71,7 +71,7 @@ export const AVAILABLE = new Set([
   'site_field', 'site_field_low', 'site_forest', 'site_forest_low', 'site_mine', 'site_mine_low',
   'site_junkyard', 'site_junkyard_low', 'site_ruins', 'site_station', 'site_depot', 'site_fortress',
   'wagon_boiler', 'wagon_greenhouse', 'wagon_bunk', 'wagon_gatherer', 'wagon_turret', 'wagon_workshop',
-  'en_biker', 'en_runner', 'en_brute', 'en_militia', 'en_boss_c1',
+  'en_biker', 'en_runner', 'en_brute', 'en_militia', 'en_drone', 'en_boss_c1',
   'loco_t2', 'wagon_cargo', 'wagon_lab', 'wagon_caboose',
   'ev_survivor', 'ev_convoy', 'ev_merchant', 'ev_storm', 'ev_mechanic', 'ev_rail', 'ev_warehouse', 'ev_epidemic', 'ev_map', 'ev_overheat',
   'crew_mecano_f', 'crew_mecano_f_m', 'crew_mecano_h', 'crew_mecano_h_m', 'crew_cultiv_f', 'crew_cultiv_f_m',
