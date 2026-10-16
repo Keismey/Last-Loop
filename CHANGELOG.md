@@ -1,5 +1,11 @@
 # Journal des versions
 
+## 0.24.2 — Mécanos au lit
+
+- **Sommeil du mécanicien** : sa pose de sommeil était une image accroupie (tête dans les mains), qui flottait
+  au-dessus des lits. Il dort maintenant allongé, comme la mécanicienne. Le col de son vêtement, resté vert sur cette
+  image, prend la couleur de sa tenue (`clothMin` par planche dans build_crew.py).
+
 ## 0.24.1 — Tirs plus propres
 
 - **Combat** : retrait du trait jaune des tirs (tourelles et survivants) et de son point d'impact. Il partait du corps
