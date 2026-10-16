@@ -1,6 +1,9 @@
 // Notes de mise à jour montrées aux joueurs (menu « Nouveautés », et une fois après chaque mise à jour).
 // Les plus récentes en premier ; courtes, dans la langue du jeu. Le détail technique est dans CHANGELOG.md.
 export const PATCH_NOTES = [
+  { v: '0.24.3', title: 'Couleurs de l’Après', items: [
+    'Les tenues et les cheveux des survivants prennent des teintes plus sobres et poussiéreuses, sans couleurs fluo.'
+  ] },
   { v: '0.24.2', title: 'Mécanos au lit', items: [
     'Le mécanicien dort enfin allongé dans son lit, au lieu de rester accroupi au-dessus.'
   ] },

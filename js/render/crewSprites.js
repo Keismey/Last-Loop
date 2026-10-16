@@ -55,7 +55,8 @@ function build(base, clothHex, hairHex) {
   const id = g.getImageData(0, 0, W, H), p = id.data;
   const tgt = [[clothHex, meta.cloth, 0], [hairHex, meta.hair, 1]].map(([hex, ref, ch]) => {
     const [h, s, v] = rgbHsv(...hexRgb(hex));
-    return { h, ks: s / ref[0], kv: v / ref[1], ch };
+    // Plafonds : les reflets de la planche ne virent pas au fluo (vert repère très saturé, couleurs éclaircies)
+    return { h, ks: s / ref[0], kv: Math.min(v / ref[1], ch ? 1.2 : 1.05), ch, smax: Math.min(1, s * 1.2), vmax: Math.min(0.86, v * 1.7) };
   });
   const tmp = [0, 0, 0];
   for (let i = 0; i < p.length; i += 4) {
@@ -64,7 +65,7 @@ function build(base, clothHex, hairHex) {
       const w = m[i + T.ch] / 255;
       if (w <= 0.02) continue;
       const [, s, v] = rgbHsv(p[i], p[i + 1], p[i + 2]);
-      hsvRgb(T.h, Math.min(1, s * T.ks), Math.min(1, v * T.kv), tmp);
+      hsvRgb(T.h, Math.min(T.smax, s * T.ks), Math.min(T.vmax, v * T.kv), tmp);
       p[i] += (tmp[0] - p[i]) * w; p[i + 1] += (tmp[1] - p[i + 1]) * w; p[i + 2] += (tmp[2] - p[i + 2]) * w;
     }
   }

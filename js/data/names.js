@@ -22,8 +22,9 @@ export const NICKNAMES = {
 // Apparence des pantins (GDD §15.2)
 export const LOOKS = {
   skin: ['#f1c9a5', '#e0ac82', '#c68b5e', '#a8704a', '#7d4f33', '#5a3825'],
-  hair: ['#2b2420', '#5a3a22', '#8c5a2b', '#c9a15c', '#a8a29a', '#b5562b'],
-  outfit: ['#3E8E8A', '#6b7f4e', '#8f4426', '#5c6a82', '#7a5c40', '#8a6f8e'],
+  // Teintes de l'Après : délavées, poussiéreuses (pas de couleurs vives). Ajouter à la fin : les sauvegardes gardent l'index.
+  hair: ['#2b2420', '#5a3a22', '#7e5530', '#b39463', '#9c968e', '#8a4a2c'],
+  outfit: ['#4b6461', '#5e6644', '#7a4630', '#4e5868', '#6e5640', '#64585f', '#7d6a45', '#55524f'],
   hairStyle: 6,   // court, chignon, long, rasé, bouclé, crête
   accessory: 5    // aucun, lunettes de soudeur, foulard, casquette, casque
 };

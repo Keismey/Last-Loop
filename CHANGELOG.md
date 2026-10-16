@@ -1,5 +1,12 @@
 # Journal des versions
 
+## 0.24.3 — Couleurs de l'Après
+
+- **Palette des survivants** : tenues et cheveux en teintes délavées (le cyan, le vert clair et le lilas sortaient de
+  l'ambiance). Deux tenues de plus (kaki, anthracite), ajoutées en fin de liste pour garder les sauvegardes.
+- **Recoloration** : saturation et luminosité plafonnées (les reflets du vert repère viraient au fluo) ; la planche du
+  mécanicien, plus claire que les autres, a une valeur de référence relevée (`clothRefV`).
+
 ## 0.24.2 — Mécanos au lit
 
 - **Sommeil du mécanicien** : sa pose de sommeil était une image accroupie (tête dans les mains), qui flottait
