@@ -322,7 +322,7 @@ T2, 6 à 8 wagons surtout niveau 2, 6 à 10 survivants.
    Le hub affiche « Mesure d'audience anonyme (Cloudflare), sans cookie » : mettre la même mention dans les Crédits.
 5. ~~Dépôt GitHub~~ **Keismey/Last-Loop** (0.23.1), adresse https://keismey.github.io/Last-Loop/. GitHub Pages à activer par
    le manager (Settings → Pages → branche main, dossier racine) : l'API Pages n'est pas accessible depuis la session.
-   **Mise en ligne** : `deploy/make_gh.py <clone du dépôt>` (régénère `sw.js`, écrit l'index complet avec Cloudflare),
+   **Mise en ligne** : `python3 tools/make_gh.py <clone du dépôt>` (régénère `sw.js`, écrit l'index complet avec Cloudflare),
    puis commit et push. Changer `VERSION` dans `js/data/config.js` à chaque mise en ligne (nom du cache hors ligne).
 6. ~~**Ajout au hub keismey.github.io**~~ (fait : bloc `last-loop` dans `games.js`, raccourci dans le manifeste du hub) : un bloc dans `games.js` (id, name, genre, tagline, path `/Last-Loop/` selon le nom
    du dépôt, repo, cover paysage, focus, color, accent, progress qui lit la sauvegarde `loopexpress.save` en lecture seule).
