@@ -1,5 +1,9 @@
 # Journal des versions
 
+## 0.25.6 — Le déraillement illustré
+
+- **Illustration** ev_derail (Gemini) sur la carte du déraillement.
+
 ## 0.25.5 — Comprendre un déraillement
 
 - **Déraillement** : carte façon événement (illustration ev_derail, en attente : ciel et pictogramme en attendant)

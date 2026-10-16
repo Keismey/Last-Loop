@@ -1,6 +1,9 @@
 // Notes de mise à jour montrées aux joueurs (menu « Nouveautés », et une fois après chaque mise à jour).
 // Les plus récentes en premier ; courtes, dans la langue du jeu. Le détail technique est dans CHANGELOG.md.
 export const PATCH_NOTES = [
+  { v: '0.25.6', title: 'Le déraillement illustré', items: [
+    'La carte du déraillement a son illustration.'
+  ] },
   { v: '0.25.5', title: 'Comprendre un déraillement', items: [
     'Quand le train déraille, une carte raconte l’accident et ce qu’il a coûté avant le résumé du tour.',
     'Les images modifiées d’une mise à jour s’affichent tout de suite (elles pouvaient rester à l’ancienne version).'

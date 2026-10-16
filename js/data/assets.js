@@ -73,7 +73,7 @@ export const AVAILABLE = new Set([
   'wagon_boiler', 'wagon_greenhouse', 'wagon_bunk', 'wagon_gatherer', 'wagon_turret', 'wagon_workshop',
   'en_biker', 'en_runner', 'en_brute', 'en_militia', 'en_drone', 'en_boss_c1',
   'loco_t2', 'wagon_cargo', 'wagon_lab', 'wagon_caboose',
-  'ev_survivor', 'ev_convoy', 'ev_merchant', 'ev_storm', 'ev_mechanic', 'ev_rail', 'ev_warehouse', 'ev_epidemic', 'ev_map', 'ev_overheat',
+  'ev_survivor', 'ev_convoy', 'ev_merchant', 'ev_storm', 'ev_mechanic', 'ev_rail', 'ev_warehouse', 'ev_epidemic', 'ev_map', 'ev_overheat', 'ev_derail',
   'crew_mecano_f', 'crew_mecano_f_m', 'crew_mecano_h', 'crew_mecano_h_m', 'crew_cultiv_f', 'crew_cultiv_f_m',
   'crew_cultiv_h', 'crew_cultiv_h_m', 'crew_guet_f', 'crew_guet_f_m', 'crew_guet_h', 'crew_guet_h_m',
   'crew_savant_f', 'crew_savant_f_m', 'crew_savant_h', 'crew_savant_h_m',

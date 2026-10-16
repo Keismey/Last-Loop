@@ -16,8 +16,8 @@ export function openDerail(summary, eased, onDone) {
   if (eased) list.appendChild(el('li', { text: t('derail.hunt', { n: eased }) }));
   const go = el('button', { class: 'btn btn-primary', type: 'button', text: t('derail.go') });
   go.addEventListener('click', () => closeModal());
-  const right = el('div', { class: 'sheet' },
-    el('p', { class: 'event-text', text: t('derail.text') }), list,
-    el('p', { class: 'muted small', text: t('derail.tip') }), go);
-  openModal(el('div', { class: 'event-body' }, art('derail'), right), { title: t('derail.title'), lock: true, cls: 'event-card', onClose: onDone });
+  const right = el('div', { class: 'sheet' }, el('p', { class: 'event-text', text: t('derail.text') }), list, go);
+  // le conseil sous l'illustration : le bouton reste visible sans faire défiler
+  const left = el('div', { class: 'derail-left' }, art('derail'), el('p', { class: 'muted small', text: t('derail.tip') }));
+  openModal(el('div', { class: 'event-body' }, left, right), { title: t('derail.title'), lock: true, cls: 'event-card', onClose: onDone });
 }
