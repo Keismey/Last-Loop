@@ -46,7 +46,7 @@ export const CIRCUITS = {
       {
         defaultBranch: 'c1_t4_a',
         branches: [
-          { id: 'c1_t4_a', name: 'Les vergers', signal: 'green', sites: [
+          { id: 'c1_t4_a', name: 'Les potagers', signal: 'green', sites: [
             site('c1_verger', 'field', 'Potagers calcinés'),
             site('c1_haie_morte', 'forest', 'Haie morte')] },
           { id: 'c1_t4_b', name: 'La Raffinerie', signal: 'orange', lockCost: 1, sites: [
