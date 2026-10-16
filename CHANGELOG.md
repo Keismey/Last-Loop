@@ -1,5 +1,12 @@
 # Journal des versions
 
+## 0.25.1 — Camps redessinés
+
+- **Lieux** : nouvelles images à plat (retouches Gemini de lieux déjà à plat) pour le village et les nomades (normal et
+  fortifié), le repaire de pillards normal (calé sur le fortifié) et le champ récolté (calé sur le champ plein).
+  Détourage sur la « magentitude » min(R, B) − G (fond magenta terne de certaines images), sans reste de violet.
+  `CAMP_ART` : village et nomades à 175 unités, sink 0,02.
+
 ## 0.25.0 — Last Loop en anglais
 
 - **Langue** : `?lang=fr|en` (liens du hub) est retenu ; sinon le dernier choix ; sinon la langue de l'appareil

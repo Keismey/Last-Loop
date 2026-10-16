@@ -1,6 +1,10 @@
 // Notes de mise à jour montrées aux joueurs (menu « Nouveautés », et une fois après chaque mise à jour).
 // Les plus récentes en premier ; courtes, dans la langue du jeu. Le détail technique est dans CHANGELOG.md.
 export const PATCH_NOTES = [
+  { v: '0.25.1', title: 'Camps redessinés', items: [
+    'Le village, le campement nomade et le repaire de pillards sont redessinés bien à plat, posés sur la voie comme les autres lieux.',
+    'Le champ récolté garde son épouvantail et montre enfin des chaumes.'
+  ] },
   { v: '0.25.0', title: 'Last Loop en anglais', items: [
     'Le jeu existe maintenant en anglais. Il suit la langue de ton appareil, et le bouton « Play in English » de l’écran titre ou du menu change de langue.'
   ] },

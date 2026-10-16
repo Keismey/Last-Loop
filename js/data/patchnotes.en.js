@@ -1,5 +1,9 @@
 // Patch notes shown to players in English (same entries as patchnotes.fr.js).
 export const PATCH_NOTES = [
+  { v: '0.25.1', title: 'Redrawn camps', items: [
+    'The village, the nomad camp and the raider den are redrawn flat, standing along the track like the other places.',
+    'The harvested field keeps its scarecrow and finally shows stubble.'
+  ] },
   { v: '0.25.0', title: 'Last Loop in English', items: [
     'The game is now available in English. It follows your device’s language, and the “Jouer en français” button on the title screen or in the menu switches language.'
   ] },
