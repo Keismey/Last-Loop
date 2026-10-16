@@ -6,7 +6,7 @@ import { el } from './modal.js';
 import { icon } from './icons.js';
 import { portrait, countArgs } from './sheets.js';
 import { beginDrag } from './dragdrop.js';
-import { autoAssign, displayName } from '../sim/crew.js';
+import { autoAssign, displayName, topSkill } from '../sim/crew.js';
 import { toast, buzz } from './toasts.js';
 import { bus } from '../core/bus.js';
 import { WAGONS } from '../data/wagons.js';
@@ -34,6 +34,7 @@ export function initCrewBar(box, { getState, onOpenSurvivor }) {
   box.append(head, list);
   refs = { box, list, count: head.querySelector('.crew-count'), getState, onOpenSurvivor, items: new Map() };
   bus.on('crew:changed', rebuild);
+  bus.on('crew:levelup', ({ s }) => setSkillBadge(s));   // la pastille montre le nouveau niveau tout de suite
   rebuild();
 }
 
@@ -68,13 +69,21 @@ export function rebuild() {
     const item = el('button', { class: 'crew-item state-' + s.state + (s.post ? ' working' : ''), type: 'button', 'aria-label': displayName(s) },
       ring,
       el('span', { class: 'crew-name', text: s.first }));
-    item.querySelector('.crew-skill').innerHTML = icon(s.main) + `<span class="num">${s.skills[s.main]}</span>`;
     placeBadge(state, s, where);
     attachPress(item, s);
     refs.list.appendChild(item);
     refs.items.set(s.id, { item, ring });
+    setSkillBadge(s);
   }
   updateCrewBar();
+}
+
+// Pastille de compétence : la meilleure (voir topSkill), son icône et son niveau
+function setSkillBadge(s) {
+  const r = refs && refs.items.get(s.id);
+  if (!r) return;
+  const top = topSkill(s);
+  r.item.querySelector('.crew-skill').innerHTML = icon(top) + `<span class="num">${s.skills[top]}</span>`;
 }
 
 // Pastille « où il est » : couleur du wagon au travail, rouge en renfort, bleu nuit au repos

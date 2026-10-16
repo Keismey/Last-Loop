@@ -1,5 +1,12 @@
 # Journal des versions
 
+## 0.23.7 — Pastille de compétence à jour
+
+- La pastille des survivants (bandeau du bas) se met à jour dès qu'un survivant gagne un niveau (elle ne changeait
+  qu'au prochain changement de poste).
+- Elle montre sa **meilleure compétence** (icône et niveau), plus seulement celle d'origine : à égalité, la compétence
+  d'origine reste affichée ; entre deux autres à égalité, celle qui a atteint ce niveau la première (`topSkill`, `s.lvlAt`).
+
 ## 0.23.6 — Ruines à leur image
 
 - **Convoi éventré** et **Raffinerie abandonnée** ont leur propre image (planche Gemini) au lieu de la maison en ruine

@@ -168,8 +168,24 @@ export function addXp(state, s, skill, n) {
   if (s.xp[skill] >= C().xpPerLevel * s.skills[skill] && s.skills[skill] < 10) {
     s.xp[skill] = 0;
     s.skills[skill] += 1;
+    // Moment où ce niveau est atteint : départage deux compétences secondaires à égalité (voir topSkill)
+    s.lvlAt = s.lvlAt || {};
+    s.lvlAt[skill] = (state.stats && state.stats.playTime) || state.time || 0;
     bus.emit('crew:levelup', { s, skill });
   }
+}
+
+// Meilleure compétence, montrée sur la pastille du survivant. À égalité, sa compétence d'origine reste devant ;
+// entre deux autres compétences à égalité, celle qui a atteint ce niveau la première.
+export function topSkill(s) {
+  let best = s.main;
+  const at = k => (s.lvlAt && s.lvlAt[k]) || 0;
+  for (const k of SKILLS) {
+    if (k === s.main) continue;
+    const a = s.skills[k] || 0, b = s.skills[best] || 0;
+    if (a > b || (best !== s.main && a === b && at(k) < at(best))) best = k;
+  }
+  return best;
 }
 
 // ---------- Moral ----------
