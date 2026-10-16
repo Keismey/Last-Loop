@@ -1,6 +1,6 @@
 // Atelier du train (onglet Train, GDD §4) : locomotive, wagons (niveau, Grenier, place dans le convoi),
 // construction de nouveaux wagons. Tout se fait en Halte, sauf le Grenier.
-import { t } from '../core/i18n.js';
+import { t, LOCALE } from '../core/i18n.js';
 import { el } from './modal.js';
 import { icon } from './icons.js';
 import { openPanel, refreshPanel } from './panels.js';
@@ -94,7 +94,7 @@ function locoDetail(getState, state) {
   const box = el('div', { class: 'tr-detail' },
     el('div', { class: 'tr-dhead' }, el('strong', { text: t('loco.' + state.train.loco) + ' · T' + state.train.loco })),
     el('p', { class: 'muted', text: t('train.locoStats', {
-      n: state.train.wagons.length, max: L.traction, v: BALANCE.locoSpeed[state.train.loco].toLocaleString('fr-FR'),
+      n: state.train.wagons.length, max: L.traction, v: BALANCE.locoSpeed[state.train.loco].toLocaleString(LOCALE),
       a: L.armor, i: maxIntegrity(state) }) }));
   if (next) {
     const c = canUpgradeLoco(state);

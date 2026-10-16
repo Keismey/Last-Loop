@@ -2,7 +2,8 @@
 import { BALANCE } from '../data/balance.js';
 import { WAGONS, AUTO_PRIORITY, slotCount, bedCount } from '../data/wagons.js';
 import { BUILD } from '../data/build.js';
-import { FIRST_NAMES, NICKNAMES, LOOKS } from '../data/names.js';
+import { FIRST_NAMES, NICKNAMES, NICKNAMES_EN, LOOKS } from '../data/names.js';
+import { IS_EN } from '../core/i18n.js';
 import { rngNext } from '../core/rng.js';
 import { capacities } from '../core/state.js';
 import { bus } from '../core/bus.js';
@@ -58,7 +59,14 @@ export function seedCrew(state) {
 }
 
 export function displayName(s) {
-  return s.nick ? `${s.first} ${s.nick}` : s.first;
+  if (!s.nick) return s.first;
+  if (IS_EN) {
+    for (const k of Object.keys(NICKNAMES)) {
+      const i = NICKNAMES[k].indexOf(s.nick);
+      if (i >= 0) return `${s.first} “${NICKNAMES_EN[k][i]}”`;
+    }
+  }
+  return `${s.first} ${s.nick}`;
 }
 
 // ---------- Efficacité ----------

@@ -1,6 +1,6 @@
 // Bilan des ressources (toucher la barre des ressources) : production et consommation actuelles, par minute.
 // Ce qui arrive par à-coups (récolte aux arrêts, butin, trocs, entretien) est résumé à part : récolté ce tour.
-import { t } from '../core/i18n.js';
+import { t, dec } from '../core/i18n.js';
 import { el } from './modal.js';
 import { icon } from './icons.js';
 import { openPanel } from './panels.js';
@@ -9,7 +9,7 @@ import { economyFlows } from '../sim/energy.js';
 import { upkeepCost } from '../sim/zones.js';
 
 const RES = ['fuel', 'food', 'scrap', 'ammo', 'parts', 'know'];
-const fmt = v => (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(Math.round(v * 10) / 10).toLocaleString('fr-FR');
+const fmt = v => (v > 0 ? '+' : v < 0 ? '−' : '') + dec(Math.abs(v));
 
 export function openBalance(getState) {
   openPanel(t('balance.title'), () => {

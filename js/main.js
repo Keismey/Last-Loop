@@ -4,7 +4,7 @@ import { openResearch } from './ui/researchPanel.js';
 import { openBalance } from './ui/balancePanel.js';
 import { checkObjectives, claimable } from './sim/objectives.js';
 import { CONFIG } from './data/config.js';
-import { t } from './core/i18n.js';
+import { t, switchLang, IS_EN } from './core/i18n.js';
 import { createLoop } from './core/loop.js';
 import { createState } from './core/state.js';
 import { loadGame, saveGame, hasSave, wipeSave, storageAvailable } from './core/save.js';
@@ -29,7 +29,7 @@ import { initHud, updateHud, setHudSpeed } from './ui/hud.js';
 import { initToasts, toast, buzz } from './ui/toasts.js';
 import { initModal, isModalOpen, closeModal, el } from './ui/modal.js';
 import { openMenu, openExport, openCredits, openNotes } from './ui/menu.js';
-import { PATCH_NOTES } from './data/patchnotes.fr.js';
+import { PATCH_NOTES } from './data/patchnotes.js';
 import { openDebug, updateDebug, closeDebug } from './ui/debug.js';
 import { icon } from './ui/icons.js';
 import { initSceneInput } from './ui/sceneInput.js';
@@ -172,6 +172,7 @@ function buildTitleButtons() {
     box.append(el('button', { class: 'btn btn-primary btn-big', text: t('title.play'), onclick: () => startGame(true) }));
   }
   box.append(el('button', { class: 'btn btn-ghost', text: t('menu.credits'), onclick: () => openCredits() }));
+  box.append(el('button', { class: 'btn btn-ghost btn-lang', lang: IS_EN ? 'fr' : 'en', text: t('menu.lang'), onclick: switchLang }));
 }
 
 function confirmTitleNewGame() {
@@ -277,6 +278,7 @@ function openGameMenu() {
       closePanel();
       backToTitle();
     },
+    onLang: () => { persist(false); switchLang(); },
     onDebug: () => { if (!CONFIG.DEBUG_ALLOWED) return; closeModal(); openDebugPanel(); },
     tryFullscreen: () => tryLandscape(true)
   });

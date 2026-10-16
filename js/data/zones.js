@@ -4,6 +4,9 @@
 // l'équipement de zone qui ouvre la suivante. Les zones 2 et 3 n'ont pas encore de voies (ready: false).
 //  mods : modificateurs du climat (1 = neutre) — consommation de Vivres et de Combustible, repousse des sites,
 //         production de la Serre
+import { IS_EN } from '../core/i18n.js';
+import { PLACE_EN } from './places.en.js';
+
 export const ZONES = {
   1: {
     id: 1, name: 'Les Plaines de Cendre', ready: true,
@@ -33,5 +36,7 @@ export const ZONE_KITS = {
   cooler: { opens: 2, cost: { material: 'kingplate', scrap: 120, parts: 40 } },
   icebreaker: { opens: 3, cost: { material: 'miragecore', scrap: 200, parts: 80 } }
 };
+
+if (IS_EN) for (const z of Object.values(ZONES)) z.name = PLACE_EN[z.name] || z.name;
 
 export const zoneOf = ring => ZONES[ring] || ZONES[1];

@@ -1,5 +1,5 @@
 // Équipement dans l'interface : section « Équipement » de la fiche survivant, arsenal et fabrication.
-import { t } from '../core/i18n.js';
+import { t, dec, fixed } from '../core/i18n.js';
 import { el } from './modal.js';
 import { icon } from './icons.js';
 import { toast, buzz } from './toasts.js';
@@ -19,7 +19,7 @@ export function itemStats(type) {
   const W = WEAPONS[type];
   if (W) {
     const range = W.range === 0 ? t('item.melee') : t('item.range', { n: W.range });
-    return t('item.dps', { v: String(W.dps).replace('.', ',') }) + ' · ' + range + (W.ammo ? ' · ' + t('item.ammo') : '');
+    return t('item.dps', { v: dec(W.dps) }) + ' · ' + range + (W.ammo ? ' · ' + t('item.ammo') : '');
   }
   const A = ARMORS[type];
   return A ? t('item.armor', { p: Math.round(A.armor * 100) }) : '';
@@ -74,7 +74,7 @@ export function gearSection(getState, s) {
   const W = WEAPONS[weaponType(state, s)];
   const power = W.dps * efficiency(s, 'com');
   const box = el('div', { class: 'skills gear' },
-    el('p', { class: 'muted small', text: t('gear.power', { v: power.toFixed(1).replace('.', ',') }) }));
+    el('p', { class: 'muted small', text: t('gear.power', { v: fixed(power) }) }));
   for (const slot of ['weapon', 'armor']) {
     box.appendChild(slotRow(getState, s, slot));
     if (picking && picking.id === s.id && picking.slot === slot) box.appendChild(pickList(getState, s, slot));

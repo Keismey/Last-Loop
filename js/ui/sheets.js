@@ -1,6 +1,6 @@
 // Fiches : survivant, wagon, liste de l'équipage (GDD §14.7).
 import { carById } from '../sim/caboose.js';
-import { t, num } from '../core/i18n.js';
+import { t, num, dec, pct } from '../core/i18n.js';
 import { el } from './modal.js';
 import { icon } from './icons.js';
 import { openPanel, closePanel } from './panels.js';
@@ -21,7 +21,7 @@ import { subTabs } from './subtabs.js';
 import { CRAFT } from '../data/items.js';
 import { canCraft } from '../sim/equipment.js';
 
-const fmt1 = v => (Math.round(v * 10) / 10).toLocaleString('fr-FR');
+const fmt1 = v => dec(v);
 
 export function portrait(s, size) {
   const c = document.createElement('canvas');
@@ -216,7 +216,7 @@ function crewRow(state, s, wagonType, onClick) {
   }
   const k = skill || s.main;
   // Au poste : efficacité réelle (compétence et moral) ; sinon le niveau de la compétence principale
-  const val = skill && s.post ? Math.round(efficiency(s, k) * 100) + ' %' : s.skills[k];
+  const val = skill && s.post ? pct(Math.round(efficiency(s, k) * 100)) : s.skills[k];
   row.querySelector('.crew-row-skill').innerHTML = icon(k) + `<span class="num">${val}</span>`;
   return row;
 }

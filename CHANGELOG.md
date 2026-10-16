@@ -1,5 +1,15 @@
 # Journal des versions
 
+## 0.25.0 — Last Loop en anglais
+
+- **Langue** : `?lang=fr|en` (liens du hub) est retenu ; sinon le dernier choix ; sinon la langue de l'appareil
+  (`LANG` dans core/i18n.js, même règle que Pas ce soir). Bouton « Play in English » / « Jouer en français » sur
+  l'écran titre et dans le menu (la partie est sauvegardée avant de recharger).
+- **Textes** : texts.en.js (toutes les clés de texts.fr.js, une clé absente retombe sur le français), notes de mise à
+  jour en anglais (patchnotes.en.js), noms des lieux (places.en.js, aussi appliqué aux noms déjà écrits dans le
+  journal), surnoms des survivants traduits à l'affichage (gardés en français dans la sauvegarde).
+- **Nombres** : séparateurs, décimales et pourcentages selon la langue (`num`, `dec`, `fixed`, `pct`).
+
 ## 0.24.4 — Debug : miliciens
 
 - **Debug** : bouton « Miliciens » (vague de miliciens seuls). Ils ne viennent sinon que des villages et avant-postes

@@ -3,6 +3,9 @@
 //  signal : feu affiché tant que l'embranchement est inconnu (green / orange / red)
 //  lockCost : clés pour ouvrir ; traverseTo : anneau atteint (traverse)
 //  site.links : sites de ressources liés au camp (GDD §3.5)
+import { IS_EN } from '../core/i18n.js';
+import { PLACE_EN } from './places.en.js';
+
 const site = (id, type, name, extra = {}) => ({ id, type, name, ...extra });
 const camp = (id, kind, name, extra = {}) => ({ id, type: 'camp', camp: kind, name, ...extra });
 
@@ -81,6 +84,15 @@ export const CIRCUITS = {
     ]
   }
 };
+
+// En anglais : noms des circuits, voies et sites traduits (le français reste la référence)
+if (IS_EN) for (const c of Object.values(CIRCUITS)) {
+  c.name = PLACE_EN[c.name] || c.name;
+  for (const leg of c.legs) for (const b of leg.branches) {
+    b.name = PLACE_EN[b.name] || b.name;
+    for (const s of b.sites) s.name = PLACE_EN[s.name] || s.name;
+  }
+}
 
 export function getCircuit(ring) {
   return CIRCUITS[ring] || CIRCUITS[1];

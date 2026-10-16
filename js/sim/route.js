@@ -387,7 +387,10 @@ function reachJunction(state) {
 // Fenêtre de décision : un arrêt de récolte approche (8 s) ou le train est arrêté sur un site
 export function decisionContext(state) {
   const r = state.route;
-  if (r.mode === 'stop') return { site: currentBranch(state).sites[r.stopIdx], stopping: true };
+  if (r.mode === 'stop') {
+    const site = currentBranch(state).sites[r.stopIdx];
+    return site ? { site, stopping: true } : null;
+  }
   const up = upcomingSite(state);
   if (!up) return null;
   const v = BALANCE.scroll.nearPxPerSec * Math.max(0.3, trainSpeed(state));

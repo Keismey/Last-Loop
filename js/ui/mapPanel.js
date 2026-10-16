@@ -192,7 +192,7 @@ export function openMap(getState) {
             dot.style.background = ATTITUDE_COLORS[(st.lastSeen && st.lastSeen.attitude) || st.attitude || CAMP_TYPES[s.camp].attitude];
             mk.appendChild(dot);
           }
-          if (s.type === 'station' && st && st.contract && st.contract.accepted) mk.appendChild(el('i', { class: 'map-contract', text: 'T' + st.contract.deadline }));
+          if (s.type === 'station' && st && st.contract && st.contract.accepted) mk.appendChild(el('i', { class: 'map-contract', text: t('map.contractLap', { n: st.contract.deadline }) }));
           mk.addEventListener('click', () => { selected = b.id; buzz(8); refreshPanel(true); });
           overlay.appendChild(mk);
         });

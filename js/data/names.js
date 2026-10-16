@@ -18,6 +18,13 @@ export const NICKNAMES = {
   com: ['l’Œil', 'Tir-sec', 'la Gâchette'],
   sav: ['le Prof', 'Lunettes', 'la Plume']
 };
+// En anglais, même ordre (le surnom est gardé en français dans la sauvegarde et traduit à l'affichage)
+export const NICKNAMES_EN = {
+  mec: ['Wrench', 'Bolts', 'Ironhand'],
+  ter: ['Shovel', 'Lightfoot', 'Root'],
+  com: ['Hawkeye', 'Snapshot', 'Trigger'],
+  sav: ['Prof', 'Specs', 'Quill']
+};
 
 // Apparence des pantins (GDD §15.2)
 export const LOOKS = {

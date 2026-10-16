@@ -1,5 +1,5 @@
 // Pupitre d'aiguillage (GDD §14.5) : levier et cartes d'embranchement, panneau d'arrêt, dépôt.
-import { t } from '../core/i18n.js';
+import { t, pct as pct_ } from '../core/i18n.js';
 import { el } from './modal.js';
 import { icon } from './icons.js';
 import { fxOn } from '../sim/research.js';
@@ -342,7 +342,7 @@ function buildStop(state, sc) {
   const stock = el('div', { class: 'sb-stockline' },
     el('span', { text: t('site.' + site.type) + ' · ' + t('stop.stock') }),
     el('i', { class: 'sb-stock big' }),
-    el('span', { class: 'num', text: Math.round((st.stock ?? 1) * 100) + ' %' }));
+    el('span', { class: 'num', text: pct_(Math.round((st.stock ?? 1) * 100)) }));
   const fill = el('b');
   fill.style.width = Math.round((st.stock ?? 1) * 100) + '%';
   stock.querySelector('.sb-stock').appendChild(fill);
@@ -372,7 +372,7 @@ function buildStop(state, sc) {
     else {
       const g = fmtGain(previewGain(state, site, a)) || '+0';
       const pct = Math.round(A.stock * 100);
-      sub = `${g} · ${t('action.stock', { v: (pct > 0 ? '+' : '−') + Math.abs(pct) + ' %' })}`;
+      sub = `${g} · ${t('action.stock', { v: (pct > 0 ? '+' : '−') + pct_(Math.abs(pct)) })}`;
       if (A.cost) sub += ' · ' + t('action.cost', { v: Object.entries(A.cost).map(([k, v]) => v + ' ' + t('res.' + k)).join(', ') });
     }
     const b = el('button', { class: 'sb-action' + (a === chosen ? ' selected' : '') + (a === 'pass' ? ' pass' : ''), type: 'button' },

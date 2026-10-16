@@ -1,12 +1,12 @@
 // Menu de pause : reprendre, export / import, nouvelle partie, version (7 touchers = debug).
-import { t, duration } from '../core/i18n.js';
+import { t, duration, pct, switchLang, IS_EN } from '../core/i18n.js';
 import { CONFIG } from '../data/config.js';
 import { openModal, closeModal, el } from './modal.js';
 import { toast } from './toasts.js';
 import { exportText, importText } from '../core/save.js';
 import { settings, setSetting } from '../core/settings.js';
 import { sfx } from '../audio/sound.js';
-import { PATCH_NOTES } from '../data/patchnotes.fr.js';
+import { PATCH_NOTES } from '../data/patchnotes.js';
 
 // api : { getState, onResume, onImport(state), onTitle, onDebug, tryFullscreen }
 export function openMenu(api) {
@@ -34,6 +34,7 @@ export function openMenu(api) {
     el('button', { class: 'btn', text: t('menu.toTitle'), onclick: () => { closeModal(); api.onTitle(); } }),
     el('button', { class: 'btn', text: t('menu.notes'), onclick: () => openNotes(() => openMenu(api)) }),
     el('button', { class: 'btn', text: t('menu.credits'), onclick: () => openCredits(() => openMenu(api)) }),
+    el('button', { class: 'btn span-2 btn-lang', lang: IS_EN ? 'fr' : 'en', text: t('menu.lang'), onclick: () => { api.onLang ? api.onLang() : switchLang(); } }),
     el('div', { class: 'span-2 version-row' }, version)
   );
   openModal(content, { title: t('menu.title'), onClose: api.onResume });
@@ -111,8 +112,8 @@ function optionsBlock() {
   const box = el('div', { class: 'span-2 options' });
   const slider = (key, label) => {
     const input = el('input', { type: 'range', min: '0', max: '100', step: '5', value: String(Math.round(settings[key] * 100)), 'aria-label': label });
-    const val = el('span', { class: 'num opt-val', text: Math.round(settings[key] * 100) + ' %' });
-    input.addEventListener('input', () => { setSetting(key, input.value / 100); val.textContent = input.value + ' %'; });
+    const val = el('span', { class: 'num opt-val', text: pct(Math.round(settings[key] * 100)) });
+    input.addEventListener('input', () => { setSetting(key, input.value / 100); val.textContent = pct(input.value); });
     if (key === 'sfx') input.addEventListener('change', () => sfx('coin'));
     return el('label', { class: 'opt-row' }, el('span', { text: label }), input, val);
   };

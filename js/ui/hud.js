@@ -1,6 +1,6 @@
 // Barre du haut et rail d'onglets (GDD §14.2).
 import { icon } from './icons.js';
-import { t, num, duration } from '../core/i18n.js';
+import { t, num, dec, duration } from '../core/i18n.js';
 import { capacities } from '../core/state.js';
 import { currentBranch, sitePos, junctionPos } from '../sim/route.js';
 import { maxIntegrity, steamActive } from '../sim/combat.js';
@@ -135,7 +135,7 @@ export function updateHud(state) {
   // Énergie produite / demandée et vitesse du train
   if (refs.powerEl && state.power) {
     const p = state.power;
-    const f1 = v => (Math.round(v * 10) / 10).toLocaleString('fr-FR');
+    const f1 = v => dec(v);
     // Vitesse réelle du train : énergie × pleine vapeur × effets d'événement (tempête, voie, surchauffe)
     const steam = steamActive(state) ? COMBAT.abilities.fullsteam.speed : 1;
     const ev = eventSpeed(state);
