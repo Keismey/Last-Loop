@@ -640,6 +640,10 @@ export function debugAssault(state) {
 export function debugMilitia(state) {
   launchWave(state, 'camp', { militia: 100 }, 6 * threat(state));
 }
+// Drones faucheurs (défenseurs des avant-postes)
+export function debugDrones(state) {
+  launchWave(state, 'camp', { drone: 100 }, 6 * threat(state));
+}
 export function debugBoss(state) {
   const id = newWave(state, 'boss');
   queueEnemies(state, id, ['boss_c' + state.route.ring], 0.2);

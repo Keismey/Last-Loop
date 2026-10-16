@@ -1,5 +1,9 @@
 # Journal des versions
 
+## 0.25.4 — Debug : drones
+
+- **Debug** : bouton « Drones » (vague de drones faucheurs seuls). Rien ne change pour les joueurs.
+
 ## 0.25.3 — Le drone s'anime
 
 - **Drone faucheur** : planche animée (vol, scie, touché, épave). Images calées sur l'œil rouge (le corps ne saute

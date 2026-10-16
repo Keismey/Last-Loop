@@ -771,6 +771,7 @@ export const TEXTS = {
   'debug.wave': 'Wave',
   'debug.assault': 'Assault',
   'debug.militia': 'Militia',
+  'debug.drones': 'Drones',
   'debug.event': 'Event',
   'debug.boss': 'Boss',
   'debug.hurt': 'Integrity −50',

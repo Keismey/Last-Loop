@@ -2,7 +2,7 @@
 import { t } from '../core/i18n.js';
 import { el } from './modal.js';
 import { toast } from './toasts.js';
-import { debugWave, debugAssault, debugMilitia, debugBoss, maxIntegrity } from '../sim/combat.js';
+import { debugWave, debugAssault, debugMilitia, debugDrones, debugBoss, maxIntegrity } from '../sim/combat.js';
 import { debugEvent } from '../sim/events.js';
 import { createSurvivor, bedsTotal, SKILLS } from '../sim/crew.js';
 import { FIRST_NAMES } from '../data/names.js';
@@ -55,6 +55,7 @@ export function openDebug(host, api) {
   const wave = el('button', { class: 'chip', text: t('debug.wave'), onclick: () => debugWave(api.getState()) });
   const assault = el('button', { class: 'chip', text: t('debug.assault'), onclick: () => debugAssault(api.getState()) });
   const militia = el('button', { class: 'chip', text: t('debug.militia'), onclick: () => debugMilitia(api.getState()) });
+  const drones = el('button', { class: 'chip', text: t('debug.drones'), onclick: () => debugDrones(api.getState()) });
   const evt = el('button', { class: 'chip', text: t('debug.event'), onclick: () => debugEvent(api.getState()) });
   const boss = el('button', { class: 'chip', text: t('debug.boss'), onclick: () => debugBoss(api.getState()) });
   const hurt = el('button', { class: 'chip', text: t('debug.hurt'), onclick: () => { const st = api.getState(); st.train.integrity = Math.max(1, st.train.integrity - 50); } });
@@ -90,7 +91,7 @@ export function openDebug(host, api) {
     el('div', { class: 'debug-row' }, el('strong', { text: t('debug.title') }), fpsEl),
     el('div', { class: 'debug-row' }, el('span', { class: 'muted', text: t('debug.speed') }), speeds),
     el('div', { class: 'debug-row' }, add, keys, reveal),
-    el('div', { class: 'debug-row' }, wave, assault, militia, boss, evt, hurt, heal),
+    el('div', { class: 'debug-row' }, wave, assault, militia, drones, boss, evt, hurt, heal),
     el('div', { class: 'debug-row' }, el('span', { class: 'muted', text: t('debug.crew') }), roles, sexes, plus),
     el('div', { class: 'debug-row' }, wipe, close));
   host.appendChild(panel);
