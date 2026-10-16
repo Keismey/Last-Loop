@@ -320,8 +320,11 @@ T2, 6 à 8 wagons surtout niveau 2, 6 à 10 survivants.
 4. **Cloudflare Web Analytics** (même balise que le hub, avant `</body>`, version GitHub seulement) :
    `<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "cdb82226cd1b401d9e4f4e899f9b8425"}'></script><!-- End Cloudflare Web Analytics -->`
    Le hub affiche « Mesure d'audience anonyme (Cloudflare), sans cookie » : mettre la même mention dans les Crédits.
-5. Dépôt GitHub **Last Loop** (créé par le manager), GitHub Pages.
-6. **Ajout au hub keismey.github.io** : un bloc dans `games.js` (id, name, genre, tagline, path `/Last-Loop/` selon le nom
+5. ~~Dépôt GitHub~~ **Keismey/Last-Loop** (0.23.1), adresse https://keismey.github.io/Last-Loop/. GitHub Pages à activer par
+   le manager (Settings → Pages → branche main, dossier racine) : l'API Pages n'est pas accessible depuis la session.
+   **Mise en ligne** : `deploy/make_gh.py <clone du dépôt>` (régénère `sw.js`, écrit l'index complet avec Cloudflare),
+   puis commit et push. Changer `VERSION` dans `js/data/config.js` à chaque mise en ligne (nom du cache hors ligne).
+6. ~~**Ajout au hub keismey.github.io**~~ (fait : bloc `last-loop` dans `games.js`, raccourci dans le manifeste du hub) : un bloc dans `games.js` (id, name, genre, tagline, path `/Last-Loop/` selon le nom
    du dépôt, repo, cover paysage, focus, color, accent, progress qui lit la sauvegarde `loopexpress.save` en lecture seule).
 
 ## Points ouverts
