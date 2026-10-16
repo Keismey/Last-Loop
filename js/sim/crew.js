@@ -175,18 +175,15 @@ export function addXp(state, s, skill, n) {
   }
 }
 
-// Meilleure compétence, montrée sur la pastille du survivant. À égalité, sa compétence d'origine reste devant ;
-// entre deux autres compétences à égalité, celle qui a atteint ce niveau la première.
-export function topSkill(s) {
-  let best = s.main;
+// Compétences de la meilleure à la moins bonne. À égalité, celle d'origine passe devant ; entre deux autres
+// à égalité, celle qui a atteint ce niveau la première (s.lvlAt).
+export function sortedSkills(s) {
   const at = k => (s.lvlAt && s.lvlAt[k]) || 0;
-  for (const k of SKILLS) {
-    if (k === s.main) continue;
-    const a = s.skills[k] || 0, b = s.skills[best] || 0;
-    if (a > b || (best !== s.main && a === b && at(k) < at(best))) best = k;
-  }
-  return best;
+  return [...SKILLS].sort((a, b) => (s.skills[b] || 0) - (s.skills[a] || 0)
+    || (a === s.main ? -1 : b === s.main ? 1 : at(a) - at(b)));
 }
+// Meilleure compétence, montrée sur la pastille du survivant
+export const topSkill = s => sortedSkills(s)[0];
 
 // ---------- Moral ----------
 // Ce qui fixe le moral visé par tout l'équipage (le moral de chacun y tend doucement) ; affiché dans la fiche

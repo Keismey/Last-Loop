@@ -205,6 +205,8 @@ export const TEXTS = {
   'crew.count': '{n} / {beds} lits · {free} au repos',
   'crew.countShort': '{n} / {beds} lits',
   'crew.countFull': '{n} à bord · {free} au repos · {beds} couchages',
+  'crew.medkits': 'Trousses de soins : {n}. On les utilise depuis la fiche d’un survivant ; on en fabrique dans Arsenal, à l’arrêt.',
+  'sheet.swipe': '‹ {i} / {n} › glisse pour changer de survivant',
   'crew.auto': 'Auto',
   'crew.autoDone': 'Équipage réparti',
   'crew.autoNone': 'Personne de libre à affecter',

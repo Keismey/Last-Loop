@@ -1,5 +1,15 @@
 # Journal des versions
 
+## 0.23.8 — Fiches qui glissent, compétences dans l'équipage
+
+- **Fiche survivant** : glisser à gauche ou à droite passe au survivant suivant ou précédent (dans l'ordre de
+  l'équipage, en boucle), avec « ‹ 2 / 5 › » sous l'état. `openPanel` accepte `onSwipe` (le clic qui suit un glissé
+  est ignoré) et `slide` (petite animation d'entrée).
+- **Onglet Équipage** : chaque ligne montre les quatre compétences, de la meilleure à la moins bonne (`sortedSkills`) ;
+  la ou les meilleures en grand, les autres en petit. Le nom prend moins de place, la santé et les compétences
+  remontent vers la gauche.
+- Onglet Équipage : une ligne rappelle le nombre de trousses de soins, où on les utilise et où on les fabrique.
+
 ## 0.23.7 — Pastille de compétence à jour
 
 - La pastille des survivants (bandeau du bas) se met à jour dès qu'un survivant gagne un niveau (elle ne changeait

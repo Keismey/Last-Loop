@@ -8,7 +8,7 @@ import { drawHead } from '../render/puppets.js';
 import { drawCrewPortrait } from '../render/crewSprites.js';
 import { WAGONS, slotCount, bedCount } from '../data/wagons.js';
 import { BALANCE } from '../data/balance.js';
-import { SKILLS, displayName, efficiency, unassign, workers, restingPlaces, bestBunkLevel, moraleFactors, moraleTarget } from '../sim/crew.js';
+import { SKILLS, displayName, efficiency, unassign, workers, restingPlaces, bestBunkLevel, moraleFactors, moraleTarget, sortedSkills } from '../sim/crew.js';
 import { harvestMultiplier } from '../sim/energy.js';
 import { repairNow, canAutoRepair, repairRate, isHalte } from '../sim/route.js';
 import { turretFire } from '../sim/combat.js';
@@ -59,7 +59,7 @@ export function statusText(state, s) {
 }
 
 // ---------- Fiche survivant ----------
-export function openSurvivorSheet(getState, id, back = null) {
+export function openSurvivorSheet(getState, id, back = null, slide = null) {
   openPanel('', () => {
     const state = getState();
     const s = state.crew.find(x => x.id === id);
@@ -68,6 +68,7 @@ export function openSurvivorSheet(getState, id, back = null) {
       portrait(s, 84),
       el('div', { class: 'sheet-id' },
         el('p', { class: 'sheet-status', text: statusText(state, s) }),
+        state.crew.length > 1 ? el('p', { class: 'sheet-nav muted small', text: t('sheet.swipe', { i: state.crew.indexOf(s) + 1, n: state.crew.length }) }) : null,
         el('div', { class: 'stat-row' }, el('span', { class: 'stat-ico', html: '' }), el('span', { text: t('sheet.hp') }),
           bar(s.hp, 100, 'bar-hp'), el('span', { class: 'num', text: Math.round(s.hp) })),
         el('div', { class: 'stat-row' }, el('span', { class: 'stat-ico' }), el('span', { text: t('sheet.morale') }),
@@ -92,7 +93,14 @@ export function openSurvivorSheet(getState, id, back = null) {
       onclick: () => unassign(getState(), s)
     }) : null;
     return { el: out, tabs: tabsBar, foot, title: displayName(s) };
-  }, { back });
+  }, { back, slide, onSwipe: dir => {
+    // Survivant suivant ou précédent (dans l'ordre de l'équipage, en boucle)
+    const crew = getState().crew;
+    const i = crew.findIndex(x => x.id === id);
+    if (crew.length < 2 || i < 0) return;
+    const next = crew[(i + dir + crew.length) % crew.length];
+    openSurvivorSheet(getState, next.id, back, dir > 0 ? 'next' : 'prev');
+  } });
 }
 
 // Compétences : niveau, expérience, à quoi elles servent et efficacité au poste
@@ -196,6 +204,16 @@ function crewRow(state, s, wagonType, onClick) {
   const hp = row.querySelector('.crew-row-hp i');
   hp.style.width = Math.max(0, Math.min(100, s.hp)) + '%';
   hp.style.background = s.state === 'critical' || s.hp < 30 ? '#c8382d' : s.hp < 70 ? '#e8a33d' : '#8fd17e';
+  // Onglet Équipage : les quatre compétences, de la meilleure à la moins bonne (les meilleures en grand)
+  if (!wagonType) {
+    row.classList.add('full');
+    const box = row.querySelector('.crew-row-skill');
+    box.className = 'crew-row-skills';
+    const order = sortedSkills(s);
+    const best = s.skills[order[0]];
+    box.innerHTML = order.map(k => `<span class="sk${s.skills[k] === best ? '' : ' minor'}" title="${t('skill.' + k)}">${icon(k)}<span class="num">${s.skills[k]}</span></span>`).join('');
+    return row;
+  }
   const k = skill || s.main;
   // Au poste : efficacité réelle (compétence et moral) ; sinon le niveau de la compétence principale
   const val = skill && s.post ? Math.round(efficiency(s, k) * 100) + ' %' : s.skills[k];
@@ -216,6 +234,7 @@ export function openCrewList(getState, onPick) {
     const box = el('div', { class: 'sheet' });
     if (active === 'list') {
       box.appendChild(el('p', { class: 'muted', text: t('crew.countFull', countArgs(state)) }));
+      box.appendChild(el('p', { class: 'muted small', text: t('crew.medkits', { n: state.medkits || 0 }) }));
       const list = el('div', { class: 'crew-list' });
       const sorted = [...state.crew].sort((a, b) => (a.post ? 0 : 1) - (b.post ? 0 : 1) || a.hp - b.hp);
       for (const s of sorted) list.appendChild(crewRow(state, s, null, () => onPick(s.id, () => openCrewList(getState, onPick))));

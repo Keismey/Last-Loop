@@ -957,3 +957,19 @@ button.crew-row:active { background: rgba(239, 230, 207, 0.05); }
   display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 18px; border-radius: 14px; border: 2px solid #1f1e25;
   background: #e8a33d; color: #1f1e25; font: 600 13px var(--font-ui); box-shadow: 0 4px 0 #8a5a17; cursor: pointer; }
 .update-bar b { font-size: 14px; }
+
+/* Onglet Équipage : les quatre compétences sur chaque ligne (les meilleures en grand) */
+.crew-row.full .crew-row-text { flex: 0 1 auto; width: clamp(96px, 30%, 190px); }
+.crew-row-skills { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; padding-left: 4px; }
+.crew-row-skills .sk { display: inline-flex; align-items: center; gap: 3px; font-size: 13.5px; font-weight: 700; }
+.crew-row-skills .sk svg { width: 19px; height: 19px; }
+.crew-row-skills .sk.minor { font-size: 11px; font-weight: 600; opacity: .72; }
+.crew-row-skills .sk.minor svg { width: 13px; height: 13px; }
+@media (max-width: 420px) { .crew-row-skills { gap: 6px; } }
+
+/* Fiche survivant : glisser pour passer au suivant */
+.sheet-nav { margin: 2px 0 0; }
+.side-panel.slide-next { animation: slide-next .2s ease-out; }
+.side-panel.slide-prev { animation: slide-prev .2s ease-out; }
+@keyframes slide-next { from { transform: translateX(44px); opacity: .2; } }
+@keyframes slide-prev { from { transform: translateX(-44px); opacity: .2; } }
