@@ -1,6 +1,10 @@
 // Notes de mise à jour montrées aux joueurs (menu « Nouveautés », et une fois après chaque mise à jour).
 // Les plus récentes en premier ; courtes, dans la langue du jeu. Le détail technique est dans CHANGELOG.md.
 export const PATCH_NOTES = [
+  { v: '0.23.6', title: 'Ruines à leur image', items: [
+    'Le Convoi éventré et la Raffinerie abandonnée ont enfin leur propre dessin.',
+    'Deux lieux renommés : la Casse de la carrière et les Potagers calcinés.'
+  ] },
   { v: '0.23.5', title: 'Motard et campements', items: [
     'Le motard reste sur sa moto, qui ne change plus de taille d’une image à l’autre.',
     'Les ennemis ne sursautent plus à chaque tir de tourelle.',

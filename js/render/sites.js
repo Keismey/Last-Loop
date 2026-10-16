@@ -331,6 +331,7 @@ export function drawSite(ctx, state, site, x, y, k) {
   const stock = st.stock ?? 1;
   if (site.type === 'camp' && campArt(ctx, site, x, y, k, st)) return;
   if (site.specialty === 'traverse' && siteArt(ctx, 'traverse', x, y, k, 1)) return;
+  if (site.art && siteArt(ctx, site.art, x, y, k, stock)) return;     // image propre au lieu, quand elle existe
   if (site.type !== 'camp' && siteArt(ctx, site.type, x, y, k, stock)) return;
   switch (site.type) {
     case 'field': field(ctx, x, y, k, stock); break;

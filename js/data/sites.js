@@ -88,7 +88,10 @@ export const SITE_ART = {
   station: { h: 290 },
   depot: { h: 275 },
   fortress: { h: 265 },
-  traverse: { h: 300 }       // Atelier de la Traverse (gare à spécialité)
+  traverse: { h: 300 },      // Atelier de la Traverse (gare à spécialité)
+  // images propres à un lieu (site.art) ; sans elles, l'image de son type
+  convoy: { h: 235 },       // trois wagons éventrés, à l'échelle du train (assez haut pour dépasser des wagons)
+  refinery: { h: 280 }
 };
 // Camps (images Gemini) : hauteur en unités ; fortifié à partir de cette défense ; drapeau (position, hauteur)
 export const CAMP_ART = {

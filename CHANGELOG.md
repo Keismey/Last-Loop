@@ -1,5 +1,13 @@
 # Journal des versions
 
+## 0.23.6 — Ruines à leur image
+
+- **Convoi éventré** et **Raffinerie abandonnée** ont leur propre image (planche Gemini) au lieu de la maison en ruine
+  commune aux ruines. Un lieu peut maintenant avoir une image à lui (`art` dans `circuits.js`, `SITE_ART`), sinon
+  celle de son type.
+- Deux lieux renommés pour coller à leur image : Carrière sèche → **Casse de la carrière**, Verger calciné →
+  **Potagers calcinés**.
+
 ## 0.23.5 — Motard et campements
 
 - **Motard** : son image « touché » est à pied, il semblait sauter de sa moto et y remonter à chaque coup reçu ;

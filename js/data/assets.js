@@ -31,6 +31,8 @@ for (let t = 1; t <= 4; t++) add(`loco_t${t}`, 520, 264, 'sprite', t <= 2 ? 'boo
 // Ennemis et boss
 ['biker', 'runner', 'drone', 'brute', 'wolf', 'sandcrawler', 'wraith', 'militia']
   .forEach(e => add(`enemy_${e}`, 192, 192, 'sprite', 'boot'));
+// Lieux à image propre (site.art)
+add('site_convoy', 1000, 192, 'sprite', 'boot'); add('site_refinery', 760, 310, 'sprite', 'boot');
 for (let c = 1; c <= 3; c++) add(`boss_c${c}`, 640, 360, 'sprite', c === 1 ? 'boot' : 'later');
 // Planches animées (marche, attaque, coup reçu, chute ; le boss : roule, tir, charge, saut, épave)
 ['biker', 'runner', 'brute', 'militia', 'boss_c1'].forEach(e => add(`en_${e}`, 2048, 400, 'sprite', 'boot'));
@@ -76,7 +78,7 @@ export const AVAILABLE = new Set([
   'crew_cultiv_h', 'crew_cultiv_h_m', 'crew_guet_f', 'crew_guet_f_m', 'crew_guet_h', 'crew_guet_h_m',
   'crew_savant_f', 'crew_savant_f_m', 'crew_savant_h', 'crew_savant_h_m',
   'camp_village_0', 'camp_village_1', 'camp_nomads_0', 'camp_nomads_1', 'camp_outpost_0', 'camp_outpost_1',
-  'camp_raiders_0', 'camp_raiders_1', 'flag', 'signal_0', 'signal_1', 'signal_2', 'site_traverse',
+  'camp_raiders_0', 'camp_raiders_1', 'flag', 'signal_0', 'signal_1', 'signal_2', 'site_traverse', 'site_convoy', 'site_refinery',
   'roof_attic', 'roof_berths', 'roof_autoturret', 'wagon_caboose_breached', 'wagon_foundry',
   'turret_head_0', 'turret_head_1', 'turret_head_2', 'autoturret_head_0', 'autoturret_head_1', 'autoturret_head_2',
   'wagon_turret_bare', 'enemy_drone', 'gus_0', 'gus_1', 'gus_2',

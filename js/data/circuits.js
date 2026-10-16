@@ -17,7 +17,7 @@ export const CIRCUITS = {
             site('c1_champs_ada', 'field', 'Champs de la Mère Ada'),
             camp('c1_hameau_ada', 'village', 'Hameau d’Ada', { links: ['c1_champs_ada'] })] },
           { id: 'c1_t1_b', name: 'Voie de la carrière', signal: 'green', sites: [
-            site('c1_carriere', 'junkyard', 'Carrière sèche')] }
+            site('c1_carriere', 'junkyard', 'Casse de la carrière')] }
         ]
       },
       {
@@ -40,18 +40,18 @@ export const CIRCUITS = {
             camp('c1_ferrailleurs', 'nomads', 'Ferrailleurs du Dépotoir', { links: ['c1_sept_epaves'] })] },
           { id: 'c1_t3_b', name: 'Corridor des pillards', signal: 'red', sites: [
             camp('c1_barrage', 'raiders', 'Barrage du Corridor', { defense: 2, links: ['c1_convoi'] }),
-            site('c1_convoi', 'ruins', 'Convoi éventré')] }
+            site('c1_convoi', 'ruins', 'Convoi éventré', { art: 'convoy' })] }
         ]
       },
       {
         defaultBranch: 'c1_t4_a',
         branches: [
           { id: 'c1_t4_a', name: 'Les vergers', signal: 'green', sites: [
-            site('c1_verger', 'field', 'Verger calciné'),
+            site('c1_verger', 'field', 'Potagers calcinés'),
             site('c1_haie_morte', 'forest', 'Haie morte')] },
           { id: 'c1_t4_b', name: 'La Raffinerie', signal: 'orange', lockCost: 1, sites: [
             camp('c1_garde_raffinerie', 'outpost', 'Garde de la raffinerie', { links: ['c1_raffinerie'] }),
-            site('c1_raffinerie', 'ruins', 'Raffinerie abandonnée', { yieldMult: { fuel: 2 }, bonusYield: { fuel: 40 } })] }
+            site('c1_raffinerie', 'ruins', 'Raffinerie abandonnée', { art: 'refinery', yieldMult: { fuel: 2 }, bonusYield: { fuel: 40 } })] }
         ]
       },
       {
