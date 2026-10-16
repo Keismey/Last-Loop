@@ -1,6 +1,9 @@
 // Notes de mise à jour montrées aux joueurs (menu « Nouveautés », et une fois après chaque mise à jour).
 // Les plus récentes en premier ; courtes, dans la langue du jeu. Le détail technique est dans CHANGELOG.md.
 export const PATCH_NOTES = [
+  { v: '0.24.1', title: 'Tirs plus propres', items: [
+    'Plus de trait jaune pendant les tirs : il partait souvent du mauvais endroit.'
+  ] },
   { v: '0.24.0', title: 'Retours de partie', items: [
     'Le Roi des Rails a sa propre musique.',
     'Le fourgon blindé se construit dès la zone 1, et sa fiche dit ce qui manque.',

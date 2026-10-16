@@ -1,5 +1,11 @@
 # Journal des versions
 
+## 0.24.1 — Tirs plus propres
+
+- **Combat** : retrait du trait jaune des tirs (tourelles et survivants) et de son point d'impact. Il partait du corps
+  des survivants ou du pare-chocs du boss et n'apportait pas d'information fiable. Les dégâts restent visibles par les
+  barres de vie et les grimaces des ennemis.
+
 ## 0.24.0 — Retours de partie
 
 - **Fourgon blindé** : toucher le fourgon pas encore construit ouvrait la locomotive. Il ouvre maintenant sa fiche,

@@ -1,16 +1,13 @@
 // Ennemis dans la scène (GDD §14.3) : approche, accrochage, tirs des tourelles, explosions,
 // barres de PV, réticule de la cible prioritaire, flèches pour les ennemis hors champ, barre du boss.
 // Dessins provisoires faits par le code ; une image enemy_<id> (Gemini) les remplace dès qu'elle existe.
-import { carFrame, muzzlePoint } from './train.js';
+import { carFrame } from './train.js';
 import { getImage } from './assets.js';
 import { drawSmooth } from './mip.js';
 import { COMBAT } from '../data/enemies.js';
 import { statsOf } from '../sim/combat.js';
 import { BOSSES } from '../data/enemies.js';
 import { t } from '../core/i18n.js';
-import { hits as crewHits } from './crewLayer.js';
-import { weaponType } from '../sim/equipment.js';
-import { WEAPONS } from '../data/items.js';
 import { ENEMY_SPRITES } from '../data/enemySprites.js';
 
 const INK = '#2B2A33';
@@ -255,16 +252,6 @@ function explosion(ctx, x, y, t, S, big) {
   ctx.restore();
 }
 
-// Origine des tirs d'une tourelle (canon en haut du wagon)
-function gunPoint(cars, view, i) {
-  const car = cars[i + 1];
-  if (!car) return null;
-  const m = muzzlePoint(car, view);
-  if (m) return m;
-  const f = carFrame(car, view);
-  return { x: f.x + f.w * 0.8, y: f.top + 14 * view.S };     // bout des canons de la tourelle
-}
-
 // Planches animées (Gemini) : un canvas par cadre, découpé une fois dans l'atlas
 const animCache = new Map();
 function animOf(type) {
@@ -421,29 +408,6 @@ export function drawEnemies(ctx, state, cars, view, time) {
   if (!c.enemies.length) return;
   const offLeft = [], offRight = [];
   let boss = null;
-
-  // Tirs : traits lumineux des tourelles vers leur cible
-  for (const e of c.enemies) {
-    if (state.time - e.hitT > 0.15 || e.phase === 'leave') continue;
-    let g = null;
-    if (e.hitBy >= 0) g = gunPoint(cars, view, e.hitBy);
-    else if (e.hitCrew) {
-      // Tir d'un survivant armé d'une arme à distance
-      const s = state.crew.find(x => x.id === e.hitCrew);
-      const h = s && crewHits.survivors.find(x => x.s === s);
-      if (!h || !s || !(WEAPONS[weaponType(state, s)].range > 0)) continue;
-      g = { x: h.x + (s.fightDir < 0 ? -8 : 8) * S, y: h.y - 2 * S };    // bout du canon, côté où il vise
-    }
-    const p = enemyScreen(e, cars, view, 0, time);
-    if (!g || !p) continue;
-    const flick = Math.sin(time * 60 + e.id) > -0.2;
-    if (!flick) continue;
-    ctx.strokeStyle = 'rgba(242,193,78,0.9)';
-    ctx.lineWidth = Math.max(1.5, 2 * S);
-    ctx.beginPath(); ctx.moveTo(g.x, g.y); ctx.lineTo(p.cx, p.cy); ctx.stroke();
-    ctx.fillStyle = '#fff1c4';
-    ctx.beginPath(); ctx.arc(p.cx, p.cy, 4 * S, 0, Math.PI * 2); ctx.fill();
-  }
 
   for (const e of c.enemies) {
     const p = enemyScreen(e, cars, view, 0, time);
