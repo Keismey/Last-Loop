@@ -1,5 +1,10 @@
 # Journal des versions
 
+## 0.24.4 — Debug : miliciens
+
+- **Debug** : bouton « Miliciens » (vague de miliciens seuls). Ils ne viennent sinon que des villages et avant-postes
+  hostiles (`CAMP_POOLS`). Rien ne change pour les joueurs.
+
 ## 0.24.3 — Couleurs de l'Après
 
 - **Palette des survivants** : tenues et cheveux en teintes délavées (le cyan, le vert clair et le lilas sortaient de

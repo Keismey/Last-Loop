@@ -634,6 +634,10 @@ export function ambush(state, budget) {
 export function debugAssault(state) {
   launchWave(state, 'camp', CAMP_POOLS.nomads, 6 * threat(state));
 }
+// Miliciens (défenseurs des villages et avant-postes, qui n'attaquent que si le camp est hostile)
+export function debugMilitia(state) {
+  launchWave(state, 'camp', { militia: 100 }, 6 * threat(state));
+}
 export function debugBoss(state) {
   const id = newWave(state, 'boss');
   queueEnemies(state, id, ['boss_c' + state.route.ring], 0.2);
