@@ -38,6 +38,25 @@ export function useMedkit(state, s) {
   return true;
 }
 
+// Démanteler un objet qui n'est porté par personne : on récupère une partie de sa valeur
+export function salvageOf(type) {
+  const d = WEAPONS[type] || ARMORS[type];
+  if (!d) return null;
+  const out = { scrap: Math.max(2, Math.round(d.value * 0.4)) };
+  if (d.tier >= 2) out.parts = d.tier - 1;
+  return out;
+}
+export function dismantleItem(state, id) {
+  const it = (state.inventory || []).find(i => i.id === id);
+  if (!it || holderOf(state, id)) return null;
+  const got = salvageOf(it.type);
+  if (!got) return null;
+  state.inventory = state.inventory.filter(i => i !== it);
+  for (const [r, v] of Object.entries(got)) state.resources[r] = (state.resources[r] || 0) + v;
+  bus.emit('item:dismantled', it);
+  return got;
+}
+
 export function addItem(state, type) {
   ensureInventory(state);
   const it = { id: 'i' + state.nextItemId++, type };

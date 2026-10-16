@@ -3,7 +3,8 @@ import { icon } from './icons.js';
 import { t, num, duration } from '../core/i18n.js';
 import { capacities } from '../core/state.js';
 import { currentBranch, sitePos, junctionPos } from '../sim/route.js';
-import { maxIntegrity } from '../sim/combat.js';
+import { maxIntegrity, steamActive } from '../sim/combat.js';
+import { eventSpeed } from '../sim/events.js';
 import { COMBAT } from '../data/enemies.js';
 import { isHalte } from '../sim/route.js';
 import { economyFlows } from '../sim/energy.js';
@@ -135,8 +136,13 @@ export function updateHud(state) {
   if (refs.powerEl && state.power) {
     const p = state.power;
     const f1 = v => (Math.round(v * 10) / 10).toLocaleString('fr-FR');
+    // Vitesse réelle du train : énergie × pleine vapeur × effets d'événement (tempête, voie, surchauffe)
+    const steam = steamActive(state) ? COMBAT.abilities.fullsteam.speed : 1;
+    const ev = eventSpeed(state);
+    const fx = (state.events && state.events.fx || []).map(f =>
+      `<span class="pw-fx ${f.speed < 1 ? 'down' : 'up'}">${t('fx.' + f.id, { s: Math.ceil(f.left) })}</span>`).join('');
     refs.powerEl.innerHTML = `${icon('bolt')}<span class="num">${t('power.short', { p: f1(p.produced), d: f1(p.demand) })}</span>` +
-      `<span class="pw-speed">${t('power.speed', { v: Math.round(p.factor * 100) })}</span>`;
+      `<span class="pw-speed${ev < 1 ? ' down' : ev > 1 || steam > 1 ? ' up' : ''}">${t('power.speed', { v: Math.round(p.factor * steam * ev * 100) })}</span>` + fx;
     refs.powerEl.classList.toggle('low', p.ratio < 1);
     refs.powerEl.title = t('power.tip');
   }

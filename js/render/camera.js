@@ -22,7 +22,8 @@ export function setTrainBounds(rear, front) {
 // Limites du centre de vue pour une largeur d'écran donnée (en unités)
 function clampCx(cx, viewUnits) {
   const half = viewUnits / 2;
-  const margin = 30;
+  // Vue convoi (dézoom) : on peut aller environ un wagon plus loin de chaque côté (ennemis qui arrivent, ce qui vient en face)
+  const margin = camera.zoomIdx === 1 ? 240 : 30;
   const lo = bounds.rear - margin + half;
   const hi = bounds.front + margin - half;
   if (lo > hi) return (bounds.rear + bounds.front) / 2;

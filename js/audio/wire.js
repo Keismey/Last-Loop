@@ -42,6 +42,7 @@ const MAP = {
   'contract:accepted': 'page',
   'event:open': 'page',
   'item:new': 'build',
+  'item:dismantled': 'build',
   'zone:kit': 'success',
   'zone:bossDown': 'success',
   'camp:raided': 'success',

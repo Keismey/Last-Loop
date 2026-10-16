@@ -1,5 +1,27 @@
 # Journal des versions
 
+## 0.24.0 — Retours de partie
+
+- **Fourgon blindé** : toucher le fourgon pas encore construit ouvrait la locomotive. Il ouvre maintenant sa fiche,
+  avec le bouton Construire et, en clair, ce qui manque (Halte ou matériaux). Il se construit dès la zone 1 (la loco T3
+  n'est pas nécessaire).
+- **Fiche survivant** : le glisser (peu fiable sur téléphone) est remplacé par deux flèches ◀ ▶ de part et d'autre du
+  nom (`openPanel` : `onNav`).
+- **Combat** : les survivants se tournent vers leur cible (tirs et coups) ; contre un ennemi accroché à leur propre
+  wagon, ils gardent leur sens (pas d'aller-retour). Le trait de tir part du bon côté.
+- **Course des ennemis** : les images de course sont calées sur la tête et non plus sur les pieds (le coureur glissait
+  de 50 px d'une image à l'autre).
+- **Démanteler** un objet de l'arsenal que personne ne porte : 40 % de sa valeur en Ferraille, plus des Pièces pour
+  les objets peu courants et rares (deux touchers pour confirmer).
+- **Vue convoi** (dézoom) : on peut aller environ un wagon plus loin de chaque côté.
+- **Vitesse affichée réelle** : énergie × pleine vapeur × tempête / voie / surchauffe, en orange ou en vert, avec
+  l'effet en cours et son compte à rebours.
+- Postes de travail ramenés à l'intérieur des wagons (Chaudière, Serre, Collecteur, Atelier, Labo, Fonderie, Fourgon).
+- Animations plus posées : marteau et pelle ralentis.
+- Cheveux : le bleu repère qui restait sur les mèches fines (mécano, guetteuse…) est recoloré.
+- **Musique du Roi des Rails** (Gemini) pendant tout le combat contre le boss.
+- Boss : plus de pixels violets sur l'image du saut ; liseré violet des contours neutralisé sur tous les ennemis.
+
 ## 0.23.8 — Fiches qui glissent, compétences dans l'équipage
 
 - **Fiche survivant** : glisser à gauche ou à droite passe au survivant suivant ou précédent (dans l'ordre de

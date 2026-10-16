@@ -93,8 +93,8 @@ export function openSurvivorSheet(getState, id, back = null, slide = null) {
       onclick: () => unassign(getState(), s)
     }) : null;
     return { el: out, tabs: tabsBar, foot, title: displayName(s) };
-  }, { back, slide, onSwipe: dir => {
-    // Survivant suivant ou précédent (dans l'ordre de l'équipage, en boucle)
+  }, { back, slide, onNav: getState().crew.length < 2 ? null : dir => {
+    // Flèches autour du nom : survivant suivant ou précédent (dans l'ordre de l'équipage, en boucle)
     const crew = getState().crew;
     const i = crew.findIndex(x => x.id === id);
     if (crew.length < 2 || i < 0) return;

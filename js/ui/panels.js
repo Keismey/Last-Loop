@@ -39,7 +39,22 @@ export function openPanel(title, build, opts = {}) {
     bk.addEventListener('click', () => opts.back());
     head.append(bk);
   }
-  head.append(h, x);
+  // Flèches autour du titre : panneau voisin (fiches de survivants : précédent, suivant)
+  if (opts.onNav) {
+    const arrow = (dir, glyph, label) => {
+      const b = document.createElement('button');
+      b.className = 'icon-btn panel-nav';
+      b.type = 'button';
+      b.innerHTML = `<span aria-hidden="true">${glyph}</span>`;
+      b.setAttribute('aria-label', label);
+      b.addEventListener('click', () => opts.onNav(dir));
+      return b;
+    };
+    const wrap = document.createElement('div');
+    wrap.className = 'panel-title-nav';
+    wrap.append(arrow(-1, '◀', t('sheet.prev')), h, arrow(1, '▶', t('sheet.next')));
+    head.append(wrap, x);
+  } else head.append(h, x);
   // Sous-onglets (fixes, ne défilent pas) : rangée entre le titre et le contenu
   const tabs = document.createElement('div');
   tabs.className = 'panel-tabs';
@@ -49,22 +64,6 @@ export function openPanel(title, build, opts = {}) {
   const foot = document.createElement('div');
   foot.className = 'panel-foot';
   card.append(head, tabs, body, foot);
-  // Glisser à l'horizontale : panneau voisin (fiches de survivants). Le défilement vertical n'est pas gêné.
-  if (opts.onSwipe) {
-    let sx = null, sy = 0;
-    card.addEventListener('pointerdown', e => { sx = e.clientX; sy = e.clientY; });
-    card.addEventListener('pointerup', e => {
-      if (sx === null) return;
-      const dx = e.clientX - sx, dy = e.clientY - sy;
-      sx = null;
-      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.6) {
-        // le clic qui suit le glissé ne doit pas toucher un bouton de la fiche
-        card.addEventListener('click', ev => { ev.stopPropagation(); ev.preventDefault(); }, { capture: true, once: true });
-        opts.onSwipe(dx < 0 ? 1 : -1);
-      }
-    });
-    card.addEventListener('pointercancel', () => { sx = null; });
-  }
   if (opts.slide) card.classList.add('slide-' + opts.slide);
   host.appendChild(card);
   host.hidden = false;

@@ -53,6 +53,9 @@ function cabooseSection(getState, state) {
         el('span', { class: 'muted', text: t('train.cabooseHp', { l: 1, hp: BUILD.caboose.hp[0], max: BUILD.caboose.hp[0], n: WAGONS.caboose.slots[0] }) })),
       el('div', { class: 'build-actions' },
         btn(t('train.cabooseBuild'), BUILD.caboose.cost, canBuildCaboose(state), buildCaboose, () => t('train.cabooseBuilt')))));
+    // Pourquoi on ne peut pas (sur téléphone, l'infobulle du bouton ne se voit pas)
+    const why = canBuildCaboose(state);
+    if (!why.ok) wrap.appendChild(el('p', { class: 'warn-text small', text: t(REASON[why.reason] || 'build.needCost') }));
     return wrap;
   }
   const max = cabooseMax(cb);
@@ -246,7 +249,7 @@ export function openTrain(getState, { onWagonSheet, select = null } = {}) {
     const halte = isHalte(state);
     const wagons = state.train.wagons;
     if (!sel || (sel !== 'loco' && sel !== 'caboose' && sel !== 'build' && !wagons.some(w => w.id === sel))) sel = halte ? 'build' : 'loco';
-    if (sel === 'caboose' && !caboose(state)) sel = 'loco';
+    // Fourgon pas encore construit : sa fiche propose de le construire (elle renvoyait sur la locomotive)
     const box = el('div', { class: 'sheet train-panel' });
     box.appendChild(el('p', { class: halte ? 'gain-text small' : 'muted small', text: t(halte ? 'train.halte' : 'train.notHalte') + ' ' + t('train.bedsLine', { n: state.crew.length, beds: bedsTotal(state) }) }));
 

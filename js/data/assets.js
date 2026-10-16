@@ -89,4 +89,4 @@ export const AVAILABLE = new Set([
 // Musiques (Gemini) : boucles MP3. Seules celles de AVAILABLE_MUSIC sont demandées au serveur.
 export const MUSIC = ['mus_title', 'mus_c1', 'mus_c2', 'mus_c3', 'mus_combat', 'mus_boss', 'mus_station']
   .map(id => ({ id, src: `assets/audio/${id}.mp3` }));
-export const AVAILABLE_MUSIC = new Set(['mus_title', 'mus_c1', 'mus_combat', 'mus_station']);
+export const AVAILABLE_MUSIC = new Set(['mus_title', 'mus_c1', 'mus_combat', 'mus_station', 'mus_boss']);

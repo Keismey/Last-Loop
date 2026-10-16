@@ -63,6 +63,8 @@ function fighting(state, s) {
   return s.fightT !== undefined && state.time - s.fightT < 0.4;
 }
 const fightPose = (gear) => (WEAPONS[gear.weapon] && WEAPONS[gear.weapon].range > 0 ? 'shoot' : 'strike');
+// Tourné vers sa cible pendant le combat (les images regardent vers la droite) ; sinon le sens habituel
+const faceTarget = (state, s, base = false) => (fighting(state, s) && s.fightDir ? s.fightDir < 0 : base);
 
 export function drawCrew(ctx, state, cars, view, time) {
   const { S } = view;
@@ -143,7 +145,7 @@ export function drawCrew(ctx, state, cars, view, time) {
       const px = f.x + fx * f.w, py = floorY;
       const gear = gearOf(state, s);
       const pose = s.post.slot === 'repair' ? 'hammer' : fighting(state, s) ? fightPose(gear) : 'stand';
-      drawPuppet(ctx, s, px, py, scale, pose, time + i * 0.37, s.post.slot === 'repair' && i % 2 === 1, gear);
+      drawPuppet(ctx, s, px, py, scale, pose, time + i * 0.37, faceTarget(state, s, s.post.slot === 'repair' && i % 2 === 1), gear);
       hits.survivors.push({ s, x: px, y: py - PUPPET_HEIGHT * scale * 0.5, r: 16 * scale });
     });
 
@@ -184,7 +186,7 @@ export function drawCrew(ctx, state, cars, view, time) {
         // Réveillé par une attaque : debout sur le plancher, il se bat
         if (fighting(state, r.s)) {
           const gear = gearOf(state, r.s);
-          drawPuppet(ctx, r.s, px, floorY, scale, fightPose(gear), time, false, gear);
+          drawPuppet(ctx, r.s, px, floorY, scale, fightPose(gear), time, faceTarget(state, r.s), gear);
           hits.survivors.push({ s: r.s, x: px, y: floorY - PUPPET_HEIGHT * scale * 0.5, r: 16 * scale });
           return;
         }
@@ -212,7 +214,7 @@ export function drawCrew(ctx, state, cars, view, time) {
         slotRing(ctx, px, py - 1 * S, 10 * S, 'hover');
       }
       const gear = gearOf(state, s);
-      drawPuppet(ctx, s, px, py, scale, fighting(state, s) ? fightPose(gear) : def.anim || 'stand', time, false, gear);
+      drawPuppet(ctx, s, px, py, scale, fighting(state, s) ? fightPose(gear) : def.anim || 'stand', time, faceTarget(state, s), gear);
       hits.survivors.push({ s, x: px, y: py - PUPPET_HEIGHT * scale * 0.5, r: 16 * scale });
     }
   }

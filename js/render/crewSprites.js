@@ -11,7 +11,7 @@ const ROLE = { mec: 'mecano', ter: 'cultiv', com: 'guet', sav: 'savant' };
 const STAND_UNITS = 50;      // hauteur debout, en unités du train (le pantin en fait 44)
 
 // Cadence des poses à deux images (secondes par image) et petit mouvement des poses fixes
-const TEMPO = { idle: 0.9, shovel: 0.42, hammer: 0.28, water: 0.12, sort: 0.7, read: 1.8, shoot: 0.12, strike: 0.26 };
+const TEMPO = { idle: 0.9, shovel: 0.5, hammer: 0.45, water: 0.12, sort: 0.7, read: 1.8, shoot: 0.12, strike: 0.26 };
 // Suite d'images d'une pose (indices dans sa liste) : au repos, le soupir (2e image) ne revient qu'une fois sur quatre
 const PATTERN = { idle: [0, 0, 0, 1] };
 // Poses allongées : le lit est plus bas que le repère utilisé pour les pantins

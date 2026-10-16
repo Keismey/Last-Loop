@@ -1,6 +1,14 @@
 // Notes de mise à jour montrées aux joueurs (menu « Nouveautés », et une fois après chaque mise à jour).
 // Les plus récentes en premier ; courtes, dans la langue du jeu. Le détail technique est dans CHANGELOG.md.
 export const PATCH_NOTES = [
+  { v: '0.24.0', title: 'Retours de partie', items: [
+    'Le Roi des Rails a sa propre musique.',
+    'Le fourgon blindé se construit dès la zone 1, et sa fiche dit ce qui manque.',
+    'Flèches ◀ ▶ autour du nom pour passer d’un survivant à l’autre.',
+    'Les survivants se tournent vers l’ennemi qu’ils visent.',
+    'Démantèle les objets que personne ne porte pour récupérer des matériaux.',
+    'Vue convoi plus large, vitesse réelle affichée, ennemis qui courent plus souplement.'
+  ] },
   { v: '0.23.8', title: 'Fiches et compétences', items: [
     'Dans la fiche d’un survivant, glisse à gauche ou à droite pour passer au suivant.',
     'L’onglet Équipage montre les quatre compétences de chacun, la meilleure en grand.'

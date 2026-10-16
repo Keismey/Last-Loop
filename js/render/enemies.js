@@ -432,7 +432,7 @@ export function drawEnemies(ctx, state, cars, view, time) {
       const s = state.crew.find(x => x.id === e.hitCrew);
       const h = s && crewHits.survivors.find(x => x.s === s);
       if (!h || !s || !(WEAPONS[weaponType(state, s)].range > 0)) continue;
-      g = { x: h.x + 8 * S, y: h.y - 2 * S };
+      g = { x: h.x + (s.fightDir < 0 ? -8 : 8) * S, y: h.y - 2 * S };    // bout du canon, côté où il vise
     }
     const p = enemyScreen(e, cars, view, 0, time);
     if (!g || !p) continue;

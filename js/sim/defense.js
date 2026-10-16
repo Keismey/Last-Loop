@@ -106,6 +106,9 @@ export function updateDefenders(state, pos, dt) {
     hurt(state, tgt, dmg, -1, s.id);
     bus.emit('combat:fire', W.range > 0 ? 'gun' : 'melee');
     s.fightT = state.time;
+    // Face à sa cible : -1 vers l'arrière (gauche), 1 vers l'avant (droite) ; 0 = ennemi accroché à son propre
+    // wagon, il garde son sens (pas d'aller-retour gauche-droite). En approche : du côté d'où arrive l'ennemi.
+    s.fightDir = tgt.phase === 'approach' ? (tgt.side < 0 ? -1 : 1) : tgt.wagon > i ? -1 : tgt.wagon < i ? 1 : 0;
     s.fightClock = (s.fightClock || 0) + dt;
     if (s.fightClock >= DEFENSE.xpEverySec) { s.fightClock -= DEFENSE.xpEverySec; addXp(state, s, 'com', 1); }
   }

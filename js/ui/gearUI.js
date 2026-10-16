@@ -5,12 +5,14 @@ import { icon } from './icons.js';
 import { toast, buzz } from './toasts.js';
 import { costEl } from './stationPanel.js';
 import { WEAPONS, ARMORS, CRAFT, itemKind } from '../data/items.js';
-import { weaponType, armorType, freeItems, equip, unequip, holderOf, canCraft, craft, canUseMedkit, useMedkit, canCraftMedkit, craftMedkit } from '../sim/equipment.js';
+import { weaponType, armorType, freeItems, equip, unequip, holderOf, canCraft, craft, canUseMedkit, useMedkit, canCraftMedkit, craftMedkit, salvageOf, dismantleItem } from '../sim/equipment.js';
 import { MEDKIT } from '../data/items.js';
 import { efficiency, displayName } from '../sim/crew.js';
 import { isHalte } from '../sim/route.js';
+import { refreshPanel } from './panels.js';
 
-let picking = null;   // { id, slot } : choix d'objet en cours dans la fiche d'un survivant
+let picking = null;
+let armed = null;      // objet dont le démantèlement attend la confirmation (second toucher)   // { id, slot } : choix d'objet en cours dans la fiche d'un survivant
 
 // Description courte d'un objet : « 4 dégâts/s · corps à corps » ou « −30 % de coups »
 export function itemStats(type) {
@@ -92,6 +94,20 @@ export function arsenalSection(getState) {
     const chip = el('span', { class: 'arsenal-item' + (h ? '' : ' free') },
       el('strong', { text: t('item.' + it.type) }), el('span', { class: 'muted small', text: h ? displayName(h) : t('gear.free') }));
     chip.title = itemStats(it.type);
+    // Objet libre : on peut le démanteler (deux touchers : le premier demande confirmation)
+    if (!h) {
+      const yieldOf = salvageOf(it.type);
+      const db = el('button', { class: 'btn btn-small btn-ghost dismantle' + (armed === it.id ? ' armed' : ''), type: 'button' },
+        document.createTextNode((armed === it.id ? t('gear.dismantleSure') : t('gear.dismantle')) + ' '), costEl(yieldOf));
+      db.addEventListener('click', () => {
+        if (armed !== it.id) { armed = it.id; buzz(8); refreshPanel(true); return; }
+        armed = null;
+        const got = dismantleItem(getState(), it.id);
+        if (got) { toast(t('gear.dismantled', { item: t('item.' + it.type) })); buzz([15, 30, 15]); }
+        refreshPanel(true);
+      });
+      chip.appendChild(db);
+    }
     list.appendChild(chip);
   }
   box.appendChild(list);
