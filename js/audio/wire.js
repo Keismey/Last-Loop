@@ -1,0 +1,56 @@
+// Quels événements du jeu font quel bruit. Les sons eux-mêmes sont dans sound.js.
+const MAP = {
+  'combat:fire': kind => (kind === 'turret' ? 'turret' : kind === 'melee' ? 'melee' : 'gun'),
+  'combat:hit': 'hit',
+  'combat:kill': 'kill',
+  'combat:breach': 'breach',
+  'combat:ram': 'breach',
+  'combat:bossJump': 'derail',
+  'combat:derail': 'derail',
+  'combat:wave': 'alert',
+  'combat:bossArrives': 'alert',
+  'combat:lowIntegrity': 'alert',
+  'combat:victory': 'success',
+  'combat:cleared': 'success',
+  'combat:doorFixed': 'build',
+  'route:depart': 'whistle',
+  'route:halt': 'brake',
+  'route:depot': 'brake',
+  'route:pickup': 'harvest',
+  'route:key': 'coin',
+  'route:unlocked': 'coin',
+  'train:built': 'build',
+  'train:upgraded': 'build',
+  'train:loco': 'whistle',
+  'train:attic': 'build',
+  'train:berths': 'build',
+  'train:roof': 'build',
+  'train:dismantled': 'build',
+  'wagon:broken': 'error',
+  'wagon:repaired': 'build',
+  'crew:levelup': 'levelup',
+  'crew:joined': 'success',
+  'crew:recruited': 'success',
+  'crew:critical': 'alert',
+  'crew:rescued': 'heal',
+  'crew:healed': 'heal',
+  'crew:died': 'death',
+  'research:done': 'success',
+  'objective:done': 'levelup',
+  'objective:claimed': 'coin',
+  'contract:done': 'coin',
+  'contract:accepted': 'page',
+  'event:open': 'page',
+  'item:new': 'build',
+  'zone:kit': 'success',
+  'zone:bossDown': 'success',
+  'camp:raided': 'success',
+  'camp:tribute': 'coin',
+  'station:rep': 'coin'
+};
+
+export function wireSounds(bus, sfx) {
+  for (const [ev, s] of Object.entries(MAP)) {
+    bus.on(ev, data => sfx(typeof s === 'function' ? s(data) : s));
+  }
+}

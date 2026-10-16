@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Un train, une boucle, des survivants : tiens la ligne jusqu'au bout. Jeu de gestion pour mobile, à jouer en paysage.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Last Loop">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Last Loop</title>
+<meta name="theme-color" content="#2B2A33">
+<link rel="icon" type="image/png" href="assets/icons/icon-64.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-180.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- Chargement -->
+  <section id="screen-loading" class="screen screen-loading">
+    <div class="loading-box">
+      <p class="eyebrow" id="loading-title">Chargement</p>
+      <div class="loading-track"><div class="loading-bar" id="loading-bar"></div></div>
+      <p class="loading-tip" id="loading-tip"></p>
+    </div>
+  </section>
+
+  <!-- Écran titre -->
+  <section id="screen-title" class="screen screen-title" hidden>
+    <canvas id="title-canvas"></canvas>
+    <div class="title-shade"></div>
+    <div class="title-content">
+      <h1 class="logo">
+        <span class="logo-loop">Last</span>
+        <span class="logo-loop logo-loop2">Loop</span>
+      </h1>
+      <p class="title-sub" id="title-sub"></p>
+      <div class="title-actions" id="title-actions"></div>
+    </div>
+    <p class="title-version" id="title-version"></p>
+  </section>
+
+  <!-- Jeu -->
+  <section id="screen-game" class="screen screen-game" hidden>
+    <header class="topbar">
+      <div class="hud-res" id="hud-res"></div>
+      <div class="hud-right">
+        <button class="hud-hunt" id="hud-hunt" type="button" hidden></button>
+        <span class="hud-integrity" id="hud-integrity"></span>
+        <span class="hud-route" id="hud-route"></span>
+        <span class="hud-time" id="hud-time"></span>
+        <button class="icon-btn" id="btn-menu" type="button"></button>
+      </div>
+    </header>
+    <nav class="tabs" id="tabs"></nav>
+    <div class="scene" id="scene">
+      <canvas id="scene-canvas"></canvas>
+      <div class="scene-overlay" id="scene-overlay">
+        <div class="leg-progress" id="leg-progress" hidden></div>
+        <div class="halte-banner" id="halte-banner" hidden></div>
+        <div class="scene-tools">
+          <button class="chip chip-speed" id="btn-speed" type="button">×1</button>
+          <button class="chip chip-zoom" id="btn-zoom" type="button"></button>
+        </div>
+        <div class="power-pill" id="hud-power" role="status"></div>
+        <div class="abilities" id="abilities"></div>
+      </div>
+    </div>
+    <div class="bottom">
+      <div class="panel crew-bar" id="crew-bar"></div>
+      <div class="panel switchboard" id="switchboard"></div>
+    </div>
+    <div class="panel-host" id="panel-host" hidden></div>
+  </section>
+
+  <div class="drag-ghost" id="drag-ghost" hidden><canvas></canvas></div>
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+  <div class="modal-layer" id="modal-layer" hidden></div>
+
+  <!-- Téléphone tenu droit -->
+  <section id="screen-rotate" class="overlay-screen" hidden>
+    <div class="rotate-icon" id="rotate-icon"></div>
+    <h2 id="rotate-title"></h2>
+    <p id="rotate-body"></p>
+  </section>
+
+  <!-- Erreur -->
+  <section id="screen-error" class="overlay-screen screen-error" hidden>
+    <h2 id="error-title"></h2>
+    <p id="error-body"></p>
+    <p class="error-detail" id="error-detail"></p>
+    <div class="error-actions">
+      <button class="btn" id="error-export" type="button"></button>
+      <button class="btn btn-primary" id="error-reload" type="button"></button>
+    </div>
+  </section>
+</div>
+
+<script type="module" src="js/main.js"></script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "cdb82226cd1b401d9e4f4e899f9b8425"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
