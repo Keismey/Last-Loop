@@ -18,7 +18,8 @@ const FILES = %(files)s;
 self.addEventListener('install', e => {
   e.waitUntil((async () => {
     const code = await caches.open(CODE), media = await caches.open(MEDIA);
-    await Promise.all(FILES.map(f => (/^assets\\//.test(f) ? media : code).add(f).catch(() => {})));
+    // relus sans le cache HTTP du navigateur : jamais une vieille copie dans le cache hors ligne
+    await Promise.all(FILES.map(f => (/^assets\\//.test(f) ? media : code).add(new Request(f, { cache: 'reload' })).catch(() => {})));
     await self.skipWaiting();
   })());
 });
@@ -36,6 +37,7 @@ self.addEventListener('fetch', e => {
   const url = new URL(req.url);
   if (url.origin !== location.origin) return;
   const path = url.pathname;
+  if (/version\\.json$/.test(path)) return;     // vérification de mise à jour : toujours le réseau
   // Musiques : le lecteur demande des morceaux (Range) ; on sert le fichier entier gardé en cache s'il existe
   if (/\\.mp3$/.test(path)) {
     e.respondWith((async () => {
@@ -60,7 +62,8 @@ self.addEventListener('fetch', e => {
   e.respondWith((async () => {
     const code = await caches.open(CODE);
     try {
-      const r = await fetch(req);
+      // revalidé à chaque ouverture (le cache HTTP de GitHub Pages ne fait pas attendre une mise à jour)
+      const r = await fetch(req, { cache: 'no-cache' });
       if (r.ok) code.put(req, r.clone());
       return r;
     } catch (err) {

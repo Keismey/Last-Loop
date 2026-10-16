@@ -6,6 +6,7 @@ import { toast } from './toasts.js';
 import { exportText, importText } from '../core/save.js';
 import { settings, setSetting } from '../core/settings.js';
 import { sfx } from '../audio/sound.js';
+import { PATCH_NOTES } from '../data/patchnotes.fr.js';
 
 // api : { getState, onResume, onImport(state), onTitle, onDebug, tryFullscreen }
 export function openMenu(api) {
@@ -31,10 +32,24 @@ export function openMenu(api) {
     optionsBlock(),
     el('button', { class: 'btn', text: t('menu.fullscreen'), onclick: () => api.tryFullscreen() }),
     el('button', { class: 'btn', text: t('menu.toTitle'), onclick: () => { closeModal(); api.onTitle(); } }),
-    el('button', { class: 'btn span-2', text: t('menu.credits'), onclick: () => openCredits(() => openMenu(api)) }),
+    el('button', { class: 'btn', text: t('menu.notes'), onclick: () => openNotes(() => openMenu(api)) }),
+    el('button', { class: 'btn', text: t('menu.credits'), onclick: () => openCredits(() => openMenu(api)) }),
     el('div', { class: 'span-2 version-row' }, version)
   );
   openModal(content, { title: t('menu.title'), onClose: api.onResume });
+}
+
+// Nouveautés : les notes de mise à jour, les plus récentes d'abord
+export function openNotes(onClose) {
+  const list = el('div', { class: 'notes-list' });
+  for (const n of PATCH_NOTES) {
+    const h = el('h3', { text: n.title });
+    h.append(el('small', { text: t('notes.version', { v: n.v }) }));
+    const ul = el('ul');
+    for (const it of n.items) ul.append(el('li', { text: it }));
+    list.append(el('section', {}, h, ul));
+  }
+  openModal(list, { title: t('notes.title'), onClose });
 }
 
 // Crédits (écran titre et menu) ; onClose : retour au menu

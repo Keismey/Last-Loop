@@ -1,5 +1,15 @@
 # Journal des versions
 
+## 0.23.2 — Aligné sur les autres jeux du studio
+
+- **Logo Keismey Studio** au lancement (toucher pour passer), comme les autres jeux.
+- **Nouveautés** : notes de mise à jour pour les joueurs (`js/data/patchnotes.fr.js`), dans le menu et affichées une
+  fois à l'écran titre après chaque mise à jour.
+- **Mise à jour automatique** : `version.json` lu à l'ouverture et au retour dans l'appli ; à l'écran titre, le jeu
+  se recharge seul ; en partie, un bandeau propose la mise à jour (la partie est sauvegardée avant).
+- Service worker : pré-cache relu sans le cache HTTP, code revalidé à chaque ouverture, `version.json` jamais en cache.
+- Icône « maskable » (Android), zoom du navigateur bloqué, pas d'invite d'installation (l'appli à installer est le hub).
+
 ## 0.23.1 — Première mise en ligne
 
 - Les six survivants dessinés « recroquevillés debout » dorment maintenant vraiment allongés (nouvelles images) ;

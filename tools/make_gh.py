@@ -20,7 +20,7 @@ page = f"""<!doctype html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="description" content="Un train, une boucle, des survivants : tiens la ligne jusqu'au bout. Jeu de gestion pour mobile, à jouer en paysage.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -36,4 +36,8 @@ page = f"""<!doctype html>
 </html>
 """
 open(os.path.join(DST, 'index.html'), 'w', encoding='utf-8').write(page)
+# version.json : lu par le jeu à l'ouverture pour se mettre à jour seul
+import re, json
+ver = re.search(r"VERSION: '([^']+)'", open(os.path.join(SRC, 'js/data/config.js')).read()).group(1)
+json.dump({'v': ver}, open(os.path.join(DST, 'version.json'), 'w'))
 print('ok', DST)

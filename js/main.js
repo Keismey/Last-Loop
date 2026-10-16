@@ -28,7 +28,8 @@ import { createScene, refreshSceneArt } from './render/scene.js';
 import { initHud, updateHud, setHudSpeed } from './ui/hud.js';
 import { initToasts, toast, buzz } from './ui/toasts.js';
 import { initModal, isModalOpen, closeModal, el } from './ui/modal.js';
-import { openMenu, openExport, openCredits } from './ui/menu.js';
+import { openMenu, openExport, openCredits, openNotes } from './ui/menu.js';
+import { PATCH_NOTES } from './data/patchnotes.fr.js';
 import { openDebug, updateDebug, closeDebug } from './ui/debug.js';
 import { icon } from './ui/icons.js';
 import { initSceneInput } from './ui/sceneInput.js';
@@ -48,10 +49,11 @@ import { openSurvivorSheet, openWagonSheet, openCrewList } from './ui/sheets.js'
 import { initCrewBar, rebuild as rebuildCrewBar, updateCrewBar } from './ui/crewbar.js';
 import { initDrag, beginDrag, tickDrag } from './ui/dragdrop.js';
 
-// Version installable (GitHub Pages) : jeu hors ligne grâce au service worker. Jamais dans l'aperçu.
-if ('serviceWorker' in navigator && /(^|\.)github\.io$|^localhost$/.test(location.hostname)) {
-  addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
-}
+// Version en ligne (GitHub Pages) : jeu hors ligne grâce au service worker, mise à jour automatique. Jamais dans l'aperçu.
+const ON_PAGES = 'serviceWorker' in navigator && /(^|\.)github\.io$|^localhost$/.test(location.hostname);
+if (ON_PAGES) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+// Installable par le menu du navigateur, sans invite : l'appli à installer en priorité, c'est le hub Keismey Studio
+addEventListener('beforeinstallprompt', e => e.preventDefault());
 
 const $ = id => document.getElementById(id);
 
@@ -132,6 +134,7 @@ function persist(showToast) {
 
 document.addEventListener('visibilitychange', () => {
   app.hidden = document.visibilityState === 'hidden';
+  if (!app.hidden) checkUpdate();
   if (app.hidden) persist(false);
   suspendAudio(app.hidden);
   muteMusic(app.hidden);
@@ -392,6 +395,52 @@ function registerHot() {
 }
 
 // ---------- Démarrage ----------
+// ---------- Studio, nouveautés, mises à jour ----------
+// Logo Keismey Studio au lancement : toucher pour passer, sinon 2,4 s après son chargement (5 s au plus)
+function studioSplash() {
+  const d = $('studio-splash');
+  if (!d) return;
+  if (navigator.webdriver && !/[?&]splash/.test(location.search)) { d.remove(); return; }
+  d.hidden = false;
+  let gone = false;
+  const end = () => { if (gone) return; gone = true; d.classList.add('out'); setTimeout(() => d.remove(), 650); };
+  d.addEventListener('pointerdown', end);
+  const im = d.querySelector('img');
+  const arm = () => setTimeout(end, 2400);
+  if (im.complete) arm(); else { im.onload = arm; im.onerror = end; }
+  setTimeout(end, 5000);
+}
+
+// Nouveautés montrées une fois après chaque mise à jour (pas à la toute première partie)
+const NOTES_KEY = 'loopexpress.notes';
+function maybeShowNotes() {
+  let seen = null;
+  try { seen = localStorage.getItem(NOTES_KEY); localStorage.setItem(NOTES_KEY, CONFIG.VERSION); } catch (e) { return; }
+  if (seen === CONFIG.VERSION || !hasSave()) return;
+  if (!PATCH_NOTES.some(n => n.v === CONFIG.VERSION)) return;
+  setTimeout(() => { if (app.screen === 'title') openNotes(); }, 2900);
+}
+
+// Nouvelle version en ligne : à l'écran titre on recharge tout de suite (une fois), en partie un bandeau propose de le faire
+function checkUpdate() {
+  if (!ON_PAGES) return;
+  fetch('version.json?t=' + Date.now(), { cache: 'no-store' }).then(r => (r.ok ? r.json() : null)).then(j => {
+    if (!j || !j.v || j.v === CONFIG.VERSION) return;
+    let tried = null;
+    try { tried = sessionStorage.getItem('loopexpress.upd'); } catch (e) { /* stockage indisponible */ }
+    const go = () => {
+      try { sessionStorage.setItem('loopexpress.upd', j.v); } catch (e) { /* stockage indisponible */ }
+      persist(false);
+      navigator.serviceWorker.getRegistration().then(r => r && r.update()).catch(() => {}).then(() => setTimeout(() => location.reload(), 300));
+    };
+    if (tried !== j.v && app.screen !== 'game') { go(); return; }
+    if (document.querySelector('.update-bar')) return;
+    const b = el('button', { class: 'update-bar', type: 'button' }, el('b', { text: t('update.title') }), el('span', { text: t('update.body') }));
+    b.addEventListener('click', go);
+    document.body.appendChild(b);
+  }).catch(() => {});
+}
+
 async function start(data) {
   initToasts($('toasts'));
   initModal($('modal-layer'));
@@ -608,6 +657,7 @@ async function start(data) {
   loop.start();
   checkOrientation();
   show('loading');
+  studioSplash();
 
   await loadGroup('boot', p => { $('loading-bar').style.transform = `scaleX(${p})`; });
   loadGroup('later');     // illustrations d'événements, etc. : en arrière-plan
@@ -619,7 +669,9 @@ async function start(data) {
   else {
     buildTitleButtons();
     show('title');
+    maybeShowNotes();
   }
+  checkUpdate();
 }
 
 const hot = window.claude && window.claude.hot;

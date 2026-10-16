@@ -939,3 +939,21 @@ button.crew-row:active { background: rgba(239, 230, 207, 0.05); }
 .credits p { margin: 0; }
 .credits .small { font-size: 0.8rem; }
 .credits-thanks { margin-top: 6px !important; font-style: italic; }
+
+/* Logo du studio au lancement (comme les autres jeux Keismey Studio) */
+.studio-splash { position: fixed; inset: 0; z-index: 200; background: #000; display: grid; place-items: center; cursor: pointer; transition: opacity .6s ease; }
+.studio-splash img { width: min(52vh, 260px, 58vw); height: auto; opacity: 0; animation: studioIn 1s ease-out .15s forwards; }
+.studio-splash.out { opacity: 0; pointer-events: none; }
+@keyframes studioIn { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: scale(1); } }
+
+/* Nouveautés */
+.notes-list { display: flex; flex-direction: column; gap: 14px; }
+.notes-list h3 { margin: 0 0 4px; font-family: var(--font-display); font-size: 1.05rem; }
+.notes-list h3 small { color: var(--dim, #a99f8f); font-family: var(--font-ui); font-weight: 600; font-size: .8rem; margin-left: 6px; }
+.notes-list ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+
+/* Nouvelle version en ligne */
+.update-bar { position: fixed; left: 50%; top: max(10px, env(safe-area-inset-top, 0px)); transform: translateX(-50%); z-index: 150;
+  display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 18px; border-radius: 14px; border: 2px solid #1f1e25;
+  background: #e8a33d; color: #1f1e25; font: 600 13px var(--font-ui); box-shadow: 0 4px 0 #8a5a17; cursor: pointer; }
+.update-bar b { font-size: 14px; }

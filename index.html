@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="description" content="Un train, une boucle, des survivants : tiens la ligne jusqu'au bout. Jeu de gestion pour mobile, à jouer en paysage.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -17,6 +17,9 @@
 </head>
 <body>
 <div id="app">
+
+  <!-- Logo du studio au lancement (toucher pour passer) -->
+  <div id="studio-splash" class="studio-splash" hidden><img src="assets/img/studio_logo.webp" alt="Keismey Studio" draggable="false"></div>
 
   <!-- Chargement -->
   <section id="screen-loading" class="screen screen-loading">
