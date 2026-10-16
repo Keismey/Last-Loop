@@ -1,5 +1,14 @@
 # Journal des versions
 
+## 0.25.5 — Comprendre un déraillement
+
+- **Déraillement** : carte façon événement (illustration ev_derail, en attente : ciel et pictogramme en attendant)
+  avec le récit, les pertes, la santé de l'équipage, l'intégrité et la traque qui recule ; « Au dépôt » ouvre ensuite
+  le résumé du tour (`ui/derailCard.js`).
+- **Service worker** : les images sont rangées sous leur empreinte (md5) ; une image modifiée sous le même nom est
+  retéléchargée à la mise à jour, les anciennes sont retirées. Avant, le rafraîchissement en fond pouvait remettre une
+  vieille copie (cache HTTP) : les nouveaux camps restaient invisibles chez certains joueurs.
+
 ## 0.25.4 — Debug : drones
 
 - **Debug** : bouton « Drones » (vague de drones faucheurs seuls). Rien ne change pour les joueurs.

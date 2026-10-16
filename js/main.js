@@ -22,6 +22,7 @@ import { isHalte } from './sim/route.js';
 import { initSwitchboard, updateSwitchboard, refreshSwitchboard } from './ui/switchboard.js';
 import { openMap } from './ui/mapPanel.js';
 import { openSummary } from './ui/summary.js';
+import { openDerail } from './ui/derailCard.js';
 import { addFloater } from './render/floaters.js';
 import { loadGroup } from './render/assets.js';
 import { createScene, refreshSceneArt } from './render/scene.js';
@@ -159,6 +160,8 @@ function show(screen) {
   $('screen-game').hidden = screen !== 'game';
   refreshPause();
 }
+
+let derailEased = 0;     // crans de traque perdus au dernier déraillement (montrés sur sa carte)
 
 function buildTitleButtons() {
   const box = $('title-actions');
@@ -528,9 +531,11 @@ async function start(data) {
     // Les nouvelles du tour entrent au carnet (le tour vient de s'achever)
     const st = getState();
     for (const n of [...(summary.news || [])].reverse()) if (n.key !== 'news.regrown') { addLog(st, n.key, n); st.log[0].lap = summary.lap; }
+    persist(false);
+    // Déraillement : d'abord la carte qui raconte l'accident, puis le résumé du tour
+    if (summary.derailed) { openDerail(summary, derailEased, () => openSummary(getState)); derailEased = 0; return; }
     toast(t('route.depotArrive'));
     buzz([20, 40, 20]);
-    persist(false);
     openSummary(getState);
   });
   bus.on('route:stop', () => refreshSwitchboard());
@@ -574,7 +579,7 @@ async function start(data) {
   bus.on('objective:done', o => { toast(t('obj.doneToast', { name: t('obj.' + o.id, { n: o.n }) })); addLog(getState(), 'log.objective', { name: t('obj.' + o.id, { n: o.n }) }); buzz([20, 30, 20]); });
   bus.on('objective:claimed', () => persist(false));
   bus.on('combat:lowIntegrity', () => toast(t('combat.lowIntegrity'), 'warn'));
-  bus.on('combat:derail', d => { toast(t('combat.derail') + (d && d.eased ? ' ' + t('combat.derailHunt') : ''), 'warn'); buzz([80, 40, 80, 40, 120]); });
+  bus.on('combat:derail', d => { derailEased = (d && d.eased) || 0; buzz([80, 40, 80, 40, 120]); });
   bus.on('combat:ability', () => refreshSwitchboard());
   let lastGuard = 0;
   bus.on('combat:guard', ({ s, w }) => {

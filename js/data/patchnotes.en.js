@@ -1,5 +1,9 @@
 // Patch notes shown to players in English (same entries as patchnotes.fr.js).
 export const PATCH_NOTES = [
+  { v: '0.25.5', title: 'Understanding a derailment', items: [
+    'When the train derails, a card tells what happened and what it cost, before the lap summary.',
+    'Images changed by an update show up right away (they could stay on the old version).'
+  ] },
   { v: '0.25.3', title: 'The drone comes alive', items: [
     'The outposts’ reaper drone flies, saws at the wagons and falls as a wreck when shot down.'
   ] },

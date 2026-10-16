@@ -14,10 +14,11 @@ const SKY = {
   survivor: ['#d9a35a', '#7a4a33', 'crew'], convoy: ['#c7a06b', '#5b4a44', 'scrap'], merchant: ['#e2b866', '#7d5a3a', 'trade'],
   storm: ['#5e6b78', '#2b2f3a', 'bolt'], mechanic: ['#c99a5a', '#5a4237', 'wrench'], rail: ['#bda27a', '#55473f', 'train'],
   warehouse: ['#d8b071', '#6a4c37', 'food'], epidemic: ['#8f9a76', '#3c4236', 'heart'], map: ['#cdb48a', '#5d4d3e', 'map'],
-  overheat: ['#e08a45', '#5a2f24', 'fuel']
+  overheat: ['#e08a45', '#5a2f24', 'fuel'],
+  derail: ['#c9773f', '#3a2a28', 'train']
 };
 
-function art(id) {
+export function art(id) {
   const box = el('div', { class: 'event-art' });
   const img = getImage('ev_' + id);
   if (img) {

@@ -37,7 +37,7 @@ for (let c = 1; c <= 3; c++) add(`boss_c${c}`, 640, 360, 'sprite', c === 1 ? 'bo
 // Planches animées (marche, attaque, coup reçu, chute ; le boss : roule, tir, charge, saut, épave)
 ['biker', 'runner', 'brute', 'militia', 'drone', 'boss_c1'].forEach(e => add(`en_${e}`, 2048, 400, 'sprite', 'boot'));
 // Événements
-['survivor', 'convoy', 'merchant', 'storm', 'mechanic', 'rail', 'warehouse', 'epidemic', 'map', 'overheat']
+['survivor', 'convoy', 'merchant', 'storm', 'mechanic', 'rail', 'warehouse', 'epidemic', 'map', 'overheat', 'derail']
   .forEach(e => add(`ev_${e}`, 960, 540, 'opaque'));
 // Divers
 add('title_keyart', 1920, 1080, 'opaque', 'boot');
