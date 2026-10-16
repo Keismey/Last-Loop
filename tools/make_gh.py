@@ -36,6 +36,11 @@ page = f"""<!doctype html>
 </html>
 """
 open(os.path.join(DST, 'index.html'), 'w', encoding='utf-8').write(page)
+# Pas de mode debug en ligne : ni #debug ni les 7 touchers sur la version
+cfg = os.path.join(DST, 'js/data/config.js')
+c = open(cfg, encoding='utf-8').read()
+assert 'DEBUG_ALLOWED: true' in c
+open(cfg, 'w', encoding='utf-8').write(c.replace('DEBUG_ALLOWED: true', 'DEBUG_ALLOWED: false'))
 # version.json : lu par le jeu à l'ouverture pour se mettre à jour seul
 import re, json
 ver = re.search(r"VERSION: '([^']+)'", open(os.path.join(SRC, 'js/data/config.js')).read()).group(1)

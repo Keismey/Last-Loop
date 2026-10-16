@@ -28,4 +28,4 @@ Le document de conception (GDD) fait foi pour toutes les règles et valeurs.
 - Sauvegarde dans le navigateur (`localStorage`, clé `loopexpress.save`) ; son résumé est lu par le hub.
 - Polices système : aucune requête vers un service externe (hors la mesure d'audience Cloudflare, sans cookie).
 
-Mode debug : ajouter `#debug` à l'adresse, ou toucher 7 fois le numéro de version dans le menu.
+Mode debug (aperçu et local seulement, jamais en ligne) : ajouter `#debug` à l'adresse, ou toucher 7 fois le numéro de version dans le menu.

@@ -229,7 +229,7 @@ function showEvent(ev) {
 function startGame(fresh) {
   adopt((!fresh && loadGame()) || newState());
   show('game');
-  if (location.hash === '#debug') { openDebugPanel(); window.__app = app; }
+  if (CONFIG.DEBUG_ALLOWED && location.hash === '#debug') { openDebugPanel(); window.__app = app; }
   launchTutorial();
 }
 
@@ -277,7 +277,7 @@ function openGameMenu() {
       closePanel();
       backToTitle();
     },
-    onDebug: () => { closeModal(); openDebugPanel(); },
+    onDebug: () => { if (!CONFIG.DEBUG_ALLOWED) return; closeModal(); openDebugPanel(); },
     tryFullscreen: () => tryLandscape(true)
   });
 }

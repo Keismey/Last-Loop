@@ -1,5 +1,11 @@
 # Journal des versions
 
+## 0.23.4 — Pas de debug en ligne, portraits recadrés
+
+- Portraits des survivants (pastilles et fiches) : même cadrage pour les huit bases, centrés sur le visage.
+- La version GitHub n'a plus de mode debug : `#debug` et les 7 touchers sur la version sont désactivés
+  (`DEBUG_ALLOWED` passé à false par `tools/make_gh.py`). L'aperçu et le local le gardent.
+
 ## 0.23.3 — Paysage depuis le hub
 
 - Le plein écran et le verrou paysage étaient demandés sur `pointerdown`, qui ne compte pas comme un geste sur écran

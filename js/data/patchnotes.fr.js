@@ -1,6 +1,9 @@
 // Notes de mise à jour montrées aux joueurs (menu « Nouveautés », et une fois après chaque mise à jour).
 // Les plus récentes en premier ; courtes, dans la langue du jeu. Le détail technique est dans CHANGELOG.md.
 export const PATCH_NOTES = [
+  { v: '0.23.4', title: 'Portraits recadrés', items: [
+    'Les portraits des survivants (pastilles et fiches) sont tous cadrés pareil, centrés sur le visage.'
+  ] },
   { v: '0.23.3', title: 'À l’horizontale depuis le hub', items: [
     'Ouvert depuis le hub installé, le jeu passe bien à l’horizontale.',
     'Écran « Tourne ton téléphone » : un bouton pour passer à l’horizontale d’un toucher.'

@@ -12,7 +12,7 @@ import { PATCH_NOTES } from '../data/patchnotes.fr.js';
 export function openMenu(api) {
   let taps = 0;
   const version = el('button', { class: 'version-btn', text: t('menu.version', { v: CONFIG.VERSION }) });
-  version.addEventListener('click', () => {
+  if (CONFIG.DEBUG_ALLOWED) version.addEventListener('click', () => {
     taps += 1;
     const left = CONFIG.DEBUG_TAPS - taps;
     if (left <= 0) {
