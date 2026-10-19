@@ -28,7 +28,7 @@ import { loadGroup } from './render/assets.js';
 import { createScene, refreshSceneArt } from './render/scene.js';
 import { initHud, updateHud, setHudSpeed } from './ui/hud.js';
 import { initToasts, toast, buzz } from './ui/toasts.js';
-import { initModal, isModalOpen, closeModal, el } from './ui/modal.js';
+import { initModal, isModalOpen, isModalLocked, closeModal, el } from './ui/modal.js';
 import { openMenu, openExport, openCredits, openNotes } from './ui/menu.js';
 import { PATCH_NOTES } from './data/patchnotes.js';
 import { openDebug, updateDebug, closeDebug } from './ui/debug.js';
@@ -45,7 +45,7 @@ import { playMusic, unlockMusic, muteMusic } from './audio/music.js';
 import { wireSounds } from './audio/wire.js';
 import { startTutorial, gusTip, tutoActive } from './ui/tutorial.js';
 import { huntLevel } from './sim/zones.js';
-import { initPanels, refreshPanel, closePanel, openTab } from './ui/panels.js';
+import { initPanels, refreshPanel, closePanel, openTab, panelOpen } from './ui/panels.js';
 import { openSurvivorSheet, openWagonSheet, openCrewList } from './ui/sheets.js';
 import { initCrewBar, rebuild as rebuildCrewBar, updateCrewBar } from './ui/crewbar.js';
 import { initDrag, beginDrag, tickDrag } from './ui/dragdrop.js';
@@ -266,6 +266,17 @@ function openDebugPanel() {
     }
   });
 }
+
+// ---------- Bouton retour du téléphone (voir js/ks-back.js) ----------
+// fenêtre ouverte → fermée (sauf les cartes où il faut choisir) ; panneau latéral → fermé ;
+// en partie → menu de pause (un 2e retour reprend la partie) ; écran titre → hub.
+function onBack() {
+  if (isModalOpen()) { if (!isModalLocked()) closeModal(); return; }
+  if (panelOpen()) { closePanel(); return; }
+  if (app.screen === 'game') { openGameMenu(); return; }
+  if (app.screen === 'title') return 'hub';
+}
+window.KSBack?.init({ back: onBack, lang: () => (IS_EN ? 'en' : 'fr') });
 
 function openGameMenu() {
   if (app.screen !== 'game' || isModalOpen()) return;

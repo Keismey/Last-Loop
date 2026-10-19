@@ -1,5 +1,9 @@
 # Journal des versions
 
+## 0.25.7 — Le bouton retour
+
+- **Bouton retour du téléphone** (`js/ks-back.js`, fichier commun aux jeux du hub ; `onBack()` dans `main.js`) : ferme la fenêtre (sauf les cartes verrouillées), puis le panneau latéral ; en partie, ouvre le menu de pause (un second retour reprend) ; à l'écran titre, ramène au hub. `isModalLocked()` ajouté à `ui/modal.js`.
+
 ## 0.25.6 — Le déraillement illustré
 
 - **Illustration** ev_derail (Gemini) sur la carte du déraillement.

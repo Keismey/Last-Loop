@@ -1,6 +1,9 @@
 // Notes de mise à jour montrées aux joueurs (menu « Nouveautés », et une fois après chaque mise à jour).
 // Les plus récentes en premier ; courtes, dans la langue du jeu. Le détail technique est dans CHANGELOG.md.
 export const PATCH_NOTES = [
+  { v: '0.25.7', title: 'Le bouton retour', items: [
+    'Le bouton retour du téléphone ne quitte plus le jeu : il ferme la fenêtre ou le panneau ouvert, sinon il ouvre le menu de pause (un second appui reprend la partie). Depuis l’écran titre, il ramène au hub Keismey Studio.'
+  ] },
   { v: '0.25.6', title: 'Le déraillement illustré', items: [
     'La carte du déraillement a son illustration.'
   ] },

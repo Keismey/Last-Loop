@@ -17,6 +17,11 @@ export function isModalOpen() {
   return layer && !layer.hidden;
 }
 
+// carte d'événement ou de déraillement : il faut choisir
+export function isModalLocked() {
+  return isModalOpen() && locked;
+}
+
 // content : élément DOM ; options : { title, onClose }
 export function openModal(content, { title = '', onClose = null, lock = false, cls = '' } = {}) {
   locked = lock;
