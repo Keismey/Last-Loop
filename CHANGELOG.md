@@ -1,5 +1,11 @@
 # Journal des versions
 
+## 0.25.8 — Le bouton retour, en plein écran aussi
+
+- **Plein écran** : Android consomme le premier retour pour quitter le plein écran sans prévenir la page ; `fullscreenchange` (sortie non suivie d'un `popstate`) est traité comme un retour (menu de pause), et le verrou paysage est remis à zéro pour que le toucher suivant redemande le plein écran.
+- **Écran titre** : le retour demande confirmation avant d'aller au hub (`confirmHub()`).
+- `ks-back.js` : n'empile plus d'entrées d'historique sur un clic simulé par le jeu (Chrome les sautait ensuite et le retour faisait sortir du jeu).
+
 ## 0.25.7 — Le bouton retour
 
 - **Bouton retour du téléphone** (`js/ks-back.js`, fichier commun aux jeux du hub ; `onBack()` dans `main.js`) : ferme la fenêtre (sauf les cartes verrouillées), puis le panneau latéral ; en partie, ouvre le menu de pause (un second retour reprend) ; à l'écran titre, ramène au hub. `isModalLocked()` ajouté à `ui/modal.js`.

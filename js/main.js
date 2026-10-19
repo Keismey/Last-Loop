@@ -28,7 +28,7 @@ import { loadGroup } from './render/assets.js';
 import { createScene, refreshSceneArt } from './render/scene.js';
 import { initHud, updateHud, setHudSpeed } from './ui/hud.js';
 import { initToasts, toast, buzz } from './ui/toasts.js';
-import { initModal, isModalOpen, isModalLocked, closeModal, el } from './ui/modal.js';
+import { initModal, isModalOpen, isModalLocked, openModal, closeModal, el } from './ui/modal.js';
 import { openMenu, openExport, openCredits, openNotes } from './ui/menu.js';
 import { PATCH_NOTES } from './data/patchnotes.js';
 import { openDebug, updateDebug, closeDebug } from './ui/debug.js';
@@ -269,14 +269,32 @@ function openDebugPanel() {
 
 // ---------- Bouton retour du téléphone (voir js/ks-back.js) ----------
 // fenêtre ouverte → fermée (sauf les cartes où il faut choisir) ; panneau latéral → fermé ;
-// en partie → menu de pause (un 2e retour reprend la partie) ; écran titre → hub.
+// en partie → menu de pause (un 2e retour reprend la partie) ; écran titre → hub (confirmé).
+// En plein écran, Android consomme le premier retour pour quitter le plein écran, sans prévenir la page :
+// on traite cette sortie comme un retour, et le toucher suivant redemande le plein écran.
 function onBack() {
   if (isModalOpen()) { if (!isModalLocked()) closeModal(); return; }
   if (panelOpen()) { closePanel(); return; }
   if (app.screen === 'game') { openGameMenu(); return; }
-  if (app.screen === 'title') return 'hub';
+  if (app.screen === 'title') confirmHub();
+}
+function confirmHub() {
+  const L = (fr, en) => (IS_EN ? en : fr);
+  const box = el('div', { class: 'menu-list' },
+    el('p', { class: 'muted', text: L('Ta partie est enregistrée. Tu retrouveras les autres jeux de Keismey Studio sur le hub.', 'Your game is saved. You will find the other Keismey Studio games on the hub.') }),
+    el('button', { class: 'btn btn-primary', text: L('Aller au hub', 'Go to the hub'), onclick: () => { closeModal(); window.KSBack?.toHub(); } }),
+    el('button', { class: 'btn', text: L('Annuler', 'Cancel'), onclick: () => closeModal() })
+  );
+  openModal(box, { title: L('Quitter Last Loop ?', 'Leave Last Loop?') });
 }
 window.KSBack?.init({ back: onBack, lang: () => (IS_EN ? 'en' : 'fr') });
+let lastPop = 0;
+window.addEventListener('popstate', () => { lastPop = performance.now(); });
+document.addEventListener('fullscreenchange', () => {
+  if (document.fullscreenElement) return;
+  landscapeLocked = false; landscapeTries = 0;   // le toucher suivant remet le plein écran
+  setTimeout(() => { if (performance.now() - lastPop > 500 && !document.hidden) onBack(); }, 250);
+});
 
 function openGameMenu() {
   if (app.screen !== 'game' || isModalOpen()) return;
