@@ -1,6 +1,11 @@
 // Notes de mise à jour montrées aux joueurs (menu « Nouveautés », et une fois après chaque mise à jour).
 // Les plus récentes en premier ; courtes, dans la langue du jeu. Le détail technique est dans CHANGELOG.md.
 export const PATCH_NOTES = [
+  { v: '0.26.0', title: 'Options pour tous les jeux du studio', items: [
+    'Les Options s’ouvrent aussi depuis l’écran titre (volumes, vibrations, langue, notes de mise à jour, crédits).',
+    'Nouveau dans le menu : signaler un bug et soutenir le studio.',
+    'Le navigateur est invité à garder ta sauvegarde même quand il fait du ménage.'
+  ] },
   { v: '0.25.9', title: 'Retour sans quitter l’horizontale', items: [
     'Dans l’appli installée, le jeu se verrouille à l’horizontale sans passer en plein écran : le bouton retour ouvre directement le menu au lieu d’afficher « Tourne ton téléphone ». Le bouton « Plein écran » du menu reste disponible.'
   ] },

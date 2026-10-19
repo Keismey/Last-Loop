@@ -182,8 +182,19 @@ function buildTitleButtons() {
   } else {
     box.append(el('button', { class: 'btn btn-primary btn-big', text: t('title.play'), onclick: () => startGame(true) }));
   }
-  box.append(el('button', { class: 'btn btn-ghost', text: t('menu.credits'), onclick: () => openCredits() }));
-  box.append(el('button', { class: 'btn btn-ghost btn-lang', lang: IS_EN ? 'fr' : 'en', text: t('menu.lang'), onclick: switchLang }));
+  box.append(el('button', { class: 'btn btn-ghost', text: t('menu.options'), onclick: openTitleOptions }));
+}
+
+// Options depuis l'écran titre : même menu, sans ce qui touche à la partie en cours
+function openTitleOptions() {
+  if (isModalOpen()) return;
+  openMenu({
+    atTitle: true,
+    onResume: () => {},
+    onLang: switchLang,
+    onDebug: () => {},
+    tryFullscreen: () => goFullscreen()
+  });
 }
 
 function confirmTitleNewGame() {

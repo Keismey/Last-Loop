@@ -8,7 +8,8 @@ import { settings, setSetting } from '../core/settings.js';
 import { sfx } from '../audio/sound.js';
 import { PATCH_NOTES } from '../data/patchnotes.js';
 
-// api : { getState, onResume, onImport(state), onTitle, onDebug, tryFullscreen }
+// api : { getState, onResume, onImport(state), onTitle, onDebug, tryFullscreen, atTitle }
+// atTitle : ouvert depuis l'écran titre (Options) : ni temps de jeu, ni sauvegarde, ni « Écran titre » (la croix ferme)
 export function openMenu(api) {
   let taps = 0;
   const version = el('button', { class: 'version-btn', text: t('menu.version', { v: CONFIG.VERSION }) });
@@ -24,20 +25,24 @@ export function openMenu(api) {
     }
   });
 
+  const T = !!api.atTitle;
+  const lang = IS_EN ? 'en' : 'fr';
   const content = el('div', { class: 'menu-list menu-grid' },
-    el('p', { class: 'muted span-2', text: t('menu.playTime', { t: duration(api.getState().stats.playTime) }) }),
-    el('button', { class: 'btn btn-primary span-2', text: t('menu.resume'), onclick: () => closeModal() }),
-    el('button', { class: 'btn', text: t('menu.export'), onclick: () => openExport(api) }),
-    el('button', { class: 'btn', text: t('menu.import'), onclick: () => openImport(api) }),
+    T ? null : el('p', { class: 'muted span-2', text: t('menu.playTime', { t: duration(api.getState().stats.playTime) }) }),
+    T ? null : el('button', { class: 'btn btn-primary span-2', text: t('menu.resume'), onclick: () => closeModal() }),
+    T ? null : el('button', { class: 'btn', text: t('menu.export'), onclick: () => openExport(api) }),
+    T ? null : el('button', { class: 'btn', text: t('menu.import'), onclick: () => openImport(api) }),
     optionsBlock(),
     el('button', { class: 'btn', text: t('menu.fullscreen'), onclick: () => api.tryFullscreen() }),
-    el('button', { class: 'btn', text: t('menu.toTitle'), onclick: () => { closeModal(); api.onTitle(); } }),
+    T ? null : el('button', { class: 'btn', text: t('menu.toTitle'), onclick: () => { closeModal(); api.onTitle(); } }),
     el('button', { class: 'btn', text: t('menu.notes'), onclick: () => openNotes(() => openMenu(api)) }),
     el('button', { class: 'btn', text: t('menu.credits'), onclick: () => openCredits(() => openMenu(api)) }),
-    el('button', { class: 'btn span-2 btn-lang', lang: IS_EN ? 'fr' : 'en', text: t('menu.lang'), onclick: () => { api.onLang ? api.onLang() : switchLang(); } }),
+    el('button', { class: 'btn', text: t('menu.bug'), onclick: () => { if (window.KS) window.KS.bug('Last Loop', lang); } }),
+    el('button', { class: 'btn', text: t('menu.support'), onclick: () => { if (window.KS) window.KS.support(); } }),
+    el('button', { class: 'btn btn-lang' + (T ? '' : ' span-2'), lang: IS_EN ? 'fr' : 'en', text: t('menu.lang'), onclick: () => { api.onLang ? api.onLang() : switchLang(); } }),
     el('div', { class: 'span-2 version-row' }, version)
   );
-  openModal(content, { title: t('menu.title'), onClose: api.onResume });
+  openModal(content, { title: T ? t('menu.options') : t('menu.title'), onClose: api.onResume });
 }
 
 // Nouveautés : les notes de mise à jour, les plus récentes d'abord

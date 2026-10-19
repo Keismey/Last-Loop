@@ -1,5 +1,11 @@
 # Journal des versions
 
+## 0.26.0 — Options communes aux jeux du studio
+
+- **Écran titre** : un bouton « Options » remplace « Crédits » et « Play in English » (ils sont dans les Options). `openMenu({ atTitle: true })` : sans temps de jeu, sauvegarde ni « Écran titre » (la croix ferme).
+- **Menu** : « Signaler un bug » (formulaire du hub prérempli, `KS.bug`) et « Soutenir le studio » (Ko-fi, `KS.support`), via `js/ks-studio.js` (commun aux jeux, demande aussi le stockage persistant).
+- Libellés harmonisés : « Bruitages », « Notes de mise à jour », « v… · Keismey Studio ».
+
 ## 0.25.9 — Retour sans quitter l'horizontale
 
 - **Appli installée** (hub ou jeu, `display-mode: standalone`) : verrou paysage seul, sans plein écran (plein écran seulement si le verrou échoue). Le retour d'Android ne sert plus à quitter le plein écran, ce qui libérait le verrou et affichait « Tourne ton téléphone ».

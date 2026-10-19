@@ -1,5 +1,10 @@
 // Patch notes shown to players in English (same entries as patchnotes.fr.js).
 export const PATCH_NOTES = [
+  { v: '0.26.0', title: 'Options across the studio’s games', items: [
+    'Options now open from the title screen too (volume, vibration, language, patch notes, credits).',
+    'New in the menu: report a bug and support the studio.',
+    'The browser is asked to keep your save even when it clears space.'
+  ] },
   { v: '0.25.9', title: 'Back without leaving landscape', items: [
     'In the installed app, the game locks to landscape without going full screen: the back button now opens the menu instead of showing “Turn your phone”. The menu’s “Full screen” button is still available.'
   ] },
