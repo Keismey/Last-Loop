@@ -22,6 +22,21 @@ page = f"""<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="description" content="Un train, une boucle, des survivants : tiens la ligne jusqu'au bout. Jeu de gestion pour mobile, à jouer en paysage.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Keismey Studio">
+<meta property="og:title" content="Last Loop">
+<meta property="og:description" content="Fais tourner le dernier train, garde tes survivants en vie et fais tomber le Roi des Rails. Gratuit, sans pub, dans le navigateur.">
+<meta property="og:url" content="https://keismey.github.io/Last-Loop/">
+<meta property="og:image" content="https://keismey.github.io/Last-Loop/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Last Loop · Keismey Studio">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Last Loop">
+<meta name="twitter:description" content="Fais tourner le dernier train, garde tes survivants en vie et fais tomber le Roi des Rails. Gratuit, sans pub, dans le navigateur.">
+<meta name="twitter:image" content="https://keismey.github.io/Last-Loop/og.jpg">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
