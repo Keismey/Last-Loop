@@ -1,5 +1,11 @@
 # Journal des versions
 
+## 0.25.9 — Retour sans quitter l'horizontale
+
+- **Appli installée** (hub ou jeu, `display-mode: standalone`) : verrou paysage seul, sans plein écran (plein écran seulement si le verrou échoue). Le retour d'Android ne sert plus à quitter le plein écran, ce qui libérait le verrou et affichait « Tourne ton téléphone ».
+- Sortie du plein écran en appli installée : le verrou est redemandé tout de suite. Bouton « Plein écran » du menu : `goFullscreen()` (vrai plein écran, à la demande).
+- Onglet du navigateur : inchangé (le verrou exige le plein écran ; après un retour, l'écran « Tourne ton téléphone » propose de repasser à l'horizontale).
+
 ## 0.25.8 — Le bouton retour, en plein écran aussi
 
 - **Plein écran** : Android consomme le premier retour pour quitter le plein écran sans prévenir la page ; `fullscreenchange` (sortie non suivie d'un `popstate`) est traité comme un retour (menu de pause), et le verrou paysage est remis à zéro pour que le toucher suivant redemande le plein écran.

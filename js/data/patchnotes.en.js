@@ -1,5 +1,8 @@
 // Patch notes shown to players in English (same entries as patchnotes.fr.js).
 export const PATCH_NOTES = [
+  { v: '0.25.9', title: 'Back without leaving landscape', items: [
+    'In the installed app, the game locks to landscape without going full screen: the back button now opens the menu instead of showing “Turn your phone”. The menu’s “Full screen” button is still available.'
+  ] },
   { v: '0.25.8', title: 'The back button, in full screen too', items: [
     'In full screen, the back button now opens the pause menu (the game goes back to full screen on your next tap).',
     'On the title screen, the back button asks before going to the Keismey Studio hub.'

@@ -108,22 +108,30 @@ portraitQuery.addEventListener('change', checkOrientation);
 // fenêtre du hub : seul ce verrou force l'horizontale, quel que soit le manifeste du hub.
 // À appeler sur « pointerup » : sur écran tactile, « pointerdown » ne compte pas comme
 // un geste de l'utilisateur et le navigateur refuse alors le plein écran.
+// Dans l'appli installée (hub ou jeu), le verrou suffit : pas de plein écran, car Android consomme
+// alors le bouton retour pour quitter le plein écran, ce qui libère aussi le verrou (écran « Tourne
+// ton téléphone »). Le plein écran ne sert qu'en cas d'échec du verrou, ou dans un onglet du navigateur.
 let landscapeLocked = false, landscapeTries = 0;
+const INSTALLED = () => matchMedia('(display-mode: fullscreen), (display-mode: standalone)').matches;
 function lockLandscape() {
   try {
     const p = screen.orientation && screen.orientation.lock ? screen.orientation.lock('landscape') : null;
-    if (p && p.then) p.then(() => { landscapeLocked = true; }).catch(() => {});
+    if (p && p.then) return p.then(() => { landscapeLocked = true; return true; }).catch(() => false);
   } catch (e) { /* non supporté (iPhone) */ }
+  return Promise.resolve(false);
+}
+function goFullscreen() {
+  const root = document.documentElement;
+  if (document.fullscreenElement || !root.requestFullscreen) return;
+  try { root.requestFullscreen({ navigationUI: 'hide' }).then(lockLandscape).catch(() => {}); } catch (e) { /* refusé */ }
 }
 function tryLandscape(force) {
   if (landscapeLocked || !matchMedia('(pointer: coarse)').matches) return;
   if (!force && landscapeTries >= 3) return;   // pas d'insistance si l'appareil refuse
   landscapeTries++;
-  const root = document.documentElement;
-  if (document.fullscreenElement || matchMedia('(display-mode: fullscreen), (display-mode: standalone)').matches) lockLandscape();
-  if (!document.fullscreenElement && root.requestFullscreen) {
-    try { root.requestFullscreen({ navigationUI: 'hide' }).then(lockLandscape).catch(() => {}); } catch (e) { /* refusé */ }
-  }
+  if (document.fullscreenElement) { lockLandscape(); return; }
+  if (INSTALLED()) { lockLandscape().then(ok => { if (!ok) goFullscreen(); }); return; }
+  goFullscreen();
 }
 
 // Premier toucher : son débloqué (les navigateurs l'exigent)
@@ -292,7 +300,8 @@ let lastPop = 0;
 window.addEventListener('popstate', () => { lastPop = performance.now(); });
 document.addEventListener('fullscreenchange', () => {
   if (document.fullscreenElement) return;
-  landscapeLocked = false; landscapeTries = 0;   // le toucher suivant remet le plein écran
+  landscapeLocked = false; landscapeTries = 0;   // le toucher suivant remet l'horizontale
+  if (INSTALLED()) lockLandscape();               // appli installée : le verrou revient sans plein écran
   setTimeout(() => { if (performance.now() - lastPop > 500 && !document.hidden) onBack(); }, 250);
 });
 
@@ -312,7 +321,7 @@ function openGameMenu() {
     },
     onLang: () => { persist(false); switchLang(); },
     onDebug: () => { if (!CONFIG.DEBUG_ALLOWED) return; closeModal(); openDebugPanel(); },
-    tryFullscreen: () => tryLandscape(true)
+    tryFullscreen: () => goFullscreen()
   });
 }
 
