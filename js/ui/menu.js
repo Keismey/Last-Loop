@@ -64,7 +64,7 @@ export function openCredits(onClose) {
   const content = el('div', { class: 'credits' },
     el('h3', { class: 'credits-game', text: t('credits.game') }),
     line('credits.by', 'muted'),
-    el('div', { class: 'credits-list' }, line('credits.studio'), line('credits.claude'), line('credits.gemini')),
+    el('div', { class: 'credits-list' }, line('credits.studio'), line('credits.claude')),
     line('credits.save', 'muted small'),
     line('credits.stats', 'muted small'),
     line('credits.thanks', 'credits-thanks'),
