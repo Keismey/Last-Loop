@@ -4,8 +4,7 @@ Jeu de survie et de gestion ferroviaire pour navigateur mobile, en paysage. Un j
 
 **Jouer : https://keismey.github.io/Last-Loop/** (installable : « Ajouter à l'écran d'accueil »).
 
-- Conception et code : Claude (Anthropic) · Direction : Keismey Studio
-- Images et musiques : générées avec Gemini (Google) · Sons : synthétisés par le code
+- Conception et direction : Keismey Studio · Développé avec l'aide d'outils IA
 
 Le document de conception (GDD) fait foi pour toutes les règles et valeurs.
 
