@@ -52,7 +52,8 @@ import { initDrag, beginDrag, tickDrag } from './ui/dragdrop.js';
 
 // Version en ligne (GitHub Pages) : jeu hors ligne grâce au service worker, mise à jour automatique. Jamais dans l'aperçu.
 const ON_PAGES = 'serviceWorker' in navigator && /(^|\.)github\.io$|^localhost$/.test(location.hostname);
-if (ON_PAGES) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+// enregistré une fois les images du jeu chargées : la copie hors ligne reprend alors celles du navigateur au lieu de tout retélécharger
+const registerSW = () => { if (ON_PAGES) navigator.serviceWorker.register('sw.js').catch(() => {}); };
 // Installable par le menu du navigateur, sans invite : l'appli à installer en priorité, c'est le hub Keismey Studio
 addEventListener('beforeinstallprompt', e => e.preventDefault());
 
@@ -249,7 +250,17 @@ function showEvent(ev) {
   openEvent(() => app.state, ev, { onDone: () => { app.eventOpen = false; refreshPause(); refreshSwitchboard(); persist(false); } });
 }
 
-function startGame(fresh) {
+// Images du jeu : chargées pendant l'écran titre ; « Jouer » attend la fin (écran de chargement) si besoin
+let bootLoad = null, bootReady = false, bootP = 0, starting = false;
+const loadingBar = p => { $('loading-bar').style.transform = `scaleX(${p})`; };
+
+async function startGame(fresh) {
+  if (!bootReady) {
+    if (starting) return;
+    starting = true; show('loading'); loadingBar(bootP);
+    await bootLoad;
+    starting = false;
+  }
   adopt((!fresh && loadGame()) || newState());
   show('game');
   if (CONFIG.DEBUG_ALLOWED && location.hash === '#debug') { openDebugPanel(); window.__app = app; }
@@ -728,9 +739,13 @@ async function start(data) {
   show('loading');
   studioSplash();
 
-  await loadGroup('boot', p => { $('loading-bar').style.transform = `scaleX(${p})`; });
-  loadGroup('later');     // illustrations d'événements, etc. : en arrière-plan
-  refreshSceneArt();
+  await loadGroup('title', loadingBar);     // l'illustration de l'écran titre, seule
+  bootLoad = loadGroup('boot', p => { bootP = p; if (app.screen === 'loading') loadingBar(p); }).then(() => {
+    bootReady = true;
+    refreshSceneArt();
+    loadGroup('later');     // illustrations d'événements, etc. : en arrière-plan
+    registerSW();
+  });
   if (!app.canSave) toast(t('save.unavailable'), 'warn');
 
   registerHot();
