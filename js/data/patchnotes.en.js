@@ -1,5 +1,9 @@
 // Patch notes shown to players in English (same entries as patchnotes.fr.js).
 export const PATCH_NOTES = [
+  { v: '0.26.6', title: 'Easier to tap and read', items: [
+    'Small buttons (speed, view, Auto, Lap summary, Depart, tutorial) respond to a larger area, without changing their look.',
+    'Several small texts are larger, and the “Halt” banner and the title screen Options button are easier to read.'
+  ] },
   { v: '0.26.5', title: 'Fewer false derailments', items: [
     'The “The train derailed” screen no longer shows up for an error that does not come from the game (browser extension, another site): your game goes on.'
   ] },

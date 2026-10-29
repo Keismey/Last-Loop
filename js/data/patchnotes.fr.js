@@ -1,6 +1,10 @@
 // Notes de mise à jour montrées aux joueurs (menu « Nouveautés », et une fois après chaque mise à jour).
 // Les plus récentes en premier ; courtes, dans la langue du jeu. Le détail technique est dans CHANGELOG.md.
 export const PATCH_NOTES = [
+  { v: '0.26.6', title: 'Plus facile à toucher et à lire', items: [
+    'Les petits boutons (vitesse, vue, Auto, Résumé du tour, Partir, tutoriel) réagissent sur une zone plus large, sans changer d’allure.',
+    'Plusieurs petits textes sont plus grands, et le bandeau « Halte » et le bouton Options de l’écran titre sont plus lisibles.'
+  ] },
   { v: '0.26.5', title: 'Moins de faux déraillements', items: [
     'L’écran « Le train a déraillé » ne s’affiche plus pour une erreur qui ne vient pas du jeu (extension du navigateur, autre site) : ta partie continue.'
   ] },
