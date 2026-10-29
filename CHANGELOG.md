@@ -2,7 +2,8 @@
 
 ## 0.26.5 — Écran de plantage réservé aux erreurs du jeu
 
-- **Erreurs** : `error` et `unhandledrejection` n'appellent `crash()` que pour une erreur du jeu (objet d'erreur venant d'un fichier du site, `fromGame()`). « Script error. » d'un script d'un autre site (mesure d'audience Cloudflare), extensions du navigateur, avertissement « ResizeObserver loop » sans objet d'erreur, rejets sans pile du site : seulement `console.warn`, la partie continue.
+- **Erreurs** : `error` et `unhandledrejection` n'appellent `crash()` que pour une erreur du jeu (objet d'erreur venant d'un fichier du site, `fromGame()`). « Script error. » d'un script d'un autre site (mesure d'audience Cloudflare), extensions du navigateur, avertissement « ResizeObserver loop » sans objet d'erreur, rejets sans pile du site : seulement `console.warn`, la partie continue. La pile est lue sans le message (qui peut citer l'adresse du site). Page sans origine web (aperçu en artefact) : toute erreur compte, comme avant.
+- **Sauvegarde** : le message « partie plus récente » peut revenir après une sauvegarde réussie (`tooNewTold` remis à zéro).
 
 ## 0.26.4 — Une partie plus récente n'est plus écrasée
 
