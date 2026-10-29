@@ -306,7 +306,7 @@ function confirmHub() {
   );
   openModal(box, { title: L('Quitter Last Loop ?', 'Leave Last Loop?') });
 }
-window.KSBack?.init({ back: onBack, lang: () => (IS_EN ? 'en' : 'fr') });
+window.KSBack?.init({ back: onBack, lang: () => (IS_EN ? 'en' : 'fr'), title: () => app.screen === 'title' && !isModalOpen() && !panelOpen() });
 let lastPop = 0;
 window.addEventListener('popstate', () => { lastPop = performance.now(); });
 document.addEventListener('fullscreenchange', () => {
