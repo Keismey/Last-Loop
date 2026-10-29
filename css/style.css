@@ -32,6 +32,7 @@
   --tabs-w: 60px;
   --bottom-h: 132px;
   --radius: 10px;
+  --z-tuto: 45;             /* tutoriel : au-dessus des fenêtres ; le bouton du menu juste au-dessus de lui */
   color-scheme: dark;
 }
 
@@ -905,14 +906,14 @@ button.crew-row:active { background: rgba(239, 230, 207, 0.05); }
 .tab { position: relative; }
 
 /* ---------- Tutoriel (Gus) ---------- */
-.tuto { position: absolute; inset: 0; z-index: 45; pointer-events: none; }
+.tuto { position: absolute; inset: 0; z-index: var(--z-tuto); pointer-events: none; }
 .tuto.free .tuto-spot, .tuto.free .tuto-pane, .tuto.free .tuto-bubble { display: none; }
 .tuto-spot { position: fixed; border-radius: 12px; box-shadow: 0 0 0 9999px rgba(10, 9, 12, 0.62); pointer-events: none; transition: left 0.2s, top 0.2s, width 0.2s, height 0.2s; }
 .tuto-spot.pulse { outline: 3px solid var(--gold); outline-offset: 2px; animation: tuto-pulse 1.1s ease-in-out infinite; }
 @keyframes tuto-pulse { 50% { outline-color: rgba(242, 193, 78, 0.25); outline-offset: 7px; } }
 .tuto-pane { position: fixed; pointer-events: auto; background: transparent; }
 /* Le bouton du menu reste touchable au-dessus du tutoriel (pause, Options, retour au hub) */
-.tuto-on #btn-menu { position: relative; z-index: 46; }
+.tuto-on #btn-menu { position: relative; z-index: calc(var(--z-tuto) + 1); }
 .tuto-bubble {
   position: fixed; left: 50%; bottom: max(12px, env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
   width: min(560px, calc(100vw - 32px)); display: grid; grid-template-columns: 64px 1fr; gap: 12px; align-items: start;

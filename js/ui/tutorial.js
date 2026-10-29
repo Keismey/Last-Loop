@@ -32,7 +32,7 @@ function faceHtml(i) {
 }
 
 let ui = null;       // { root, spot, panes[4], bubble, text, nextBtn, skipBtn }
-let api = null;      // { getState, setPause(on), choiceOpen(), onDone() }
+let api = null;      // { getState, setPause(on), choiceOpen(), inGame(), modalOpen(), onDone() }
 let raf = 0;
 let missing = 0;     // temps sans cible (s) : l'étape est sautée si l'élément n'existe pas
 
@@ -98,6 +98,7 @@ export function startTutorial(a) {
     ui = build();
     document.addEventListener('click', onClickCapture, true);
   }
+  document.body.classList.add('tuto-on');
   show();
   if (!raf) raf = requestAnimationFrame(tick);
 }
@@ -114,7 +115,12 @@ function advance() {
 function finish() {
   const st = tuto();
   if (st) st.done = true;
+  teardown();
+}
+
+function teardown() {
   if (ui) { ui.root.remove(); ui = null; }
+  away = false;
   document.body.classList.remove('tuto-on');
   document.removeEventListener('click', onClickCapture, true);
   cancelAnimationFrame(raf); raf = 0;
@@ -191,13 +197,22 @@ let lastT = 0;
 function tick(now) {
   const dt = lastT ? Math.min(0.1, (now - lastT) / 1000) : 0;
   lastT = now;
-  if (!tutoActive()) { raf = 0; document.body.classList.remove('tuto-on'); return; }
-  // Menu ouvert (ou retour à l'écran titre) : le tutoriel s'efface derrière et attend, sans rien bloquer
-  const away = !document.getElementById('modal-layer').hidden || document.getElementById('screen-game').hidden;
-  ui.root.hidden = away;
-  document.body.classList.toggle('tuto-on', !away);
+  if (!tutoActive()) { teardown(); return; }        // partie remplacée (import) par une partie sans tutoriel
+  if (!api.inGame()) { setAway(true); raf = 0; return; }   // écran titre : startTutorial relance la boucle
+  setAway(api.modalOpen());
   if (!away) place(dt);
   raf = requestAnimationFrame(tick);
+}
+
+// Fenêtre ouverte (menu, carte) ou écran titre : le tutoriel s'efface et attend, sans rien bloquer ;
+// au retour, il reprend l'étape de la partie en cours (elle a pu changer par un import)
+let away = false;
+function setAway(on) {
+  if (on === away) return;
+  away = on;
+  ui.root.hidden = on;
+  document.body.classList.toggle('tuto-on', !on);
+  if (!on) show();
 }
 
 // ---------- Conseils de Gus : une fois chacun, la première fois que la situation se présente ----------
