@@ -6,7 +6,7 @@ export const TEXTS = {
   'title.play': 'Jouer',
   'title.continue': 'Continuer',
   'title.newGame': 'Nouvelle partie',
-  'title.tooNew': 'Ta partie a été enregistrée par une version plus récente de Last Loop. Mets le jeu à jour pour la continuer.',
+  'title.tooNew': 'Ta partie a été enregistrée par une version plus récente de Last Loop. Mets le jeu à jour pour la continuer (connexion internet nécessaire).',
   'title.update': 'Mettre à jour',
   'title.tapHint': 'Touche l’écran pour monter à bord',
   'title.version': 'v{v} · Keismey Studio',
@@ -764,6 +764,7 @@ export const TEXTS = {
   'common.back': 'Retour',
 
   'save.saved': 'Partie sauvegardée',
+  'save.tooNew': 'Une version plus récente du jeu a enregistré ta partie : celle-ci n’est plus sauvegardée. Retourne à l’écran titre pour mettre le jeu à jour.',
   'save.unavailable': 'Sauvegarde impossible sur ce navigateur : ta partie ne sera pas gardée.',
 
   'error.title': 'Le train a déraillé (bug)',

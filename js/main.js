@@ -145,10 +145,13 @@ function onFirstTouch() {
 }
 
 // ---------- Sauvegarde ----------
+let tooNewTold = false;
 function persist(showToast) {
   if (!app.state || !app.canSave) return;
   const ok = saveGame(app.state);
   if (showToast && ok) toast(t('save.saved'));
+  // une version plus récente a enregistré la partie pendant qu'on jouait (synchro) : on le dit, une fois
+  if (!ok && !tooNewTold && saveTooNew()) { tooNewTold = true; toast(t('save.tooNew'), 'warn'); }
 }
 
 document.addEventListener('visibilitychange', () => {
@@ -262,7 +265,7 @@ let bootLoad = null, bootReady = false, bootP = 0, starting = false;
 const loadingBar = p => { $('loading-bar').style.transform = `scaleX(${p})`; };
 
 async function startGame(fresh) {
-  if (!fresh && saveTooNew()) { buildTitleButtons(); return; }
+  if (!fresh && saveTooNew()) { buildTitleButtons(); show('title'); return; }
   if (!bootReady) {
     if (starting) return;
     starting = true; show('loading'); loadingBar(bootP);
