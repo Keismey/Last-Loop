@@ -1,5 +1,10 @@
 # Journal des versions
 
+## 0.26.2 — Options dans l'ordre commun, bouton « Retour au hub »
+
+- **Menu** : ordre commun aux jeux du studio (son et vibrations, langue, sauvegarde, puis notes, crédits, écran titre, bug, soutien) et bouton « Retour au hub » (`KSBack.toHub()`, après `persist`).
+- Notes de mise à jour joueur pour 0.26.1 et 0.26.2.
+
 ## 0.26.1 — Premier lancement plus léger
 
 - **Chargement** : l'écran titre n'attend plus que son illustration (`title_keyart`, groupe `title`). Les images du jeu (`boot`) se chargent pendant l'écran titre ; « Jouer » montre l'écran de chargement s'il en manque encore.

@@ -720,6 +720,7 @@ export const TEXTS = {
   'menu.options': 'Options',
   'menu.bug': 'Signaler un bug',
   'menu.support': 'Soutenir le studio',
+  'menu.hub': 'Retour au hub',
   'notes.version': 'version {v}',
   'update.title': 'Nouvelle version disponible',
   'update.body': 'Touche pour mettre à jour (ta partie est gardée)',

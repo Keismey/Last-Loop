@@ -1,6 +1,10 @@
 // Notes de mise à jour montrées aux joueurs (menu « Nouveautés », et une fois après chaque mise à jour).
 // Les plus récentes en premier ; courtes, dans la langue du jeu. Le détail technique est dans CHANGELOG.md.
 export const PATCH_NOTES = [
+  { v: '0.26.2', title: 'Démarrage plus rapide', items: [
+    'L’écran titre s’affiche bien plus vite : les images du jeu se chargent pendant que tu le regardes.',
+    'Options : bouton « Retour au hub », et le même ordre que dans les autres jeux du studio.'
+  ] },
   { v: '0.26.0', title: 'Options pour tous les jeux du studio', items: [
     'Les Options s’ouvrent aussi depuis l’écran titre (volumes, vibrations, langue, notes de mise à jour, crédits).',
     'Nouveau dans le menu : signaler un bug et soutenir le studio.',

@@ -342,6 +342,7 @@ function openGameMenu() {
       backToTitle();
     },
     onLang: () => { persist(false); switchLang(); },
+    onHub: () => persist(false),
     onDebug: () => { if (!CONFIG.DEBUG_ALLOWED) return; closeModal(); openDebugPanel(); },
     tryFullscreen: () => goFullscreen()
   });

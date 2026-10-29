@@ -1,5 +1,9 @@
 // Patch notes shown to players in English (same entries as patchnotes.fr.js).
 export const PATCH_NOTES = [
+  { v: '0.26.2', title: 'Faster start', items: [
+    'The title screen shows up much faster: the game’s pictures load while you look at it.',
+    'Options: a “Back to the hub” button, in the same order as the studio’s other games.'
+  ] },
   { v: '0.26.0', title: 'Options across the studio’s games', items: [
     'Options now open from the title screen too (volume, vibration, language, patch notes, credits).',
     'New in the menu: report a bug and support the studio.',
