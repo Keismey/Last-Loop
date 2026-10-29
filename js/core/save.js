@@ -123,6 +123,13 @@ export function hasSave() {
   return !!parse(get(KEY)) || !!parse(get(BAK));
 }
 
+// Partie enregistrée par une version plus récente du jeu (autre appareil synchronisé, ancienne copie hors ligne) :
+// on ne peut ni la lire ni l'écraser, il faut mettre le jeu à jour
+export function saveTooNew() {
+  const data = parse(get(KEY)) || parse(get(BAK));
+  return !!data && data.version > STATE_VERSION;
+}
+
 export function loadGame() {
   const data = parse(get(KEY)) || parse(get(BAK));
   if (!data) return null;
@@ -132,6 +139,7 @@ export function loadGame() {
 }
 
 export function saveGame(state) {
+  if (saveTooNew()) return false;     // jamais par-dessus une partie plus récente (effacée seulement par « Nouvelle partie »)
   const previous = get(KEY);
   if (previous) set(BAK, previous);
   return set(KEY, serialize(state));

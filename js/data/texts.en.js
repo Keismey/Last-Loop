@@ -6,6 +6,8 @@ export const TEXTS = {
   'title.play': 'Play',
   'title.continue': 'Continue',
   'title.newGame': 'New game',
+  'title.tooNew': 'Your game was saved by a newer version of Last Loop. Update the game to continue it.',
+  'title.update': 'Update',
   'title.tapHint': 'Tap the screen to climb aboard',
   'title.version': 'v{v} · Keismey Studio',
 

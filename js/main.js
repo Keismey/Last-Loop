@@ -7,7 +7,7 @@ import { CONFIG } from './data/config.js';
 import { t, switchLang, IS_EN } from './core/i18n.js';
 import { createLoop } from './core/loop.js';
 import { createState } from './core/state.js';
-import { loadGame, saveGame, hasSave, wipeSave, storageAvailable } from './core/save.js';
+import { loadGame, saveGame, hasSave, saveTooNew, wipeSave, storageAvailable } from './core/save.js';
 import { scrollDemo, ensureRoute, decisionContext, hasChoice } from './sim/route.js';
 import { ensureCombat, setTarget } from './sim/combat.js';
 import { initAbilities, updateAbilities } from './ui/abilities.js';
@@ -175,7 +175,14 @@ let derailEased = 0;     // crans de traque perdus au dernier déraillement (mon
 function buildTitleButtons() {
   const box = $('title-actions');
   box.innerHTML = '';
-  if (hasSave()) {
+  if (saveTooNew()) {
+    // Partie d'une version plus récente : « Continuer » lancerait une nouvelle partie par-dessus
+    box.append(
+      el('p', { class: 'title-confirm', text: t('title.tooNew') }),
+      el('button', { class: 'btn btn-primary btn-big', text: t('title.update'), onclick: () => updateNow() }),
+      el('button', { class: 'btn btn-ghost', text: t('title.newGame'), onclick: confirmTitleNewGame })
+    );
+  } else if (hasSave()) {
     box.append(
       el('button', { class: 'btn btn-primary btn-big', text: t('title.continue'), onclick: () => startGame(false) }),
       el('button', { class: 'btn btn-ghost', text: t('title.newGame'), onclick: confirmTitleNewGame })
@@ -255,6 +262,7 @@ let bootLoad = null, bootReady = false, bootP = 0, starting = false;
 const loadingBar = p => { $('loading-bar').style.transform = `scaleX(${p})`; };
 
 async function startGame(fresh) {
+  if (!fresh && saveTooNew()) { buildTitleButtons(); return; }
   if (!bootReady) {
     if (starting) return;
     starting = true; show('loading'); loadingBar(bootP);
@@ -498,6 +506,13 @@ function maybeShowNotes() {
   setTimeout(() => { if (app.screen === 'title') openNotes(); }, 2900);
 }
 
+// Recharge sur la dernière version en ligne (service worker mis à jour d'abord) ; hors ligne, la page se recharge telle quelle
+function updateNow() {
+  persist(false);
+  const sw = 'serviceWorker' in navigator ? navigator.serviceWorker.getRegistration().then(r => r && r.update()) : Promise.resolve();
+  sw.catch(() => {}).then(() => setTimeout(() => location.reload(), 300));
+}
+
 // Nouvelle version en ligne : à l'écran titre on recharge tout de suite (une fois), en partie un bandeau propose de le faire
 function checkUpdate() {
   if (!ON_PAGES) return;
@@ -507,8 +522,7 @@ function checkUpdate() {
     try { tried = sessionStorage.getItem('loopexpress.upd'); } catch (e) { /* stockage indisponible */ }
     const go = () => {
       try { sessionStorage.setItem('loopexpress.upd', j.v); } catch (e) { /* stockage indisponible */ }
-      persist(false);
-      navigator.serviceWorker.getRegistration().then(r => r && r.update()).catch(() => {}).then(() => setTimeout(() => location.reload(), 300));
+      updateNow();
     };
     if (tried !== j.v && app.screen !== 'game') { go(); return; }
     if (document.querySelector('.update-bar')) return;

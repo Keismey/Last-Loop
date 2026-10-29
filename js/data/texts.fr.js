@@ -6,6 +6,8 @@ export const TEXTS = {
   'title.play': 'Jouer',
   'title.continue': 'Continuer',
   'title.newGame': 'Nouvelle partie',
+  'title.tooNew': 'Ta partie a été enregistrée par une version plus récente de Last Loop. Mets le jeu à jour pour la continuer.',
+  'title.update': 'Mettre à jour',
   'title.tapHint': 'Touche l’écran pour monter à bord',
   'title.version': 'v{v} · Keismey Studio',
 
