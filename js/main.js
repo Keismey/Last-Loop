@@ -84,8 +84,24 @@ function crash(err) {
   box.hidden = false;
   if (loop) loop.setPaused(true);
 }
-window.addEventListener('error', e => crash(e.error || e.message));
-window.addEventListener('unhandledrejection', e => crash(e.reason));
+// Seules les erreurs du jeu arrêtent la partie. Les autres (script d'un autre site comme la mesure d'audience,
+// extension du navigateur, avertissement « ResizeObserver loop » sans objet d'erreur) vont seulement en console.
+// Page sans adresse web propre (aperçu dans un artefact, origine « null ») : on ne peut pas trier, tout compte.
+const ORIGIN = /^https?:/.test(location.origin) ? location.origin : null;
+const fromGame = err => {
+  if (!err) return false;
+  if (!ORIGIN) return true;
+  // la pile, sans le message (qui peut citer l'adresse du site sans venir du jeu)
+  return typeof err.stack === 'string' && err.stack.replace(String(err.message || ''), '').includes(ORIGIN);
+};
+window.addEventListener('error', e => {
+  if (e.error && (!ORIGIN || (e.filename || '').startsWith(ORIGIN) || fromGame(e.error))) crash(e.error);
+  else console.warn('Erreur ignorée (hors du jeu) :', e.message);
+});
+window.addEventListener('unhandledrejection', e => {
+  if (fromGame(e.reason)) crash(e.reason);
+  else console.warn('Promesse rejetée ignorée (hors du jeu) :', e.reason);
+});
 
 // ---------- Pause globale ----------
 function refreshPause() {
@@ -151,7 +167,8 @@ function persist(showToast) {
   const ok = saveGame(app.state);
   if (showToast && ok) toast(t('save.saved'));
   // une version plus récente a enregistré la partie pendant qu'on jouait (synchro) : on le dit, une fois
-  if (!ok && !tooNewTold && saveTooNew()) { tooNewTold = true; toast(t('save.tooNew'), 'warn'); }
+  if (ok) tooNewTold = false;
+  else if (!tooNewTold && saveTooNew()) { tooNewTold = true; toast(t('save.tooNew'), 'warn'); }
 }
 
 document.addEventListener('visibilitychange', () => {

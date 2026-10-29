@@ -1,5 +1,10 @@
 # Journal des versions
 
+## 0.26.5 — Écran de plantage réservé aux erreurs du jeu
+
+- **Erreurs** : `error` et `unhandledrejection` n'appellent `crash()` que pour une erreur du jeu (objet d'erreur venant d'un fichier du site, `fromGame()`). « Script error. » d'un script d'un autre site (mesure d'audience Cloudflare), extensions du navigateur, avertissement « ResizeObserver loop » sans objet d'erreur, rejets sans pile du site : seulement `console.warn`, la partie continue. La pile est lue sans le message (qui peut citer l'adresse du site). Page sans origine web (aperçu en artefact) : toute erreur compte, comme avant.
+- **Sauvegarde** : le message « partie plus récente » peut revenir après une sauvegarde réussie (`tooNewTold` remis à zéro).
+
 ## 0.26.4 — Une partie plus récente n'est plus écrasée
 
 - **Sauvegarde** : une partie enregistrée par une version plus récente (`version > STATE_VERSION`, par exemple synchronisée depuis un autre appareil pendant qu'on joue une ancienne copie hors ligne) était ignorée par `loadGame()` : « Continuer » lançait une nouvelle partie et l'enregistrait par-dessus. Désormais `saveTooNew()` : l'écran titre propose « Mettre à jour » (`updateNow()`, aussi utilisé par le bandeau de mise à jour) et « Nouvelle partie » (double confirmation, inchangée) ; `saveGame()` n'écrit jamais par-dessus une telle partie, et si elle apparaît en cours de partie (synchro), un message le dit une fois (`save.tooNew`). Reprise à chaud : retour à l'écran titre au lieu de rester sur le chargement.
