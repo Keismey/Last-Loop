@@ -1,5 +1,5 @@
 // Tutoriel guidé (GDD §12), qui sert d'introduction : Gus parle dans une bulle, le jeu éclaire l'élément à toucher
-// et bloque tout le reste. Court : les grandes lignes, le joueur découvre le reste.
+// et bloque tout le reste, sauf le bouton du menu (pause, Options, retour au hub). Court : les grandes lignes, le joueur découvre le reste.
 // Ensuite, les conseils de Gus (une fois chacun, désactivables dans les Options).
 import { t } from '../core/i18n.js';
 import { settings } from '../core/settings.js';
@@ -115,6 +115,7 @@ function finish() {
   const st = tuto();
   if (st) st.done = true;
   if (ui) { ui.root.remove(); ui = null; }
+  document.body.classList.remove('tuto-on');
   document.removeEventListener('click', onClickCapture, true);
   cancelAnimationFrame(raf); raf = 0;
   api.setPause(false);
@@ -190,8 +191,12 @@ let lastT = 0;
 function tick(now) {
   const dt = lastT ? Math.min(0.1, (now - lastT) / 1000) : 0;
   lastT = now;
-  if (!tutoActive()) { raf = 0; return; }
-  place(dt);
+  if (!tutoActive()) { raf = 0; document.body.classList.remove('tuto-on'); return; }
+  // Menu ouvert (ou retour à l'écran titre) : le tutoriel s'efface derrière et attend, sans rien bloquer
+  const away = !document.getElementById('modal-layer').hidden || document.getElementById('screen-game').hidden;
+  ui.root.hidden = away;
+  document.body.classList.toggle('tuto-on', !away);
+  if (!away) place(dt);
   raf = requestAnimationFrame(tick);
 }
 

@@ -1,5 +1,9 @@
 # Journal des versions
 
+## 0.26.3 — Le menu pendant le tutoriel
+
+- **Tutoriel** : le bouton ☰ reste touchable au-dessus des panneaux bloquants (`body.tuto-on #btn-menu`). Quand une fenêtre est ouverte ou que l'écran de jeu est masqué (retour à l'écran titre), le tutoriel se cache et attend : la bulle de Gus ne recouvre plus le menu, ni l'écran titre.
+
 ## 0.26.2 — Options dans l'ordre commun, bouton « Retour au hub »
 
 - **Menu** : ordre commun aux jeux du studio (son et vibrations, langue, sauvegarde, puis notes, crédits, écran titre, bug, soutien) et bouton « Retour au hub » (`KSBack.toHub()`, après `persist`).

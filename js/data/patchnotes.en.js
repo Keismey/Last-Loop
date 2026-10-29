@@ -1,5 +1,8 @@
 // Patch notes shown to players in English (same entries as patchnotes.fr.js).
 export const PATCH_NOTES = [
+  { v: '0.26.3', title: 'The menu during the tutorial', items: [
+    'During the tutorial, the menu button still works: you can pause, adjust the sound or go back to the hub. Gus waits behind the menu.'
+  ] },
   { v: '0.26.2', title: 'Faster start', items: [
     'The title screen shows up much faster: the game’s pictures load while you look at it.',
     'Options: a “Back to the hub” button, in the same order as the studio’s other games.'
