@@ -1,6 +1,6 @@
 // Liste de tous les assets attendus (GDD §15.7 et §16.2).
 // Chaque asset manquant est remplacé par un dessin provisoire : le jeu reste jouable sans aucune image.
-// group 'boot' = chargé à l'ouverture ; les autres groupes seront chargés à la demande.
+// group 'title' = avant l'écran titre ; 'boot' = pendant l'écran titre (« Jouer » attend la fin) ; 'later' = ensuite.
 
 const IMG = 'assets/img/';
 const list = [];
@@ -40,7 +40,7 @@ for (let c = 1; c <= 3; c++) add(`boss_c${c}`, 640, 360, 'sprite', c === 1 ? 'bo
 ['survivor', 'convoy', 'merchant', 'storm', 'mechanic', 'rail', 'warehouse', 'epidemic', 'map', 'overheat', 'derail']
   .forEach(e => add(`ev_${e}`, 960, 540, 'opaque'));
 // Divers
-add('title_keyart', 1920, 1080, 'opaque', 'boot');
+add('title_keyart', 1920, 1080, 'opaque', 'title');
 add('ending', 960, 540, 'opaque');
 [0, 1, 2].forEach(i => add(`gus_${i}`, 224, 384, 'sprite', 'boot'));      // parle, rit, s'inquiète
 // Survivants (planches Gemini) : atlas et masque des couleurs repères, par base (rôle × sexe)

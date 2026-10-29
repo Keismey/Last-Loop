@@ -720,6 +720,7 @@ export const TEXTS = {
   'menu.options': 'Options',
   'menu.bug': 'Report a bug',
   'menu.support': 'Support the studio',
+  'menu.hub': 'Back to the hub',
   'notes.version': 'version {v}',
   'update.title': 'New version available',
   'update.body': 'Tap to update (your game is kept)',

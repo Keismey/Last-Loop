@@ -1,5 +1,15 @@
 # Journal des versions
 
+## 0.26.2 — Options dans l'ordre commun, bouton « Retour au hub »
+
+- **Menu** : ordre commun aux jeux du studio (son et vibrations, langue, sauvegarde, puis notes, crédits, écran titre, bug, soutien) et bouton « Retour au hub » (`KSBack.toHub()`, après `persist`).
+- Notes de mise à jour joueur pour 0.26.1 et 0.26.2.
+
+## 0.26.1 — Premier lancement plus léger
+
+- **Chargement** : l'écran titre n'attend plus que son illustration (`title_keyart`, groupe `title`). Les images du jeu (`boot`) se chargent pendant l'écran titre ; « Jouer » montre l'écran de chargement s'il en manque encore.
+- **Hors ligne** : `sw.js` est enregistré une fois ces images chargées, et les relit en `no-cache` (revalidation) au lieu de `reload` : la copie hors ligne reprend les images déjà chargées au lieu de tout retélécharger (environ 8 Mo de moins à la première visite).
+
 ## 0.26.0 — Options communes aux jeux du studio
 
 - **Écran titre** : un bouton « Options » remplace « Crédits » et « Play in English » (ils sont dans les Options). `openMenu({ atTitle: true })` : sans temps de jeu, sauvegarde ni « Écran titre » (la croix ferme).

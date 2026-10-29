@@ -23,13 +23,13 @@ const keyOf = f => f + '?h=' + HASH[f];
 self.addEventListener('install', e => {
   e.waitUntil((async () => {
     const code = await caches.open(CODE), media = await caches.open(MEDIA);
-    // relus sans le cache HTTP du navigateur : jamais une vieille copie dans le cache hors ligne ;
-    // images : seulement celles dont l'empreinte a changé
+    // revalidés auprès du serveur (no-cache) : jamais une vieille copie dans le cache hors ligne, et rien n'est
+    // retéléchargé de ce que le jeu vient de charger ; images : seulement celles dont l'empreinte a changé
     await Promise.all(FILES.map(async f => {
       try {
-        if (!HASH[f]) return await code.add(new Request(f, { cache: 'reload' }));
+        if (!HASH[f]) return await code.add(new Request(f, { cache: 'no-cache' }));
         if (await media.match(keyOf(f))) return;
-        const r = await fetch(f, { cache: 'reload' });
+        const r = await fetch(f, { cache: 'no-cache' });
         if (r.ok) await media.put(keyOf(f), r);
       } catch (err) { /* réessayé à la demande */ }
     }));
