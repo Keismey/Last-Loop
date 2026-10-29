@@ -274,6 +274,8 @@ function launchTutorial() {
     getState: () => app.state,
     setPause: on => { app.tutoPause = on; refreshPause(); },
     choiceOpen: () => !app.eventOpen && !!document.querySelector('.switchboard .sb-actions .sb-action'),
+    inGame: () => app.screen === 'game',
+    modalOpen: () => isModalOpen(),
     onDone: () => { app.tutoPause = false; refreshPause(); persist(false); }
   });
 }

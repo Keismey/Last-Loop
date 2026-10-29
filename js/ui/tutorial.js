@@ -1,5 +1,5 @@
 // Tutoriel guidé (GDD §12), qui sert d'introduction : Gus parle dans une bulle, le jeu éclaire l'élément à toucher
-// et bloque tout le reste. Court : les grandes lignes, le joueur découvre le reste.
+// et bloque tout le reste, sauf le bouton du menu (pause, Options, retour au hub). Court : les grandes lignes, le joueur découvre le reste.
 // Ensuite, les conseils de Gus (une fois chacun, désactivables dans les Options).
 import { t } from '../core/i18n.js';
 import { settings } from '../core/settings.js';
@@ -32,7 +32,7 @@ function faceHtml(i) {
 }
 
 let ui = null;       // { root, spot, panes[4], bubble, text, nextBtn, skipBtn }
-let api = null;      // { getState, setPause(on), choiceOpen(), onDone() }
+let api = null;      // { getState, setPause(on), choiceOpen(), inGame(), modalOpen(), onDone() }
 let raf = 0;
 let missing = 0;     // temps sans cible (s) : l'étape est sautée si l'élément n'existe pas
 
@@ -98,6 +98,7 @@ export function startTutorial(a) {
     ui = build();
     document.addEventListener('click', onClickCapture, true);
   }
+  document.body.classList.add('tuto-on');
   show();
   if (!raf) raf = requestAnimationFrame(tick);
 }
@@ -114,7 +115,13 @@ function advance() {
 function finish() {
   const st = tuto();
   if (st) st.done = true;
+  teardown();
+}
+
+function teardown() {
   if (ui) { ui.root.remove(); ui = null; }
+  away = false;
+  document.body.classList.remove('tuto-on');
   document.removeEventListener('click', onClickCapture, true);
   cancelAnimationFrame(raf); raf = 0;
   api.setPause(false);
@@ -190,9 +197,22 @@ let lastT = 0;
 function tick(now) {
   const dt = lastT ? Math.min(0.1, (now - lastT) / 1000) : 0;
   lastT = now;
-  if (!tutoActive()) { raf = 0; return; }
-  place(dt);
+  if (!tutoActive()) { teardown(); return; }        // partie remplacée (import) par une partie sans tutoriel
+  if (!api.inGame()) { setAway(true); raf = 0; return; }   // écran titre : startTutorial relance la boucle
+  setAway(api.modalOpen());
+  if (!away) place(dt);
   raf = requestAnimationFrame(tick);
+}
+
+// Fenêtre ouverte (menu, carte) ou écran titre : le tutoriel s'efface et attend, sans rien bloquer ;
+// au retour, il reprend l'étape de la partie en cours (elle a pu changer par un import)
+let away = false;
+function setAway(on) {
+  if (on === away) return;
+  away = on;
+  ui.root.hidden = on;
+  document.body.classList.toggle('tuto-on', !on);
+  if (!on) show();
 }
 
 // ---------- Conseils de Gus : une fois chacun, la première fois que la situation se présente ----------

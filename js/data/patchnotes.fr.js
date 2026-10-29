@@ -1,6 +1,9 @@
 // Notes de mise à jour montrées aux joueurs (menu « Nouveautés », et une fois après chaque mise à jour).
 // Les plus récentes en premier ; courtes, dans la langue du jeu. Le détail technique est dans CHANGELOG.md.
 export const PATCH_NOTES = [
+  { v: '0.26.3', title: 'Le menu pendant le tutoriel', items: [
+    'Pendant le tutoriel, le bouton du menu reste utilisable : tu peux faire une pause, régler le son ou retourner au hub. Gus attend derrière le menu.'
+  ] },
   { v: '0.26.2', title: 'Démarrage plus rapide', items: [
     'L’écran titre s’affiche bien plus vite : les images du jeu se chargent pendant que tu le regardes.',
     'Options : bouton « Retour au hub », et le même ordre que dans les autres jeux du studio.'
