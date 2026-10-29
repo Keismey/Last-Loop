@@ -84,8 +84,17 @@ function crash(err) {
   box.hidden = false;
   if (loop) loop.setPaused(true);
 }
-window.addEventListener('error', e => crash(e.error || e.message));
-window.addEventListener('unhandledrejection', e => crash(e.reason));
+// Seules les erreurs du jeu arrêtent la partie. Les autres (script d'un autre site comme la mesure d'audience,
+// extension du navigateur, avertissement « ResizeObserver loop » sans objet d'erreur) vont seulement en console.
+const fromGame = err => !!err && typeof err.stack === 'string' && err.stack.includes(location.origin);
+window.addEventListener('error', e => {
+  if (e.error && (e.filename || '').startsWith(location.origin) || fromGame(e.error)) crash(e.error);
+  else console.warn('Erreur ignorée (hors du jeu) :', e.message);
+});
+window.addEventListener('unhandledrejection', e => {
+  if (fromGame(e.reason)) crash(e.reason);
+  else console.warn('Promesse rejetée ignorée (hors du jeu) :', e.reason);
+});
 
 // ---------- Pause globale ----------
 function refreshPause() {

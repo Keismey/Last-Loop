@@ -1,6 +1,9 @@
 // Notes de mise à jour montrées aux joueurs (menu « Nouveautés », et une fois après chaque mise à jour).
 // Les plus récentes en premier ; courtes, dans la langue du jeu. Le détail technique est dans CHANGELOG.md.
 export const PATCH_NOTES = [
+  { v: '0.26.5', title: 'Moins de faux déraillements', items: [
+    'L’écran « Le train a déraillé » ne s’affiche plus pour une erreur qui ne vient pas du jeu (extension du navigateur, autre site) : ta partie continue.'
+  ] },
   { v: '0.26.4', title: 'Ta partie est protégée', items: [
     'Si ta partie a été enregistrée par une version plus récente du jeu (sur un autre appareil, par exemple), l’écran titre te propose de mettre le jeu à jour au lieu de risquer de l’écraser.'
   ] },
