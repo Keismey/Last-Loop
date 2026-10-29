@@ -201,6 +201,7 @@ function tick(now) {
   if (!api.inGame()) { setAway(true); raf = 0; return; }   // écran titre : startTutorial relance la boucle
   setAway(api.modalOpen());
   if (!away) place(dt);
+  if (!ui) return;                                   // tutoriel terminé pendant place()
   raf = requestAnimationFrame(tick);
 }
 

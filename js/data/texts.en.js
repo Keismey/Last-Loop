@@ -6,6 +6,8 @@ export const TEXTS = {
   'title.play': 'Play',
   'title.continue': 'Continue',
   'title.newGame': 'New game',
+  'title.tooNew': 'Your game was saved by a newer version of Last Loop. Update the game to continue it (internet connection needed).',
+  'title.update': 'Update',
   'title.tapHint': 'Tap the screen to climb aboard',
   'title.version': 'v{v} · Keismey Studio',
 
@@ -762,6 +764,7 @@ export const TEXTS = {
   'common.back': 'Back',
 
   'save.saved': 'Game saved',
+  'save.tooNew': 'A newer version of the game saved your game: this one is no longer being saved. Go back to the title screen to update the game.',
   'save.unavailable': 'Saving isn’t possible in this browser: your game won’t be kept.',
 
   'error.title': 'The train derailed (bug)',

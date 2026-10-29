@@ -1,5 +1,8 @@
 // Patch notes shown to players in English (same entries as patchnotes.fr.js).
 export const PATCH_NOTES = [
+  { v: '0.26.4', title: 'Your game is protected', items: [
+    'If your game was saved by a newer version (on another device, for example), the title screen offers to update the game instead of risking overwriting it.'
+  ] },
   { v: '0.26.3', title: 'The menu during the tutorial', items: [
     'During the tutorial, the menu button still works: you can pause, adjust the sound or go back to the hub. Gus waits behind the menu.'
   ] },

@@ -2,7 +2,7 @@
 export const CONFIG = {
   // 'artifact' pendant le développement (artefact Claude), 'pages' une fois sur GitHub Pages
   TARGET: 'artifact',
-  VERSION: '0.26.3',
+  VERSION: '0.26.4',
   SAVE_KEY: 'loopexpress.save',
   SETTINGS_KEY: 'loopexpress.settings',
   HUB_URL: 'https://keismey.github.io/',

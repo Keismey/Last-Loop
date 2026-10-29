@@ -1,5 +1,10 @@
 # Journal des versions
 
+## 0.26.4 — Une partie plus récente n'est plus écrasée
+
+- **Sauvegarde** : une partie enregistrée par une version plus récente (`version > STATE_VERSION`, par exemple synchronisée depuis un autre appareil pendant qu'on joue une ancienne copie hors ligne) était ignorée par `loadGame()` : « Continuer » lançait une nouvelle partie et l'enregistrait par-dessus. Désormais `saveTooNew()` : l'écran titre propose « Mettre à jour » (`updateNow()`, aussi utilisé par le bandeau de mise à jour) et « Nouvelle partie » (double confirmation, inchangée) ; `saveGame()` n'écrit jamais par-dessus une telle partie, et si elle apparaît en cours de partie (synchro), un message le dit une fois (`save.tooNew`). Reprise à chaud : retour à l'écran titre au lieu de rester sur le chargement.
+- **Tutoriel** : plus de second `teardown()` quand le tutoriel se termine pendant `place()`.
+
 ## 0.26.3 — Le menu pendant le tutoriel
 
 - **Tutoriel** : le bouton ☰ reste touchable au-dessus des panneaux bloquants (`body.tuto-on #btn-menu`, `--z-tuto`). Quand une fenêtre est ouverte ou qu'on revient à l'écran titre (`api.modalOpen()`, `api.inGame()`), le tutoriel se cache et attend : la bulle de Gus ne recouvre plus le menu. Au retour, il reprend l'étape de la partie en cours ; une partie importée sans tutoriel le referme proprement (`teardown()`, la pause du tutoriel est levée).
