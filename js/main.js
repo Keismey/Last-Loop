@@ -529,7 +529,8 @@ function maybeShowNotes() {
 // Recharge sur la dernière version en ligne (service worker mis à jour d'abord) ; hors ligne, la page se recharge telle quelle
 function updateNow() {
   persist(false);
-  const sw = 'serviceWorker' in navigator ? navigator.serviceWorker.getRegistration().then(r => r && r.update()) : Promise.resolve();
+  let sw = Promise.resolve();
+  try { if (ON_PAGES) sw = navigator.serviceWorker.getRegistration().then(r => r && r.update()); } catch (e) { /* pas de service worker ici */ }
   sw.catch(() => {}).then(() => setTimeout(() => location.reload(), 300));
 }
 
