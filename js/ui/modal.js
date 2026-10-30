@@ -86,11 +86,14 @@ export function closeModal() {
   const cb = onCloseCb;
   onCloseCb = null;
   if (cb) cb();
-  // retour au bouton d'origine, s'il est encore là (sinon le jeu a changé d'écran) et qu'aucune fenêtre n'a pris la suite
-  const b = opener;
-  if (isModalOpen()) return;
-  opener = null;
-  if (b && b.isConnected && b.getClientRects().length && !b.disabled) try { b.focus({ preventScroll: true }); } catch (e) { /* sans conséquence */ }
+  // retour au bouton d'origine, une fois que l'appelant a fini (« Écran titre » change d'écran juste après) :
+  // s'il est encore visible et qu'aucune fenêtre n'a pris la suite
+  setTimeout(() => {
+    if (isModalOpen()) return;
+    const b = opener;
+    opener = null;
+    if (b && b.isConnected && b.getClientRects().length && !b.disabled) try { b.focus(); } catch (e) { /* sans conséquence */ }
+  }, 0);
 }
 
 // Petit utilitaire de construction DOM

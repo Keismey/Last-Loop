@@ -4,6 +4,8 @@
 
 - **Fenêtres** (`ui/modal.js`, comme Le Cartographe) : à l'ouverture, le focus entre dans la fenêtre (`.modal-card`, `tabindex=-1`), nommée par son titre (`aria-labelledby`) ; Tab et Maj+Tab restent dedans ; à la fermeture, le focus revient au bouton d'origine (une fenêtre qui en remplace une autre, Crédits depuis le menu, garde celui de la première). Échap reste traité par `ks-back.js`.
 - Anneau de focus aussi sur les curseurs (`input:focus-visible`).
+- Retour du focus après la fermeture différé (`setTimeout`) : « Écran titre » change d'écran juste après, le focus ne va plus sur un bouton masqué.
+- **Zones de toucher** (0.26.6) : celle de « Résumé du tour » ne s'étend plus que vers le bas ; vers le haut, elle mordait sur « Volontaire ».
 
 ## 0.26.6 — Boutons à 44 px et textes lisibles
 

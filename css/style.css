@@ -105,6 +105,8 @@ button:focus-visible, textarea:focus-visible, input:focus-visible { outline: 2px
 .btn-small::before, .btn-depart::before, .chip-speed::before, .chip-zoom::before, .chip-auto::before, .sb-shop-btn::before {
   content: ''; position: absolute; left: 50%; top: 50%; width: max(100%, 44px); height: max(100%, 44px); transform: translate(-50%, -50%);
 }
+/* « Résumé du tour » : sa zone ne s'étend que vers le bas (au-dessus, elle mordait sur « Volontaire » ; « Partir », dessous, garde la sienne) */
+.sb-depot-actions .btn-small::before { top: 0; transform: translateX(-50%); }
 /* Boutons du Dépôt (en-tête du pupitre) : la place manque pour 44 px ; la zone va du bord du pupitre aux cartes de voie */
 .sb-shop-btn::before { left: -3px; right: -3px; top: -6px; bottom: -4px; width: auto; height: auto; transform: none; }
 .btn:disabled { opacity: 0.42; cursor: default; box-shadow: none; }
