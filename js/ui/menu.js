@@ -1,14 +1,14 @@
-// Menu de pause : reprendre, export / import, nouvelle partie, version (7 touchers = debug).
+// Menu de pause : reprendre, sauvegarde (fenêtre commune du studio), nouvelle partie, version (7 touchers = debug).
 import { t, duration, pct, switchLang, IS_EN } from '../core/i18n.js';
 import { CONFIG } from '../data/config.js';
 import { openModal, closeModal, el } from './modal.js';
 import { toast } from './toasts.js';
-import { exportText, importText } from '../core/save.js';
+import { exportText, legacySave, checkSaveText, SAVE_KEYS } from '../core/save.js';
 import { settings, setSetting } from '../core/settings.js';
 import { sfx } from '../audio/sound.js';
 import { PATCH_NOTES } from '../data/patchnotes.js';
 
-// api : { getState, onResume, onImport(state), onTitle, onDebug, tryFullscreen, atTitle }
+// api : { getState, onResume, onSave, onTitle, onDebug, tryFullscreen, atTitle }
 // atTitle : ouvert depuis l'écran titre (Options) : ni temps de jeu, ni sauvegarde, ni « Écran titre » (la croix ferme)
 export function openMenu(api) {
   let taps = 0;
@@ -32,8 +32,7 @@ export function openMenu(api) {
     T ? null : el('button', { class: 'btn btn-primary span-2', text: t('menu.resume'), onclick: () => closeModal() }),
     optionsBlock(),
     el('button', { class: 'btn btn-lang' + (T ? '' : ' span-2'), lang: IS_EN ? 'fr' : 'en', text: t('menu.lang'), onclick: () => { api.onLang ? api.onLang() : switchLang(); } }),
-    T ? null : el('button', { class: 'btn', text: t('menu.export'), onclick: () => openExport(api) }),
-    T ? null : el('button', { class: 'btn', text: t('menu.import'), onclick: () => openImport(api) }),
+    T ? null : el('button', { class: 'btn span-2', text: t('menu.save'), onclick: () => api.onSave() }),
     el('button', { class: 'btn', text: t('menu.fullscreen'), onclick: () => api.tryFullscreen() }),
     el('button', { class: 'btn', text: t('menu.notes'), onclick: () => openNotes(() => openMenu(api)) }),
     el('button', { class: 'btn', text: t('menu.credits'), onclick: () => openCredits(() => openMenu(api)) }),
@@ -95,22 +94,56 @@ export function openExport(api, onClose) {
     el('p', { text: t('export.body') }), area, copy), { title: t('export.title'), onClose: onClose || api.onResume });
 }
 
-function openImport(api) {
-  const area = el('textarea', { class: 'code-area', id: 'import-text', rows: '4', placeholder: t('import.placeholder') });
-  const msg = el('p', { class: 'form-error', role: 'alert' });
-  const go = el('button', { class: 'btn btn-primary', text: t('import.go') });
-  go.addEventListener('click', () => {
-    const res = importText(area.value);
-    if (!res.ok) {
-      msg.textContent = t('import.' + res.reason);
+// Fenêtre « Sauvegarde » commune du studio (ks-studio.js : code KS1 ou fichier, synchro du compte du hub).
+// Avant que la fenêtre ne lise un code : les anciens codes « LOOPX1: » sont traduits en code KS1, et une partie
+// illisible ou d'une version plus récente est refusée (comme l'ancien import).
+// o : { save(), onClose() } ; onClose quand plus aucune fenêtre commune n'est ouverte. Renvoie false si elle n'a pas pu s'ouvrir.
+export function openSaveDialog(o) {
+  const KS = window.KS;
+  if (!KS || !KS.saveDialog || document.getElementById('ks-dlg')) return false;
+  const dir = location.pathname.split('/')[1] || '';   // même dossier que ks-studio.js
+  const enc = s => btoa(unescape(encodeURIComponent(s))), dec = s => decodeURIComponent(escape(atob(s)));
+  KS.saveDialog({ lang: IS_EN ? 'en' : 'fr', keys: SAVE_KEYS, save: o.save, file: 'last-loop', accent: '#c4a465' });
+  const dlg = document.getElementById('ks-dlg');
+  if (!dlg) return false;
+  const area = dlg.querySelector('#ks-in'), go = dlg.querySelector('#ks-go'), msg = dlg.querySelector('#ks-msg');
+  const refuse = (e, reason) => { e.stopImmediatePropagation(); if (msg) { msg.textContent = t('import.' + reason); msg.hidden = false; } };
+  // à la capture sur la fenêtre : passe avant le bouton « Charger » quel que soit le navigateur
+  if (area && go) dlg.addEventListener('click', e => {
+    if (e.target !== go) return;
+    const code = area.value.replace(/\s+/g, '');
+    if (!code) return;
+    if (code.startsWith('KS1.')) {
+      let text = null;
+      try { text = JSON.parse(dec(code.slice(code.indexOf('.', 4) + 1)))[SAVE_KEYS[0]]; } catch (err) { return; }   // code d'un autre jeu : la fenêtre le dit
+      const why = typeof text === 'string' ? checkSaveText(text) : '';
+      if (why) refuse(e, why);
       return;
     }
-    api.onImport(res.state);
-    toast(t('import.ok'));
-    closeModal();
+    const res = legacySave(code);
+    if (!res.ok) { if (res.reason === 'tooNew') refuse(e, 'tooNew'); return; }
+    // la partie remplacée devient la copie de secours, comme avec l'ancien import
+    let cur = null;
+    try { cur = localStorage.getItem(SAVE_KEYS[0]); } catch (err) { /* stockage indisponible */ }
+    area.value = 'KS1.' + dir + '.' + enc(JSON.stringify({ [SAVE_KEYS[0]]: res.text, [SAVE_KEYS[1]]: cur }));
+  }, true);
+  // au clavier : le focus entre dans la fenêtre (après le retour du focus de la fenêtre du jeu) et y reste
+  setTimeout(() => { const f = dlg.querySelector('#ks-copy') || area; if (f && dlg.isConnected) f.focus({ preventScroll: true }); }, 0);
+  dlg.addEventListener('keydown', e => {
+    if (e.key !== 'Tab') return;
+    const list = [...dlg.querySelectorAll('button, textarea')].filter(x => x.getClientRects().length);
+    if (!list.length) return;
+    const first = list[0], last = list[list.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
-  openModal(el('div', { class: 'menu-list' },
-    el('p', { text: t('import.body') }), area, msg, go), { title: t('import.title'), onClose: api.onResume });
+  const watch = new MutationObserver(() => {
+    if (document.getElementById('ks-dlg')) return;   // remplacée par une autre fenêtre commune (conflit de synchro) : on attend
+    watch.disconnect();
+    o.onClose();
+  });
+  watch.observe(document.body, { childList: true });
+  return true;
 }
 
 // Options : volumes, vibrations, conseils de Gus (gardés hors de la sauvegarde)
