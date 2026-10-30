@@ -1,6 +1,9 @@
 // Notes de mise à jour montrées aux joueurs (menu « Nouveautés », et une fois après chaque mise à jour).
 // Les plus récentes en premier ; courtes, dans la langue du jeu. Le détail technique est dans CHANGELOG.md.
 export const PATCH_NOTES = [
+  { v: '0.26.9', title: 'Sauvegarde comme dans les autres jeux', items: [
+    'Le menu a un seul bouton « Sauvegarde », le même que dans les autres jeux du studio : code à copier, fichier à télécharger, ou partie à charger. Tes anciens codes marchent toujours.'
+  ] },
   { v: '0.26.8', title: 'Plus léger à l’ouverture', items: [
     'Première visite plus légère, et sur un réseau faible le jeu s’ouvre au bout de quelques secondes avec la version gardée sur ton appareil.',
     'Sur iPhone, la musique marche aussi hors ligne, et chaque musique n’est téléchargée qu’une fois.'

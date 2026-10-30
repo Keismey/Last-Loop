@@ -1,5 +1,12 @@
 # Journal des versions
 
+## 0.26.9 — Fenêtre « Sauvegarde » commune aux jeux du studio
+
+- **Menu** : « Exporter » et « Importer » remplacés par un seul bouton « Sauvegarde », qui ouvre la fenêtre commune `KS.saveDialog` (code `KS1` à copier, fichier à télécharger, chargement d'un code ou d'un fichier). Clés : `loopexpress.save` et sa copie `.bak`. La partie est enregistrée juste avant, et reste en pause tant que la fenêtre est ouverte (`app.saveOpen`, fin repérée par un `MutationObserver`).
+- **Anciens codes** `LOOPX1:` toujours acceptés : lus par `legacySave()` (`core/save.js`, mêmes contrôles et migrations qu'avant), puis traduits en code `KS1` juste avant que la fenêtre ne les lise. Code d'une version plus récente : message « version plus récente », rien n'est remplacé.
+- Au clavier, le focus entre dans la fenêtre puis revient au bouton du menu.
+- L'écran de plantage garde son export de secours (ancien format, partie en mémoire).
+
 ## 0.26.8 — Service worker allégé, musique hors ligne sur iPhone
 
 - **Préchargement** (`tools/make_sw.py`) : une seule copie de la page (`index.html`, la racine `./` est servie par elle) ; grandes icônes `icon-512` et `maskable-512` (identiques, 400 Ko chacune) plus préchargées, le navigateur les demande à l'installation.

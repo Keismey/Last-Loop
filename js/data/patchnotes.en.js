@@ -1,5 +1,8 @@
 // Patch notes shown to players in English (same entries as patchnotes.fr.js).
 export const PATCH_NOTES = [
+  { v: '0.26.9', title: 'Save like the other games', items: [
+    'The menu has a single “Save” button, the same as in the studio’s other games: a code to copy, a file to download, or a game to load. Your old codes still work.'
+  ] },
   { v: '0.26.8', title: 'Lighter to open', items: [
     'The first visit downloads less, and on a weak network the game opens after a few seconds with the copy kept on your device.',
     'On iPhone, music also works offline, and each track is only downloaded once.'

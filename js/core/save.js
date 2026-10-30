@@ -165,6 +165,13 @@ export function exportText(state) {
   return 'LOOPX1:' + btoa(bin);
 }
 
+// Ancien code d'export (« LOOPX1: ») : texte de la sauvegarde, pour la fenêtre « Sauvegarde » commune du studio
+// Renvoie { ok, text, keys: [principale, copie de secours] } ou { ok: false, reason }
+export function legacySave(code) {
+  const res = importText(code);
+  return res.ok ? { ok: true, text: serialize(res.state), keys: [KEY, BAK] } : res;
+}
+
 // Import : renvoie { ok, state } ou { ok: false, reason }
 export function importText(text) {
   text = (text || '').trim();

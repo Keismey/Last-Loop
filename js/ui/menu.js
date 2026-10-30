@@ -1,14 +1,14 @@
-// Menu de pause : reprendre, export / import, nouvelle partie, version (7 touchers = debug).
+// Menu de pause : reprendre, sauvegarde (fenêtre commune du studio), nouvelle partie, version (7 touchers = debug).
 import { t, duration, pct, switchLang, IS_EN } from '../core/i18n.js';
 import { CONFIG } from '../data/config.js';
 import { openModal, closeModal, el } from './modal.js';
 import { toast } from './toasts.js';
-import { exportText, importText } from '../core/save.js';
+import { exportText, legacySave } from '../core/save.js';
 import { settings, setSetting } from '../core/settings.js';
 import { sfx } from '../audio/sound.js';
 import { PATCH_NOTES } from '../data/patchnotes.js';
 
-// api : { getState, onResume, onImport(state), onTitle, onDebug, tryFullscreen, atTitle }
+// api : { getState, onResume, onSave, onTitle, onDebug, tryFullscreen, atTitle }
 // atTitle : ouvert depuis l'écran titre (Options) : ni temps de jeu, ni sauvegarde, ni « Écran titre » (la croix ferme)
 export function openMenu(api) {
   let taps = 0;
@@ -32,8 +32,7 @@ export function openMenu(api) {
     T ? null : el('button', { class: 'btn btn-primary span-2', text: t('menu.resume'), onclick: () => closeModal() }),
     optionsBlock(),
     el('button', { class: 'btn btn-lang' + (T ? '' : ' span-2'), lang: IS_EN ? 'fr' : 'en', text: t('menu.lang'), onclick: () => { api.onLang ? api.onLang() : switchLang(); } }),
-    T ? null : el('button', { class: 'btn', text: t('menu.export'), onclick: () => openExport(api) }),
-    T ? null : el('button', { class: 'btn', text: t('menu.import'), onclick: () => openImport(api) }),
+    T ? null : el('button', { class: 'btn span-2', text: t('menu.save'), onclick: () => api.onSave() }),
     el('button', { class: 'btn', text: t('menu.fullscreen'), onclick: () => api.tryFullscreen() }),
     el('button', { class: 'btn', text: t('menu.notes'), onclick: () => openNotes(() => openMenu(api)) }),
     el('button', { class: 'btn', text: t('menu.credits'), onclick: () => openCredits(() => openMenu(api)) }),
@@ -95,22 +94,39 @@ export function openExport(api, onClose) {
     el('p', { text: t('export.body') }), area, copy), { title: t('export.title'), onClose: onClose || api.onResume });
 }
 
-function openImport(api) {
-  const area = el('textarea', { class: 'code-area', id: 'import-text', rows: '4', placeholder: t('import.placeholder') });
-  const msg = el('p', { class: 'form-error', role: 'alert' });
-  const go = el('button', { class: 'btn btn-primary', text: t('import.go') });
-  go.addEventListener('click', () => {
-    const res = importText(area.value);
-    if (!res.ok) {
-      msg.textContent = t('import.' + res.reason);
-      return;
+// Fenêtre « Sauvegarde » commune du studio (ks-studio.js : code KS1 ou fichier, synchro du compte du hub).
+// Les anciens codes « LOOPX1: » restent acceptés : traduits en code KS1 juste avant que la fenêtre ne les lise.
+// o : { save(), onClose() } ; onClose quand la fenêtre se ferme (ou que la page se recharge pour l'import)
+export function openSaveDialog(o) {
+  const KS = window.KS;
+  if (!KS || !KS.saveDialog) return false;
+  KS.saveDialog({ lang: IS_EN ? 'en' : 'fr', keys: [CONFIG.SAVE_KEY, CONFIG.SAVE_KEY + '.bak'], save: o.save, file: 'last-loop', accent: '#c4a465' });
+  const dlg = document.getElementById('ks-dlg');
+  if (!dlg) return false;
+  const area = dlg.querySelector('#ks-in'), go = dlg.querySelector('#ks-go'), msg = dlg.querySelector('#ks-msg');
+  if (area && go) go.addEventListener('click', e => {
+    const code = area.value.replace(/\s+/g, '');
+    if (!code || code.startsWith('KS1.')) return;
+    const res = legacySave(code);
+    if (res.ok) {
+      const dir = location.pathname.split('/')[1] || '';   // même dossier que ks-studio.js
+      const data = { [res.keys[0]]: res.text, [res.keys[1]]: null };
+      area.value = 'KS1.' + dir + '.' + btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+    } else if (res.reason === 'tooNew' && msg) {
+      e.stopImmediatePropagation();
+      msg.textContent = t('import.tooNew');
+      msg.hidden = false;
     }
-    api.onImport(res.state);
-    toast(t('import.ok'));
-    closeModal();
+  }, true);
+  // au clavier : le focus entre dans la fenêtre (après le retour du focus de la fenêtre du jeu), puis revient au jeu
+  setTimeout(() => { const f = dlg.querySelector('#ks-copy') || area; if (f && dlg.isConnected) f.focus({ preventScroll: true }); }, 0);
+  const watch = new MutationObserver(() => {
+    if (dlg.isConnected) return;
+    watch.disconnect();
+    o.onClose();
   });
-  openModal(el('div', { class: 'menu-list' },
-    el('p', { text: t('import.body') }), area, msg, go), { title: t('import.title'), onClose: api.onResume });
+  watch.observe(document.body, { childList: true });
+  return true;
 }
 
 // Options : volumes, vibrations, conseils de Gus (gardés hors de la sauvegarde)

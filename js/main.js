@@ -29,7 +29,7 @@ import { createScene, refreshSceneArt } from './render/scene.js';
 import { initHud, updateHud, setHudSpeed } from './ui/hud.js';
 import { initToasts, toast, buzz } from './ui/toasts.js';
 import { initModal, isModalOpen, isModalLocked, openModal, closeModal, el } from './ui/modal.js';
-import { openMenu, openExport, openCredits, openNotes } from './ui/menu.js';
+import { openMenu, openExport, openCredits, openNotes, openSaveDialog } from './ui/menu.js';
 import { PATCH_NOTES } from './data/patchnotes.js';
 import { openDebug, updateDebug, closeDebug } from './ui/debug.js';
 import { icon } from './ui/icons.js';
@@ -107,7 +107,7 @@ window.addEventListener('unhandledrejection', e => {
 function refreshPause() {
   if (!loop) return;
   const blocked = app.hidden || app.portrait || app.crashed;
-  if (app.screen === 'game') loop.setPaused(blocked || app.menuOpen || app.eventOpen || app.tutoPause);
+  if (app.screen === 'game') loop.setPaused(blocked || app.menuOpen || app.saveOpen || app.eventOpen || app.tutoPause);
   else if (app.screen === 'title') loop.setPaused(blocked);
   else loop.setPaused(true);
   $('screen-rotate').hidden = !app.portrait;
@@ -364,7 +364,7 @@ function openGameMenu() {
   openMenu({
     getState: () => app.state,
     onResume: () => { app.menuOpen = false; refreshPause(); },
-    onImport: state => adopt(state),
+    onSave: openGameSave,
     onTitle: () => {
       app.menuOpen = false;
       persist(false);
@@ -376,6 +376,15 @@ function openGameMenu() {
     onDebug: () => { if (!CONFIG.DEBUG_ALLOWED) return; closeModal(); openDebugPanel(); },
     tryFullscreen: () => goFullscreen()
   });
+}
+
+// Fenêtre « Sauvegarde » commune : la partie reste en pause tant qu'elle est ouverte
+function openGameSave() {
+  app.saveOpen = true;           // avant closeModal, qui relance le jeu (onResume)
+  closeModal();
+  persist(false);
+  const back = () => { app.saveOpen = false; refreshPause(); const b = $('btn-menu'); if (b && !isModalOpen()) b.focus({ preventScroll: true }); };
+  if (!openSaveDialog({ save: () => persist(false), onClose: back })) back();
 }
 
 // ---------- Vitesse automatique à l'approche d'un site ----------
