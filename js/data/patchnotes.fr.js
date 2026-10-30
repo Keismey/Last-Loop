@@ -1,6 +1,9 @@
 // Notes de mise à jour montrées aux joueurs (menu « Nouveautés », et une fois après chaque mise à jour).
 // Les plus récentes en premier ; courtes, dans la langue du jeu. Le détail technique est dans CHANGELOG.md.
 export const PATCH_NOTES = [
+  { v: '0.26.7', title: 'Fenêtres au clavier', items: [
+    'Sur ordinateur, les fenêtres (menu, Options, cartes d’événement…) se parcourent au clavier : Tab reste dans la fenêtre, et à la fermeture on revient au bouton qui l’a ouverte.'
+  ] },
   { v: '0.26.6', title: 'Plus facile à toucher et à lire', items: [
     'Les petits boutons (vitesse, vue, Auto, Résumé du tour, Partir, tutoriel) réagissent sur une zone plus large, sans changer d’allure.',
     'Plusieurs petits textes sont plus grands, et le bandeau « Halte » et le bouton Options de l’écran titre sont plus lisibles.'
