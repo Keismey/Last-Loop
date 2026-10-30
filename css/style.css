@@ -53,7 +53,8 @@ body {
 }
 #app { position: relative; height: 100%; width: 100%; overflow: hidden; }
 button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulation; }
-button:focus-visible, textarea:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+button:focus-visible, textarea:focus-visible, input:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+.modal-card:focus { outline: none; }   /* la fenêtre reçoit le focus à l'ouverture : pas d'anneau autour d'elle */
 .muted { color: var(--dim); }
 .small { font-size: 12px; }
 .num { font-variant-numeric: tabular-nums; font-weight: 700; }

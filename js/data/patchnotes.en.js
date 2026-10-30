@@ -1,5 +1,8 @@
 // Patch notes shown to players in English (same entries as patchnotes.fr.js).
 export const PATCH_NOTES = [
+  { v: '0.26.7', title: 'Keyboard-friendly windows', items: [
+    'On a computer, windows (menu, Options, event cards…) can be used with the keyboard: Tab stays inside the window, and closing it brings you back to the button that opened it.'
+  ] },
   { v: '0.26.6', title: 'Easier to tap and read', items: [
     'Small buttons (speed, view, Auto, Lap summary, Depart, tutorial) respond to a larger area, without changing their look.',
     'Several small texts are larger, and the “Halt” banner and the title screen Options button are easier to read.'
