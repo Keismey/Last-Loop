@@ -163,12 +163,13 @@ function onFirstTouch() {
 // ---------- Sauvegarde ----------
 let tooNewTold = false;
 function persist(showToast) {
-  if (!app.state || !app.canSave) return;
+  if (!app.state || !app.canSave) return false;
   const ok = saveGame(app.state);
   if (showToast && ok) toast(t('save.saved'));
   // une version plus récente a enregistré la partie pendant qu'on jouait (synchro) : on le dit, une fois
   if (ok) tooNewTold = false;
   else if (!tooNewTold && saveTooNew()) { tooNewTold = true; toast(t('save.tooNew'), 'warn'); }
+  return ok;
 }
 
 document.addEventListener('visibilitychange', () => {
@@ -378,13 +379,17 @@ function openGameMenu() {
   });
 }
 
-// Fenêtre « Sauvegarde » commune : la partie reste en pause tant qu'elle est ouverte
+// Fenêtre « Sauvegarde » commune : la partie reste en pause tant qu'elle est ouverte. Elle lit la partie enregistrée :
+// si l'enregistrement échoue (stockage indisponible ou plein, partie plus récente) ou sans ks-studio.js,
+// ancien export de la partie en mémoire, pour ne jamais rester sans copie
 function openGameSave() {
   app.saveOpen = true;           // avant closeModal, qui relance le jeu (onResume)
   closeModal();
-  persist(false);
   const back = () => { app.saveOpen = false; refreshPause(); const b = $('btn-menu'); if (b && !isModalOpen()) b.focus({ preventScroll: true }); };
-  if (!openSaveDialog({ save: () => persist(false), onClose: back })) back();
+  if (persist(false) && openSaveDialog({ save: () => {}, onClose: back })) return;
+  app.saveOpen = false;
+  app.menuOpen = true;
+  openExport({ getState: () => app.state, onResume: () => { app.menuOpen = false; refreshPause(); } });
 }
 
 // ---------- Vitesse automatique à l'approche d'un site ----------

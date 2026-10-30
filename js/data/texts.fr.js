@@ -751,6 +751,7 @@ export const TEXTS = {
   'export.copy': 'Copier',
   'export.copied': 'Sauvegarde copiée',
   'export.copyFailed': 'Copie impossible : le texte est sélectionné, copie-le à la main.',
+  'import.bad': 'Ce texte n’est pas une sauvegarde de Last Loop. Vérifie qu’il est complet.',
   'import.tooNew': 'Cette sauvegarde vient d’une version plus récente du jeu.',
   'common.close': 'Fermer',
   'common.back': 'Retour',

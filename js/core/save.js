@@ -165,11 +165,20 @@ export function exportText(state) {
   return 'LOOPX1:' + btoa(bin);
 }
 
-// Ancien code d'export (« LOOPX1: ») : texte de la sauvegarde, pour la fenêtre « Sauvegarde » commune du studio
-// Renvoie { ok, text, keys: [principale, copie de secours] } ou { ok: false, reason }
+// Fenêtre « Sauvegarde » commune du studio : clés gardées (principale, copie de secours)
+export const SAVE_KEYS = [KEY, BAK];
+
+// Ancien code d'export (« LOOPX1: ») : texte de la sauvegarde à ranger, ou { ok: false, reason }
 export function legacySave(code) {
   const res = importText(code);
-  return res.ok ? { ok: true, text: serialize(res.state), keys: [KEY, BAK] } : res;
+  return res.ok ? { ok: true, text: serialize(res.state) } : res;
+}
+
+// Sauvegarde lue dans un code KS1 : même contrôle qu'à l'import (partie de Last Loop, pas d'une version plus récente)
+export function checkSaveText(text) {
+  const data = parse(text);
+  if (!data) return 'bad';
+  return data.version > STATE_VERSION ? 'tooNew' : '';
 }
 
 // Import : renvoie { ok, state } ou { ok: false, reason }

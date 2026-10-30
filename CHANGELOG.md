@@ -4,7 +4,9 @@
 
 - **Menu** : « Exporter » et « Importer » remplacés par un seul bouton « Sauvegarde », qui ouvre la fenêtre commune `KS.saveDialog` (code `KS1` à copier, fichier à télécharger, chargement d'un code ou d'un fichier). Clés : `loopexpress.save` et sa copie `.bak`. La partie est enregistrée juste avant, et reste en pause tant que la fenêtre est ouverte (`app.saveOpen`, fin repérée par un `MutationObserver`).
 - **Anciens codes** `LOOPX1:` toujours acceptés : lus par `legacySave()` (`core/save.js`, mêmes contrôles et migrations qu'avant), puis traduits en code `KS1` juste avant que la fenêtre ne les lise. Code d'une version plus récente : message « version plus récente », rien n'est remplacé.
-- Au clavier, le focus entre dans la fenêtre puis revient au bouton du menu.
+- **Codes KS1** contrôlés comme l'ancien import avant que la fenêtre ne les range (`checkSaveText()`) : partie illisible ou d'une version plus récente refusée. Ancien code importé : la partie remplacée devient la copie de secours, comme avant. Contrôles à la capture sur la fenêtre, avant le bouton « Charger ».
+- **Secours** : si l'enregistrement échoue (stockage indisponible ou plein, partie plus récente) ou sans `ks-studio.js`, l'ancien export de la partie en mémoire s'ouvre à la place. Une seule sauvegarde à l'ouverture (la copie de secours reste la partie précédente).
+- Au clavier, le focus entre dans la fenêtre, Tab y reste, puis il revient au bouton du menu. Une fenêtre de conflit de synchro qui prend la place garde la partie en pause.
 - L'écran de plantage garde son export de secours (ancien format, partie en mémoire).
 
 ## 0.26.8 — Service worker allégé, musique hors ligne sur iPhone

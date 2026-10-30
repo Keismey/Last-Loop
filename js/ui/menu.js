@@ -3,7 +3,7 @@ import { t, duration, pct, switchLang, IS_EN } from '../core/i18n.js';
 import { CONFIG } from '../data/config.js';
 import { openModal, closeModal, el } from './modal.js';
 import { toast } from './toasts.js';
-import { exportText, legacySave } from '../core/save.js';
+import { exportText, legacySave, checkSaveText, SAVE_KEYS } from '../core/save.js';
 import { settings, setSetting } from '../core/settings.js';
 import { sfx } from '../audio/sound.js';
 import { PATCH_NOTES } from '../data/patchnotes.js';
@@ -95,33 +95,50 @@ export function openExport(api, onClose) {
 }
 
 // Fenêtre « Sauvegarde » commune du studio (ks-studio.js : code KS1 ou fichier, synchro du compte du hub).
-// Les anciens codes « LOOPX1: » restent acceptés : traduits en code KS1 juste avant que la fenêtre ne les lise.
-// o : { save(), onClose() } ; onClose quand la fenêtre se ferme (ou que la page se recharge pour l'import)
+// Avant que la fenêtre ne lise un code : les anciens codes « LOOPX1: » sont traduits en code KS1, et une partie
+// illisible ou d'une version plus récente est refusée (comme l'ancien import).
+// o : { save(), onClose() } ; onClose quand plus aucune fenêtre commune n'est ouverte. Renvoie false si elle n'a pas pu s'ouvrir.
 export function openSaveDialog(o) {
   const KS = window.KS;
-  if (!KS || !KS.saveDialog) return false;
-  KS.saveDialog({ lang: IS_EN ? 'en' : 'fr', keys: [CONFIG.SAVE_KEY, CONFIG.SAVE_KEY + '.bak'], save: o.save, file: 'last-loop', accent: '#c4a465' });
+  if (!KS || !KS.saveDialog || document.getElementById('ks-dlg')) return false;
+  const dir = location.pathname.split('/')[1] || '';   // même dossier que ks-studio.js
+  const enc = s => btoa(unescape(encodeURIComponent(s))), dec = s => decodeURIComponent(escape(atob(s)));
+  KS.saveDialog({ lang: IS_EN ? 'en' : 'fr', keys: SAVE_KEYS, save: o.save, file: 'last-loop', accent: '#c4a465' });
   const dlg = document.getElementById('ks-dlg');
   if (!dlg) return false;
   const area = dlg.querySelector('#ks-in'), go = dlg.querySelector('#ks-go'), msg = dlg.querySelector('#ks-msg');
-  if (area && go) go.addEventListener('click', e => {
+  const refuse = (e, reason) => { e.stopImmediatePropagation(); if (msg) { msg.textContent = t('import.' + reason); msg.hidden = false; } };
+  // à la capture sur la fenêtre : passe avant le bouton « Charger » quel que soit le navigateur
+  if (area && go) dlg.addEventListener('click', e => {
+    if (e.target !== go) return;
     const code = area.value.replace(/\s+/g, '');
-    if (!code || code.startsWith('KS1.')) return;
-    const res = legacySave(code);
-    if (res.ok) {
-      const dir = location.pathname.split('/')[1] || '';   // même dossier que ks-studio.js
-      const data = { [res.keys[0]]: res.text, [res.keys[1]]: null };
-      area.value = 'KS1.' + dir + '.' + btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-    } else if (res.reason === 'tooNew' && msg) {
-      e.stopImmediatePropagation();
-      msg.textContent = t('import.tooNew');
-      msg.hidden = false;
+    if (!code) return;
+    if (code.startsWith('KS1.')) {
+      let text = null;
+      try { text = JSON.parse(dec(code.slice(code.indexOf('.', 4) + 1)))[SAVE_KEYS[0]]; } catch (err) { return; }   // code d'un autre jeu : la fenêtre le dit
+      const why = typeof text === 'string' ? checkSaveText(text) : '';
+      if (why) refuse(e, why);
+      return;
     }
+    const res = legacySave(code);
+    if (!res.ok) { if (res.reason === 'tooNew') refuse(e, 'tooNew'); return; }
+    // la partie remplacée devient la copie de secours, comme avec l'ancien import
+    let cur = null;
+    try { cur = localStorage.getItem(SAVE_KEYS[0]); } catch (err) { /* stockage indisponible */ }
+    area.value = 'KS1.' + dir + '.' + enc(JSON.stringify({ [SAVE_KEYS[0]]: res.text, [SAVE_KEYS[1]]: cur }));
   }, true);
-  // au clavier : le focus entre dans la fenêtre (après le retour du focus de la fenêtre du jeu), puis revient au jeu
+  // au clavier : le focus entre dans la fenêtre (après le retour du focus de la fenêtre du jeu) et y reste
   setTimeout(() => { const f = dlg.querySelector('#ks-copy') || area; if (f && dlg.isConnected) f.focus({ preventScroll: true }); }, 0);
+  dlg.addEventListener('keydown', e => {
+    if (e.key !== 'Tab') return;
+    const list = [...dlg.querySelectorAll('button, textarea')].filter(x => x.getClientRects().length);
+    if (!list.length) return;
+    const first = list[0], last = list[list.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
   const watch = new MutationObserver(() => {
-    if (dlg.isConnected) return;
+    if (document.getElementById('ks-dlg')) return;   // remplacée par une autre fenêtre commune (conflit de synchro) : on attend
     watch.disconnect();
     o.onClose();
   });
