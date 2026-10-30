@@ -1,5 +1,12 @@
 # Journal des versions
 
+## 0.26.6 — Boutons à 44 px et textes lisibles
+
+- **Zones de toucher** : `::before` invisible de 44 × 44 px au moins sur `.btn-small`, `.btn-depart`, `.chip-speed`, `.chip-zoom`, `.chip-auto` (dessin inchangé). Boutons du Dépôt (`.sb-shop-btn`) : la place manque dans l'en-tête du pupitre, la zone va du bord du pupitre aux cartes de voie (34 px).
+- **Textes** : 12 px au moins pour les noms de l'équipage, les actions et la réserve du pupitre, les boutons du Dépôt, les fiches, la carte et le résumé. Exceptions : libellés du rail (10 px, « Recherche » ne tient pas plus grand dans 60 px), sous-titres des cartes de voie (11 px), pastilles de chiffres.
+- **Contrastes** : bandeau Halte sur sarcelle foncée (5,4:1), boutons secondaires de l'écran titre sur fond sombre.
+- **Mise à jour** : `updateNow()` ne touche au service worker que sur le site en ligne (`ON_PAGES`) ; dans l'aperçu, la page se recharge sans erreur.
+
 ## 0.26.5 — Écran de plantage réservé aux erreurs du jeu
 
 - **Erreurs** : `error` et `unhandledrejection` n'appellent `crash()` que pour une erreur du jeu (objet d'erreur venant d'un fichier du site, `fromGame()`). « Script error. » d'un script d'un autre site (mesure d'audience Cloudflare), extensions du navigateur, avertissement « ResizeObserver loop » sans objet d'erreur, rejets sans pile du site : seulement `console.warn`, la partie continue. La pile est lue sans le message (qui peut citer l'adresse du site). Page sans origine web (aperçu en artefact) : toute erreur compte, comme avant.
