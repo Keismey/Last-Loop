@@ -3,7 +3,8 @@
 ## 0.26.8 — Service worker allégé, musique hors ligne sur iPhone
 
 - **Préchargement** (`tools/make_sw.py`) : une seule copie de la page (`index.html`, la racine `./` est servie par elle) ; grandes icônes `icon-512` et `maskable-512` (identiques, 400 Ko chacune) plus préchargées, le navigateur les demande à l'installation.
-- **Réseau lent** : page, code et styles répondent par la copie gardée si le réseau ne répond pas en 4 s ; les fichiers suivants viennent alors directement du cache pendant 30 s (sinon chaque niveau d'`import` attendrait 4 s de plus). Seules les réponses 200 du site remplacent la copie gardée, copiée avant que la page ne lise la réponse.
+- **Réseau lent** : la page répond par la copie gardée si le réseau ne répond pas en 4 s (ou manque) ; le code et les styles viennent alors directement du cache pendant 30 s, sans attendre ni mélanger deux versions. Page venue du réseau : code et styles en réseau d'abord, comme avant. Seules les réponses 200 du site remplacent la copie gardée.
+- **Musiques** : la première écoute joue dès les premiers octets (la copie dans le cache se fait en parallèle) ; un morceau `Range` est découpé dans un `Blob` sans recopier tout le fichier.
 - **Musiques** : rangées sous leur empreinte (`?h=`, comme les images), une musique modifiée est retéléchargée et l'ancienne retirée à l'activation ; les deux lecteurs d'une piste partagent un seul téléchargement complet ; une demande `Range` sur une musique gardée reçoit le morceau demandé (206), ce qu'attend Safari.
 
 ## 0.26.7 — Fenêtres utilisables au clavier
