@@ -1,5 +1,11 @@
 # Journal des versions
 
+## 0.26.8 — Service worker allégé, musique hors ligne sur iPhone
+
+- **Préchargement** (`tools/make_sw.py`) : une seule copie de la page (`index.html`, la racine `./` est servie par elle) ; grandes icônes `icon-512` et `maskable-512` (identiques, 400 Ko chacune) plus préchargées, le navigateur les demande à l'installation.
+- **Réseau lent** : page, code et styles répondent par la copie gardée si le réseau ne répond pas en 4 s ; les fichiers suivants viennent alors directement du cache pendant 30 s (sinon chaque niveau d'`import` attendrait 4 s de plus). Seules les réponses 200 du site remplacent la copie gardée, copiée avant que la page ne lise la réponse.
+- **Musiques** : rangées sous leur empreinte (`?h=`, comme les images), une musique modifiée est retéléchargée et l'ancienne retirée à l'activation ; les deux lecteurs d'une piste partagent un seul téléchargement complet ; une demande `Range` sur une musique gardée reçoit le morceau demandé (206), ce qu'attend Safari.
+
 ## 0.26.7 — Fenêtres utilisables au clavier
 
 - **Fenêtres** (`ui/modal.js`, comme Le Cartographe) : à l'ouverture, le focus entre dans la fenêtre (`.modal-card`, `tabindex=-1`), nommée par son titre (`aria-labelledby`) ; Tab et Maj+Tab restent dedans ; à la fermeture, le focus revient au bouton d'origine (une fenêtre qui en remplace une autre, Crédits depuis le menu, garde celui de la première). Échap reste traité par `ks-back.js`.
